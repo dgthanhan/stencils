@@ -8,6 +8,14 @@
         description="Elements for building Gnome 3 application mockups"
         version="1.0"
         author="Duong Thanh An">
+    <Fonts>
+        <Font name="Cantarell"
+            regular="fonts/abattis-cantarell/Cantarell-Regular.otf"
+            bold="fonts/abattis-cantarell/Cantarell-Bold.otf"
+            italic="fonts/abattis-cantarell/Cantarell-Oblique.otf"
+            boldItalic="fonts/abattis-cantarell/Cantarell-BoldOblique.otf"
+            />
+    </Fonts>
     <Script comments="Scripts for">
         <![CDATA[
             collection.COLOR_BASE = 232;
@@ -417,7 +425,7 @@
         <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
         <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
         <PropertyValue name="text">Window Frame</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
         <PropertyValue name="withIcon">true</PropertyValue>
         <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
@@ -657,7 +665,7 @@
         <PropertyValue name="box">90,28</PropertyValue>
         <PropertyValue name="imageData">90,28,20-25 71-76,6-22,collection://bitmaps/toggle-offdisabled.png</PropertyValue>
         <PropertyValue name="text">OFF</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|13px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold(collection.larger($$defaultTextFont, -3))</E></PropertyValue>
         <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
         <PropertyValue name="textBounds">C5,T0,R5,B0</PropertyValue>
     </Shortcut>
@@ -665,7 +673,7 @@
         <PropertyValue name="box">90,28</PropertyValue>
         <PropertyValue name="imageData">90,28,17-22 70-75,5-21,collection://bitmaps/toggle-ondisabled.png</PropertyValue>
         <PropertyValue name="text">ON</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|13px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold(collection.larger($$defaultTextFont, -3))</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
         <PropertyValue name="textBounds">L5,T0,C-5,B0</PropertyValue>
@@ -675,7 +683,7 @@
         <PropertyValue name="imageData">86,37,26-56,7-26,collection://bitmaps/tab-active.png</PropertyValue>
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="text">Page #1</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textBounds">L10,T0,R10,B2</PropertyValue>
     </Shortcut>
@@ -684,7 +692,7 @@
         <PropertyValue name="imageData">68,37,16-57,6-31,collection://bitmaps/tab-disabled.png</PropertyValue>
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="text">Page #2</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
         <PropertyValue name="textBounds">L10,T0,R10,B2</PropertyValue>
@@ -706,7 +714,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L8,T0,R8,B1</PropertyValue>
@@ -717,7 +725,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L9,T0,R8,B1</PropertyValue>
@@ -728,7 +736,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L8,T0,R20,B1</PropertyValue>
@@ -739,7 +747,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L9,T0,R20,B1</PropertyValue>
@@ -750,7 +758,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L8,T0,R20,B1</PropertyValue>
@@ -761,7 +769,7 @@
         <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
         <PropertyValue name="extraSnappingTop">B0</PropertyValue>
         <PropertyValue name="text">Header</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="withTextShadow">false</PropertyValue>
         <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
         <PropertyValue name="textBounds">L9,T0,R20,B1</PropertyValue>
@@ -791,7 +799,7 @@
         <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
         <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
         <PropertyValue name="text">Window Frame</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
         <PropertyValue name="withIcon">true</PropertyValue>
         <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
@@ -807,7 +815,7 @@
         <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
         <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
         <PropertyValue name="text">Window Frame</PropertyValue>
-        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold($$defaultTextFont)</E></PropertyValue>
         <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
         <PropertyValue name="withIcon">true</PropertyValue>
         <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
