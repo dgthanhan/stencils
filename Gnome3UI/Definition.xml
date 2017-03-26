@@ -1,0 +1,1187 @@
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        id="Evolus.UI.Gnome3"
+        displayName="Gnome 3 Widgets"
+        description="Elements for building Gnome 3 application mockups"
+        version="1.0"
+        author="Duong Thanh An">
+    <Script comments="Scripts for">
+        <![CDATA[
+            collection.COLOR_BASE = 232;
+            collection.BOUND_CALCULATOR = {
+                L: function (box, v) { return v;},
+                T: function (box, v) { return v;},
+                R: function (box, v) { return box.w - v;},
+                B: function (box, v) { return box.h - v;},
+                C: function (box, v) { return box.w / 2 + v;},
+                M: function (box, v) { return box.h / 2 + v;},
+
+                calculate: function (box, spec) {
+                    return collection.BOUND_CALCULATOR[spec.substring(0, 1)](box, parseInt(spec.substring(1), 10));
+                }
+            };
+            collection.toBounds = function (box, textBounds) {
+                var parts = textBounds.value.split(",");
+                var x = collection.BOUND_CALCULATOR.calculate(box, parts[0]);
+                var y = collection.BOUND_CALCULATOR.calculate(box, parts[1]);
+                var w = collection.BOUND_CALCULATOR.calculate(box, parts[2]) - x;
+                var h = collection.BOUND_CALCULATOR.calculate(box, parts[3]) - y;
+
+                return new Bound(x, y, w, h);
+            };
+            collection.bold = function (f) {
+                var f2 = Font.fromString(f.toString());
+                f2.weight = "bold";
+                return f2;
+            };
+            collection.larger = function (f, d) {
+                var f2 = Font.fromString(f.toString());
+                f2.size =  (f2.getPixelHeight() + d) + "px";
+                return f2;
+            };
+            collection.disable = function (c) {
+                return c.hollowed(0.6);
+            };
+            collection.copyClipboardImage = function (target, imageDataPropName, boxPropName) {
+                try {
+                    var image = clipboard.readImage();
+                    if (image) {
+                        var id = Pencil.controller.nativeImageToRefSync(image);
+
+                        var size = image.getSize();
+                        var newImageData = new ImageData(size.width, size.height, ImageData.idToRefString(id));
+                        target.setProperty(imageDataPropName, newImageData);
+                        if (boxPropName) target.setProperty(boxPropName, new Dimension(size.width, size.height));
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        ]]>
+    </Script>
+    <Properties>
+        <PropertyGroup name="Typography">
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">Cantarell|normal|normal|16px</Property>
+            <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#222222ff</Property>
+        </PropertyGroup>
+    </Properties>
+
+    <Shape id="_baseWidget" displayName="Base Widget" system="true" icon="">
+        <Properties>
+            <PropertyGroup name="Image Background">
+                <Property name="box" type="Dimension">100,100</Property>
+
+                <Property name="imageData" displayName="Image" type="ImageData" p:disabled="true">100,100,data://</Property>
+                <Property name="fillColor" displayName="Background Color" type="Color">#E8E8E8FF</Property>
+                <Property name="widgetBounds" displayName="Widget Bounds" type="PlainText" p:disabled="true">L0,T0,R0,B0</Property>
+                <Property name="iconImageData" displayName="Image" type="ImageData" p:disabled="true">0,0,-</Property>
+                <Property name="iconGap" displayName="Icon Gap" type="PlainText" p:disabled="true">6</Property>
+                <Property name="iconOpacity" displayName="Icon Gap" type="PlainText" p:disabled="true">1</Property>
+                <Property name="withIconShadow" displayName="With Icon Shadow" type="Bool" p:disabled="true">true</Property>
+                <Property name="withIcon" displayName="With Icon" type="Bool" p:disabled="true">false</Property>
+                <Property name="iconBounds" displayName="Icon Bounds" type="PlainText" p:disabled="true"></Property>
+
+                <Property name="extraSnappingLeft" displayName="extraSnappingLeft" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingTop" displayName="extraSnappingTop" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingRight" displayName="extraSnappingRight" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingBottom" displayName="extraSnappingBottom" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingVCenter" displayName="extraSnappingVCenter" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingHCenter" displayName="extraSnappingHCenter" type="PlainText" p:disabled="true"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="text" displayName="Text Content" type="PlainText" p:editInfo="({targetName: 'text', bound: collection.toBounds($box, $textBounds), font: $textFont, align: $textAlignment})">Widget #1</Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="withTextShadow" displayName="With Text Shadow" type="Bool" p:disabled="true">true</Property>
+                <Property name="textShadowStyle" displayName="Text Shadow Style" type="ShadowStyle" p:disabled="true">1|1|0</Property>
+                <Property name="textShadowColor" displayName="Shadow Color" type="Color">#FFFFFF66</Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textBounds" displayName="Text Bounds" type="PlainText" p:disabled="true">L0,T0,R0,B0</Property>
+                <Property name="textAlignment" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="colorMatrix">
+                <Attr>
+                    <Arg>"values"</Arg>
+                    <Arg>
+                        (function () {
+                            var disabled = false;
+                            if (!$fillColor || ($fillColor.r == collection.COLOR_BASE &amp;&amp; $fillColor.g == collection.COLOR_BASE &amp;&amp; $fillColor.b == collection.COLOR_BASE &amp;&amp; $fillColor.a == 1)) {
+                                disabled = true;
+                            }
+
+                            var r = disabled ? 1 : ($fillColor.r / collection.COLOR_BASE);
+                            var g = disabled ? 1 : ($fillColor.g / collection.COLOR_BASE);
+                            var b = disabled ? 1 : ($fillColor.b / collection.COLOR_BASE);
+                            var a = disabled ? 1 : ($fillColor.a);
+
+                            return (r) + " 0.0 0.0 0.0 0.0\n" +
+                                   "0.0 " + (g) + " 0.0 0.0 0.0\n" +
+                                   "0.0 0.0 " + (b) + " 0.0 0.0\n" +
+                                   "0.0 0.0 0.0 " + (a) + " 0.0";
+                        }());
+                    </Arg>
+                </Attr>
+            </For>
+            <For ref="imageFO">
+                <NPatchDomContentFromImage>
+                    <Arg>$imageData</Arg>
+                    <Arg>
+                        var b = collection.toBounds($box, $widgetBounds);
+                        new Dimension($box.w + ($box.w - b.w), $box.h + ($box.h - b.h));
+                    </Arg>
+                </NPatchDomContentFromImage>
+                <Transform>
+                    var b = collection.toBounds($box, $widgetBounds);
+                    [translate(0 - b.x, 0 - b.y)];
+                </Transform>
+                <ApplyFilter>
+                    (function () {
+                        if ($fillColor.r == collection.COLOR_BASE &amp;&amp; $fillColor.g == collection.COLOR_BASE &amp;&amp; $fillColor.b == collection.COLOR_BASE &amp;&amp; $fillColor.a == 1) {
+                            return false;
+                        }
+
+                        return true;
+                    }());
+                </ApplyFilter>
+            </For>
+            <For ref="text">
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <PlainTextContent>
+                    <Arg>$text</Arg>
+                    <Arg>
+                        (function () {
+                            var bound = collection.toBounds($box, $textBounds);
+                            if (!$iconBounds.value &amp;&amp; $withIcon.value &amp;&amp; $iconImageData.w &gt; 0) {
+                                var iconGap = parseInt($iconGap.value, 10);
+                                if ($textAlignment.h == 0) {
+                                    bound.x += bound.h + iconGap;
+                                    bound.w -= bound.h + iconGap;
+                                } else if ($textAlignment.h == 2) {
+                                    bound.w -= bound.h + iconGap;
+                                } else if ($textAlignment.h == 1) {
+                                    bound.x += Math.round((bound.h + iconGap) / 2);
+                                }
+                            }
+
+                            return bound;
+                        }())
+                    </Arg>
+                    <Arg>$textAlignment</Arg>
+                </PlainTextContent>
+                <CustomStyle>
+                    <Arg>"text-shadow"</Arg>
+                    <Arg>
+                        $withTextShadow.value ? $textShadowStyle.toCSSString($textShadowColor) : ""
+                    </Arg>
+                </CustomStyle>
+            </For>
+            <For ref="icon">
+                <Visibility>$withIcon.value &amp;&amp; $iconImageData.w &gt; 0</Visibility>
+                <Image>$iconImageData</Image>
+                <Bound>
+                    (function () {
+                        if ($iconBounds.value) return collection.toBounds($box, $iconBounds);
+
+                        var bound = collection.toBounds($box, $textBounds);
+                        if ($textAlignment.h == 0) {
+                            return new Bound(bound.x, bound.y, bound.h, bound.h);
+                        } else if ($textAlignment.h == 2) {
+                            return new Bound(bound.x + bound.w - bound.h, bound.y, bound.h, bound.h);
+                        } else if ($textAlignment.h == 1) {
+                            var iconGap = parseInt($iconGap.value, 10);
+                            //depends $text, $textFont
+                            var textWidth = F.getObjectBoundingBox("text").w;
+                            var w = bound.h + textWidth + (textWidth ? iconGap : 0);
+                            return new Bound(bound.x + Math.round((bound.w - w) / 2), bound.y, bound.h, bound.h);
+                        }
+                    }())
+                </Bound>
+                <ApplyFilter>
+                    $iconImageData.w &gt; 0 &amp;&amp; $withIconShadow.value
+                </ApplyFilter>
+                <CustomStyle>
+                    <Arg>"opacity"</Arg>
+                    <Arg>parseFloat($iconOpacity.value)</Arg>
+                </CustomStyle>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="useClipboardImage" displayName="Use clipboard image" p:disabled="true">
+                <Impl>
+                    <![CDATA[
+                    try {
+                        var image = clipboard.readImage();
+                        if (image) {
+                            var id = Pencil.controller.nativeImageToRefSync(image);
+
+                            var size = image.getSize();
+                            var newImageData = new ImageData(size.width, size.height, ImageData.idToRefString(id));
+                            this.setProperty("imageData", newImageData);
+                            this.setProperty("box", new Dimension(size.width, size.height));
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="changeIconAction" displayName="Change icon..." p:disabled="!$withIcon.value">
+                <Impl>
+                    <![CDATA[
+                    try {
+                        var options = {
+                            prefixes: [
+                                { name: "Small", prefix: "adwaita-icons-bitmap/16x16" },
+                                { name: "Normal", prefix: "adwaita-icons-bitmap/48x48" },
+                                { name: "Large", prefix: "adwaita-icons-bitmap/96x96" }
+                            ],
+                            type: CollectionResourceBrowserDialog.TYPE_BITMAP,
+                            returnType: CollectionResourceBrowserDialog.RETURN_IMAGEDATA
+                        };
+                        CollectionResourceBrowserDialog.open(this.def.collection, options, function (imageData) {
+                            this.setProperty("iconImageData", imageData);
+                        }.bind(this));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="remiveIconAction" displayName="Remove icon" p:disabled="!$withIcon.value || $iconImageData.w == 0">
+                <Impl>
+                    <![CDATA[
+                        this.setProperty("iconImageData", new ImageData(0, 0, "-"));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var box = this.getProperty("box");
+
+                        var snaps = [
+                            new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+                            new SnappingData("Top", 0 , "Top", false, this.id).makeLocal(true),
+                            new SnappingData("Right",  box.w, "Right", true, this.id).makeLocal(true),
+                            new SnappingData("Bottom", box.h, "Bottom", false, this.id).makeLocal(true),
+                            new SnappingData("VCenter", Math.round(box.w / 2), "VCenter", true, this.id).makeLocal(true),
+                            new SnappingData("HCenter", Math.round(box.h / 2), "HCenter", false, this.id).makeLocal(true)
+                        ];
+
+                        const EXTRA_SNAP_TYPES = ["Left", "Top", "Right", "Bottom", "VCenter", "HCenter"];
+                        const EXTRA_H_SNAP_TYPES = ["Left", "Right", "VCenter"];
+                        for (var typeName of EXTRA_SNAP_TYPES) {
+                            var specProp = this.getProperty("extraSnapping" + typeName);
+                            if (!specProp || !specProp.value) continue;
+                            var specs = specProp.value.split(",");
+
+                            var index = 0;
+                            for (var spec of specs) {
+                                var value = this.def.collection.BOUND_CALCULATOR.calculate(box, spec);
+                                var horz = EXTRA_H_SNAP_TYPES.indexOf(typeName) >= 0;
+
+                                snaps.push(new SnappingData(typeName + index, value, typeName, horz, this.id).makeLocal(true));
+
+                                index ++;
+                            }
+                        }
+
+                        return snaps;
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="colorizeFilter">
+                    <feColorMatrix type="matrix" id="colorMatrix" values="0.9 0 0 0 0
+              0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 1 0" />
+                </filter>
+                <filter id="iconShadowFilter" x="0" y="0" width="100%" height="100%">
+                    <feColorMatrix in="SourceAlpha" type="matrix"
+                        values="-1 0 0 0 1, 0 -1 0 0 1, 0 0 -1 0 1, 0 0 0 1 0"
+                        result="matrix"/>
+                    <feOffset result="offOut" in="matrix" dx="1" dy="1" />
+                    <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+                </filter>
+            </defs>
+            <foreignObject x="0" y="0" width="100" height="100" id="imageFO" p:filter="url(#colorizeFilter)"></foreignObject>
+            <text id="text" />
+            <image id="icon" p:filter="url(#iconShadowFilter)" />
+        </p:Content>
+    </Shape>
+    <Shape id="_baseTextWidget" displayName="Base Text Widget" system="true" icon="">
+        <Properties>
+            <PropertyGroup name="Background">
+                <Property name="box" type="Dimension">200,20</Property>
+
+                <Property name="fillColor" displayName="Background Color" type="Color">#FFFFFF00</Property>
+
+                <Property name="extraSnappingLeft" displayName="extraSnappingLeft" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingTop" displayName="extraSnappingTop" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingRight" displayName="extraSnappingRight" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingBottom" displayName="extraSnappingBottom" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingVCenter" displayName="extraSnappingVCenter" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingHCenter" displayName="extraSnappingHCenter" type="PlainText" p:disabled="true"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="text" displayName="Text Content" type="RichText" p:editInfo="({targetName: 'text', bound: collection.toBounds($box, $textBounds), font: $textFont, align: $textAlignment, richText: true})">Widget #1</Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="withTextShadow" displayName="With Text Shadow" type="Bool" p:disabled="true">true</Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textBounds" displayName="Text Bounds" type="PlainText" p:disabled="true">L0,T0,R0,B0</Property>
+                <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="bg">
+                <Bound>Bound.fromBox($box)</Bound>
+                <Fill>$fillColor</Fill>
+            </For>
+            <For ref="text">
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <RichTextContent>
+                    <Arg>$text</Arg>
+                    <Arg>collection.toBounds($box, $textBounds)</Arg>
+                    <Arg>$textAlignment</Arg>
+                </RichTextContent>
+                <CustomStyle>
+                    <Arg>"text-shadow"</Arg>
+                    <Arg>
+                        $withTextShadow.value ? "1px 1px 0px rgba(255, 255, 255, 0.4)" : ""
+                    </Arg>
+                </CustomStyle>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var box = this.getProperty("box");
+
+                        var snaps = [
+                            new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+                            new SnappingData("Top", 0 , "Top", false, this.id).makeLocal(true),
+                            new SnappingData("Right",  box.w, "Right", true, this.id).makeLocal(true),
+                            new SnappingData("Bottom", box.h, "Bottom", false, this.id).makeLocal(true),
+                            new SnappingData("VCenter", Math.round(box.w / 2), "VCenter", true, this.id).makeLocal(true),
+                            new SnappingData("HCenter", Math.round(box.h / 2), "HCenter", false, this.id).makeLocal(true)
+                        ];
+
+                        const EXTRA_SNAP_TYPES = ["Left", "Top", "Right", "Bottom", "VCenter", "HCenter"];
+                        const EXTRA_H_SNAP_TYPES = ["Left", "Right", "VCenter"];
+                        for (var typeName of EXTRA_SNAP_TYPES) {
+                            var specProp = this.getProperty("extraSnapping" + typeName);
+                            if (!specProp || !specProp.value) continue;
+                            var specs = specProp.value.split(",");
+
+                            var index = 0;
+                            for (var spec of specs) {
+                                var value = this.def.collection.BOUND_CALCULATOR.calculate(box, spec);
+                                var horz = EXTRA_H_SNAP_TYPES.indexOf(typeName) >= 0;
+
+                                snaps.push(new SnappingData(typeName + index, value, typeName, horz, this.id).makeLocal(true));
+
+                                index ++;
+                            }
+                        }
+
+                        return snaps;
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <rect id="bg" />
+            <g id="text" />
+        </p:Content>
+    </Shape>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Window Frame" icon="icons/indowrame.png">
+        <PropertyValue name="box">600,450</PropertyValue>
+        <PropertyValue name="imageData">828,597,70-680,79-562,collection://bitmaps/indowrame.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L10,T10,R10,B10</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L15</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T61,T47</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R15</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B15</PropertyValue>
+        <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
+        <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
+        <PropertyValue name="text">Window Frame</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+        <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Entry" icon="icons/ntry.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">344,34,14-331,8-25,collection://bitmaps/ntry.png</PropertyValue>
+        <PropertyValue name="text">Entry</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Entry - disabled" icon="icons/ntry-disabled.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">344,34,17-329,7-27,collection://bitmaps/ntry-disabled.png</PropertyValue>
+        <PropertyValue name="text">Entry</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Entry - action" icon="icons/ntry-action.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">344,34,10-292,6-11 23-28,collection://bitmaps/ntry-action.png</PropertyValue>
+        <PropertyValue name="text">Entry</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R43,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Combo Entry" icon="icons/ombontry.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">344,34,10-296,8-13 22-27,collection://bitmaps/ombontry.png</PropertyValue>
+        <PropertyValue name="text">Combo Entry</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R43,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Combo Entry - disabled" icon="icons/ombontry-disabled.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">344,34,13-294,8-13 22-27,collection://bitmaps/ombontry-disabled.png</PropertyValue>
+        <PropertyValue name="text">Combo Entry</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R43,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Dropdown" icon="icons/ropdown.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">144,34,12-110,8-13 22-27,collection://bitmaps/ropdown.png</PropertyValue>
+        <PropertyValue name="text">Dropdown</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R33,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Dropdown - disabled" icon="icons/ropdown-disabled.png">
+        <PropertyValue name="box">150,34</PropertyValue>
+        <PropertyValue name="imageData">232,34,14-202,8-13 22-27,collection://bitmaps/ropdown-disabled.png</PropertyValue>
+        <PropertyValue name="text">Dropdown</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R33,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Dropdown - left" icon="icons/ropdown-left.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">115,34,15-82,8-13 22-27,collection://bitmaps/ropdown-left.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Left</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R33,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Dropdown - middle" icon="icons/ropdown-middle.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">114,34,7-88,8-13 22-27,collection://bitmaps/ropdown-middle.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Middle</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R33,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Dropdown - right" icon="icons/ropdown-right.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">115,34,6-85,8-13 22-27,collection://bitmaps/ropdown-right.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Right</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R33,B9</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button" icon="icons/utton.png">
+        <PropertyValue name="box">100,34</PropertyValue>
+        <PropertyValue name="imageData">144,34,14-124,4-30,collection://bitmaps/utton.png</PropertyValue>
+        <PropertyValue name="text">Button</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - disabled" icon="icons/utton-disabled.png">
+        <PropertyValue name="box">100,34</PropertyValue>
+        <PropertyValue name="imageData">144,34,10-134,12-24,collection://bitmaps/utton-disabled.png</PropertyValue>
+        <PropertyValue name="text">Button</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner" icon="icons/spinner.png">
+        <PropertyValue name="box">110,34</PropertyValue>
+        <PropertyValue name="imageData">112,34,12-32,4-9 25-30,collection://bitmaps/spinner.png</PropertyValue>
+        <PropertyValue name="text">50</PropertyValue>
+        <PropertyValue name="textBounds">L10,T0,R44,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner - disabled" icon="icons/spinner-disabled.png">
+        <PropertyValue name="box">110,34</PropertyValue>
+        <PropertyValue name="imageData">112,34,11-33,5-10 24-29,collection://bitmaps/spinner-disabled.png</PropertyValue>
+        <PropertyValue name="text">50</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L10,T0,R44,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - checked" icon="icons/checkbox-checked.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,22-36,0-5 23-28,collection://bitmaps/checkbox-checked.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - unchecked" icon="icons/checkbox-unchecked.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,23-37,0-5 23-28,collection://bitmaps/checkbox-unchecked.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - mixed" icon="icons/checkbox-mixed.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,26-37,0-5 23-28,collection://bitmaps/checkbox-mixed.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - checked disabled" icon="icons/checkbox-checkeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,23-37,0-5 23-28,collection://bitmaps/checkbox-checkeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - unchecked disabled" icon="icons/checkbox-uncheckeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,24-36,0-5 23-28,collection://bitmaps/checkbox-uncheckeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Checkbox - mixed disabled" icon="icons/checkbox-mixeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">40,28,23-37,0-5 23-28,collection://bitmaps/checkbox-mixeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Checkbox</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - checked" icon="icons/radio-checked.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,27-40,0-5 23-28,collection://bitmaps/radio-checked.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - unchecked" icon="icons/radio-unchecked.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,24-41,0-5 23-28,collection://bitmaps/radio-unchecked.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - mixed" icon="icons/radio-mixed.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,25-40,0-5 23-28,collection://bitmaps/radio-mixed.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - checked disabled" icon="icons/radio-checkeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,27-39,0-5 23-28,collection://bitmaps/radio-checkeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - unchecked disabled" icon="icons/radio-uncheckeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,26-40,0-5 23-28,collection://bitmaps/radio-uncheckeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Radio - mixed disabled" icon="icons/radio-mixeddisabled.png">
+        <PropertyValue name="box">150,28</PropertyValue>
+        <PropertyValue name="imageData">44,28,24-40,0-5 23-28,collection://bitmaps/radio-mixeddisabled.png</PropertyValue>
+        <PropertyValue name="text">Radio</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L25,T0,R10,B0</PropertyValue>
+        <PropertyValue name="textAlignment">0,1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Toggle - off" icon="icons/toggle-off.png">
+        <PropertyValue name="box">90,28</PropertyValue>
+        <PropertyValue name="imageData">90,28,22-27 68-73,7-17,collection://bitmaps/toggle-off.png</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold(collection.larger($$defaultTextFont, -3))</E></PropertyValue>
+        <PropertyValue name="text">OFF</PropertyValue>
+        <PropertyValue name="textBounds">C5,T0,R5,B0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Toggle - on" icon="icons/toggle-on.png">
+        <PropertyValue name="box">90,28</PropertyValue>
+        <PropertyValue name="imageData">90,28,22-27 68-73,7-17,collection://bitmaps/toggle-on.png</PropertyValue>
+        <PropertyValue name="text">ON</PropertyValue>
+        <PropertyValue name="textFont"><E>collection.bold(collection.larger($$defaultTextFont, -3))</E></PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+        <PropertyValue name="textBounds">L5,T0,C-5,B0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Toggle - off disabled" icon="icons/toggle-offdisabled.png">
+        <PropertyValue name="box">90,28</PropertyValue>
+        <PropertyValue name="imageData">90,28,20-25 71-76,6-22,collection://bitmaps/toggle-offdisabled.png</PropertyValue>
+        <PropertyValue name="text">OFF</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|13px|none</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">C5,T0,R5,B0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Toggle - on disabled" icon="icons/toggle-ondisabled.png">
+        <PropertyValue name="box">90,28</PropertyValue>
+        <PropertyValue name="imageData">90,28,17-22 70-75,5-21,collection://bitmaps/toggle-ondisabled.png</PropertyValue>
+        <PropertyValue name="text">ON</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|13px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L5,T0,C-5,B0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Tab - active" icon="icons/tab-active.png">
+        <PropertyValue name="box">120,37</PropertyValue>
+        <PropertyValue name="imageData">86,37,26-56,7-26,collection://bitmaps/tab-active.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Page #1</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textBounds">L10,T0,R10,B2</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Tab - disabled" icon="icons/tab-disabled.png">
+        <PropertyValue name="box">120,37</PropertyValue>
+        <PropertyValue name="imageData">68,37,16-57,6-31,collection://bitmaps/tab-disabled.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Page #2</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L10,T0,R10,B2</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Frame" icon="icons/frame.png">
+        <PropertyValue name="box">250,150</PropertyValue>
+        <PropertyValue name="imageData">256,142,61-151,31-100,collection://bitmaps/frame.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L15,L1</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T15,T1</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R15,R1</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B15,B1</PropertyValue>
+        <PropertyValue name="text"/>
+        <PropertyValue name="textBounds">L15,T15,R15,B15</PropertyValue>
+        <PropertyValue name="textAlignment">0,0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - first" icon="icons/tableheader-first.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">42,25,10-32,4-19,collection://bitmaps/tableheader-first.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L8,T0,R8,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - next" icon="icons/tableheader-next.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">43,25,11-33,5-21,collection://bitmaps/tableheader-next.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T0,R8,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - first down" icon="icons/tableheader-firstdown.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">70,25,6-45,2-7 17-22,collection://bitmaps/tableheader-firstdown.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L8,T0,R20,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - next down" icon="icons/tableheader-nextdown.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">71,25,13-47,3-8 17-22,collection://bitmaps/tableheader-nextdown.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T0,R20,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - first up" icon="icons/tableheader-firstup.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">70,25,11-40,3-8 15-20,collection://bitmaps/tableheader-firstup.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L8,T0,R20,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Table Header - next up" icon="icons/tableheader-nextup.png">
+        <PropertyValue name="box">100,25</PropertyValue>
+        <PropertyValue name="imageData">71,25,6-48,2-7 16-21,collection://bitmaps/tableheader-nextup.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="extraSnappingTop">B0</PropertyValue>
+        <PropertyValue name="text">Header</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#9A9A9CFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T0,R20,B1</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - normal" icon="icons/text-normal.png">
+        <PropertyValue name="box">166,20</PropertyValue>
+        <PropertyValue name="text">Normal text label</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - disabled" icon="icons/text-disabled.png">
+        <PropertyValue name="box">166,20</PropertyValue>
+        <PropertyValue name="text">Disabled text label</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Long rich text" icon="icons/longrichtext.png">
+        <PropertyValue name="box">380,54</PropertyValue>
+        <PropertyValue name="text">Lorem ipsum deus phoebe tum, &lt;span xmlns="http://www.w3.org/1999/xhtml" style="font-weight: bold;"&gt;peregrinum&lt;/span&gt; mentes diremit &lt;span xmlns="http://www.w3.org/1999/xhtml" style="text-decoration: underline; color: rgb(51, 102, 255);"&gt;austro&lt;/span&gt; recessit effervescere.</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Window Frame - close" icon="icons/windowframe-close.png">
+        <PropertyValue name="box">393,176</PropertyValue>
+        <PropertyValue name="imageData">304,254,50-242,65-231,collection://bitmaps/windowframe-close.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L10,T10,R10,B10</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L15</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T61,T47</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R15</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B15</PropertyValue>
+        <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
+        <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
+        <PropertyValue name="text">Window Frame</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+        <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Window Frame - blank" icon="icons/windowframe-blank.png">
+        <PropertyValue name="box">393,176</PropertyValue>
+        <PropertyValue name="imageData">304,254,30-251,66-235,collection://bitmaps/windowframe-blank.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L10,T10,R10,B10</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L15,L6</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T61,T47</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R15,R6</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B15</PropertyValue>
+        <PropertyValue name="extraSnappingVCenter">L25</PropertyValue>
+        <PropertyValue name="extraSnappingHCenter">T23</PropertyValue>
+        <PropertyValue name="text">Window Frame</PropertyValue>
+        <PropertyValue name="textFont">Cantarell|bold|normal|16px|none</PropertyValue>
+        <PropertyValue name="textBounds">L54,T0,R54,T46</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+        <PropertyValue name="iconBounds">L17,T15,L33,T31</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - action top" icon="icons/button-actiontop.png">
+        <PropertyValue name="box">70,34</PropertyValue>
+        <PropertyValue name="imageData">61,34,10-52,4-30,collection://bitmaps/button-actiontop.png</PropertyValue>
+        <PropertyValue name="text">Button</PropertyValue>
+        <PropertyValue name="textShadowStyle">1|-1|0</PropertyValue>
+        <PropertyValue name="textShadowColor">#00000066</PropertyValue>
+        <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - important" icon="icons/text-important.png">
+        <PropertyValue name="box">95,20</PropertyValue>
+        <PropertyValue name="text">Important</PropertyValue>
+        <PropertyValue name="textColor">#1A63D9FF</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - error" icon="icons/text-error.png">
+        <PropertyValue name="box">68,20</PropertyValue>
+        <PropertyValue name="text">Error</PropertyValue>
+        <PropertyValue name="textColor">#D91900FF</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - warning" icon="icons/text-warning.png">
+        <PropertyValue name="box">68,20</PropertyValue>
+        <PropertyValue name="text">Warning</PropertyValue>
+        <PropertyValue name="textColor">#B37700FF</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseTextWidget" displayName="Text - hyperlink" icon="icons/text-hyperlink.png">
+        <PropertyValue name="box">103,20</PropertyValue>
+        <PropertyValue name="text">&lt;span xmlns="http://www.w3.org/1999/xhtml" style="text-decoration: underline;"&gt;http://gtk.org&lt;/span&gt;</PropertyValue>
+        <PropertyValue name="textColor">#005EF5FF</PropertyValue>
+    </Shortcut>
+
+    <Shape id="_baseScaleWidget" displayName="Base Scale" system="true" icon="">
+        <Properties>
+            <PropertyGroup name="Image Background">
+                <Property name="box" type="Dimension" p:lockHeight="true">100,40</Property>
+
+                <Property name="bgImageData" displayName="Image" type="ImageData">100,40,data://</Property>
+                <Property name="valueImageData" displayName="Image" type="ImageData">50,40,data://</Property>
+                <Property name="thumbImageData" displayName="Image" type="ImageData">22,22,data://</Property>
+                <Property name="startValueHandle" displayName="ValueHandle" type="Handle" p:lockY="true" p:minX="0" p:maxX="$valueHandle.x">0,0</Property>
+                <Property name="valueHandle" displayName="ValueHandle" type="Handle" p:lockY="true" p:minX="$startValueHandle.x" p:maxX="$box.w">50,0</Property>
+                <Property name="extraSnappingLeft" displayName="extraSnappingLeft" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingTop" displayName="extraSnappingTop" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingRight" displayName="extraSnappingRight" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingBottom" displayName="extraSnappingBottom" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingVCenter" displayName="extraSnappingVCenter" type="PlainText" p:disabled="true"></Property>
+                <Property name="extraSnappingHCenter" displayName="extraSnappingHCenter" type="PlainText" p:disabled="true"></Property>
+
+                <Property name="svgImageData" displayName="Image" type="ImageData">24,24,collection://test.svg</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="text" displayName="Text Content" type="PlainText" p:editInfo="({targetName: 'text', bound: collection.toBounds($box, $textBounds), font: $textFont, align: $textAlignment})"></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="withTextShadow" displayName="With Text Shadow" type="Bool" p:disabled="true">true</Property>
+                <Property name="textShadowStyle" displayName="Text Shadow Style" type="ShadowStyle" p:disabled="true">1|1|0</Property>
+                <Property name="textShadowColor" displayName="Shadow Color" type="Color">#FFFFFF66</Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textBounds" displayName="Text Bounds" type="PlainText" p:disabled="true">L0,T0,R0,T-20</Property>
+                <Property name="textAlignment" displayName="Text Alignment" type="Alignment">1,2</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="bgImageFO">
+                <NPatchDomContentFromImage>
+                    <Arg>$bgImageData</Arg>
+                    <Arg>$box</Arg>
+                </NPatchDomContentFromImage>
+            </For>
+            <For ref="valueImageFO">
+                <NPatchDomContentFromImage>
+                    <Arg>$valueImageData</Arg>
+                    <Arg>new Dimension($valueHandle.x - $startValueHandle.x, $box.h)</Arg>
+                </NPatchDomContentFromImage>
+                <Transform>
+                    [translate($startValueHandle.x, 0)];
+                </Transform>
+            </For>
+            <For ref="thumbImageFO">
+                <NPatchDomContentFromImage>
+                    <Arg>$thumbImageData</Arg>
+                    <Arg>new Dimension($thumbImageData.w, $box.h)</Arg>
+                </NPatchDomContentFromImage>
+                <Transform>
+                    [translate($valueHandle.x - Math.round($thumbImageData.w / 2), 0)];
+                </Transform>
+            </For>
+            <For ref="text">
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <PlainTextContent>
+                    <Arg>$text</Arg>
+                    <Arg>collection.toBounds($box, $textBounds)</Arg>
+                    <Arg>$textAlignment</Arg>
+                </PlainTextContent>
+                <CustomStyle>
+                    <Arg>"text-shadow"</Arg>
+                    <Arg>
+                        $withTextShadow.value ? $textShadowStyle.toCSSString($textShadowColor) : ""
+                    </Arg>
+                </CustomStyle>
+            </For>
+            <For ref="iconImageFO">
+                <Bound>new Bound(0, 0, $box.h, $box.h)</Bound>
+            </For>
+            <For ref="iconObject">
+                <Attr>
+                    <Arg>"data"</Arg>
+                    <Arg>ImageData.refStringToUrl($svgImageData.data)</Arg>
+                </Attr>
+                <Attr>
+                    <Arg>"width"</Arg>
+                    <Arg>$box.h</Arg>
+                </Attr>
+                <Attr>
+                    <Arg>"height"</Arg>
+                    <Arg>$box.h</Arg>
+                </Attr>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="useClipboardImage-background" displayName="Use clipboard image (background)">
+                <Impl>
+                    <![CDATA[
+                    this.def.collection.copyClipboardImage(this, "bgImageData", "box");
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="useClipboardImage-value" displayName="Use clipboard image (value)">
+                <Impl>
+                    <![CDATA[
+                    this.def.collection.copyClipboardImage(this, "valueImageData");
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="useClipboardImage-thumb" displayName="Use clipboard image (thumb)">
+                <Impl>
+                    <![CDATA[
+                    this.def.collection.copyClipboardImage(this, "thumbImageData");
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var box = this.getProperty("box");
+
+                        var snaps = [
+                            new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+                            new SnappingData("Top", 0 , "Top", false, this.id).makeLocal(true),
+                            new SnappingData("Right",  box.w, "Right", true, this.id).makeLocal(true),
+                            new SnappingData("Bottom", box.h, "Bottom", false, this.id).makeLocal(true),
+                            new SnappingData("VCenter", Math.round(box.w / 2), "VCenter", true, this.id).makeLocal(true),
+                            new SnappingData("HCenter", Math.round(box.h / 2), "HCenter", false, this.id).makeLocal(true)
+                        ];
+
+                        const EXTRA_SNAP_TYPES = ["Left", "Top", "Right", "Bottom", "VCenter", "HCenter"];
+                        const EXTRA_H_SNAP_TYPES = ["Left", "Right", "VCenter"];
+                        for (var typeName of EXTRA_SNAP_TYPES) {
+                            var specProp = this.getProperty("extraSnapping" + typeName);
+                            if (!specProp || !specProp.value) continue;
+                            var specs = specProp.value.split(",");
+
+                            var index = 0;
+                            for (var spec of specs) {
+                                var value = this.def.collection.BOUND_CALCULATOR.calculate(box, spec);
+                                var horz = EXTRA_H_SNAP_TYPES.indexOf(typeName) >= 0;
+
+                                snaps.push(new SnappingData(typeName + index, value, typeName, horz, this.id).makeLocal(true));
+
+                                index ++;
+                            }
+                        }
+
+                        return snaps;
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <foreignObject x="0" y="0" width="100" height="100" id="bgImageFO"></foreignObject>
+            <foreignObject x="0" y="0" width="100" height="100" id="valueImageFO"></foreignObject>
+            <foreignObject x="0" y="0" width="100" height="100" id="thumbImageFO"></foreignObject>
+            <text id="text" />
+            <foreignObject x="0" y="0" width="100" height="100" id="iconImageFO" style="position: relative;">
+                <html:object type="image/svg+xml" data="" id="iconObject"></html:object>
+                <html:div style="width: 20px; height: 20px; position: absolute; top: 0px; left: 0px;"></html:div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseScaleWidget" displayName="Scale" icon="icons/scale.png">
+        <PropertyValue name="box">150,22</PropertyValue>
+        <PropertyValue name="bgImageData">165,22,2-163,,collection://bitmaps/scale-bgimagedata.png</PropertyValue>
+        <PropertyValue name="valueImageData">152,22,2-150,,collection://bitmaps/scale-valueimagedata.png</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseScaleWidget" displayName="Scale - thumb" icon="icons/scale-thumb.png">
+        <PropertyValue name="box">150,22</PropertyValue>
+        <PropertyValue name="bgImageData">165,22,2-163,,collection://bitmaps/scale-bgimagedata.png</PropertyValue>
+        <PropertyValue name="valueImageData">152,22,2-150,,collection://bitmaps/scale-valueimagedata.png</PropertyValue>
+        <PropertyValue name="thumbImageData">20,22,collection://bitmaps/scale-thumb-thumbimagedata.png</PropertyValue>
+        <PropertyValue name="valueHandle">107,0</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner - vert" icon="icons/spinner-vert.png">
+        <PropertyValue name="box">34,100</PropertyValue>
+        <PropertyValue name="imageData">34,100,5-10 24-29,37-62,collection://bitmaps/spinner-vert-imagedata.png</PropertyValue>
+        <PropertyValue name="text">50</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textBounds">L1,T34,R1,B34</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner - vert disabled" icon="icons/spinner-vertdisabled.png">
+        <PropertyValue name="box">34,100</PropertyValue>
+        <PropertyValue name="imageData">34,100,5-10 24-29,36-64,collection://bitmaps/spinner-vertdisabled-imagedata.png</PropertyValue>
+        <PropertyValue name="text">50</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L1,T34,R1,B34</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner - vert min" icon="icons/spinner-vertmin.png">
+        <PropertyValue name="box">34,100</PropertyValue>
+        <PropertyValue name="imageData">34,100,4-9 24-29,36-64,collection://bitmaps/spinner-vertmin-imagedata.png</PropertyValue>
+        <PropertyValue name="text">0</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textBounds">L1,T34,R1,B34</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Spinner - vert max" icon="icons/spinner-vertmax.png">
+        <PropertyValue name="box">34,100</PropertyValue>
+        <PropertyValue name="imageData">34,100,4-9 24-29,36-64,collection://bitmaps/spinner-vertmax-imagedata.png</PropertyValue>
+        <PropertyValue name="text">99</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textBounds">L1,T34,R1,B34</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group left" icon="icons/button-groupleft.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,6-117,4-30,collection://bitmaps/button-groupleft-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Left</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group middle" icon="icons/button-groupmiddle.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,6-117,3-32,collection://bitmaps/button-groupmiddle-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Middle</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group right" icon="icons/button-groupright.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">122,34,3-118,3-30,collection://bitmaps/button-groupright-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Right</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group left selected" icon="icons/button-groupleftselected.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,5-115,4-31,collection://bitmaps/button-groupleftselected-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Left</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group middle selected" icon="icons/button-groupmiddleselected.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,4-118,2-32,collection://bitmaps/button-groupmiddleselected-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Middle</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group right selected" icon="icons/button-grouprightselected.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">122,34,4-114,2-32,collection://bitmaps/button-grouprightselected-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Right</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group left disabled" icon="icons/button-groupleftdisabled.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,4-117,3-31,collection://bitmaps/button-groupleftdisabled-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Left</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group middle disabled" icon="icons/button-groupmiddledisabled.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">121,34,4-117,2-32,collection://bitmaps/button-groupmiddledisabled-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Middle</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Button - group right disabled" icon="icons/button-grouprightdisabled.png">
+        <PropertyValue name="box">120,34</PropertyValue>
+        <PropertyValue name="imageData">122,34,5-116,2-32,collection://bitmaps/button-grouprightdisabled-imagedata.png</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">R0</PropertyValue>
+        <PropertyValue name="text">Right</PropertyValue>
+        <PropertyValue name="withTextShadow">false</PropertyValue>
+        <PropertyValue name="textColor">#8B8E8FFF</PropertyValue>
+        <PropertyValue name="textBounds">L9,T9,R9,B9</PropertyValue>
+        <PropertyValue name="iconOpacity">0.4</PropertyValue>
+        <PropertyValue name="withIcon">true</PropertyValue>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - top" icon="icons/popover-top.png">
+        <PropertyValue name="box">190,220</PropertyValue>
+        <PropertyValue name="imageData">52,41,9-14 38-42,16-31,collection://bitmaps/popover-top-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T11,R5,B5</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - top right" icon="icons/popover-top.png">
+        <PropertyValue name="box">190,100</PropertyValue>
+        <PropertyValue name="imageData">52,41,9-14,16-31,collection://bitmaps/popover-top-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T11,R5,B5</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - top left" icon="icons/popover-top.png">
+        <PropertyValue name="box">190,100</PropertyValue>
+        <PropertyValue name="imageData">52,41,38-42,16-31,collection://bitmaps/popover-top-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T11,R5,B5</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - bottom" icon="icons/popover-bottom.png">
+        <PropertyValue name="box">190,220</PropertyValue>
+        <PropertyValue name="imageData">52,41,9-14 38-42,10-25,collection://bitmaps/popover-bottom-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T5,R5,B11</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - bottom right" icon="icons/popover-bottom.png">
+        <PropertyValue name="box">190,100</PropertyValue>
+        <PropertyValue name="imageData">52,41,9-14,10-25,collection://bitmaps/popover-bottom-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T5,R5,B11</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+    <Shortcut xmlns="http://www.evolus.vn/Namespace/Pencil" to="_baseWidget" displayName="Popover - bottom left" icon="icons/popover-bottom.png">
+        <PropertyValue name="box">190,100</PropertyValue>
+        <PropertyValue name="imageData">52,41,38-42,10-25,collection://bitmaps/popover-bottom-imagedata.png</PropertyValue>
+        <PropertyValue name="widgetBounds">L5,T5,R5,B11</PropertyValue>
+        <PropertyValue name="extraSnappingLeft">L13</PropertyValue>
+        <PropertyValue name="extraSnappingTop">T13</PropertyValue>
+        <PropertyValue name="extraSnappingRight">R13</PropertyValue>
+        <PropertyValue name="extraSnappingBottom">B13</PropertyValue>
+        <PropertyValue name="text"/>
+    </Shortcut>
+</Shapes>
