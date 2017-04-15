@@ -52,7 +52,13 @@
                     info.valueLiteral = this.getProperty(propName + "Expression").value;
                     info.realValueLiteral = info.valueLiteral;
 
-                    if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [info.valueLiteral]);
+                    if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
+                    return info;
+                } else {
+                    info.valueLiteral = type.name + ".fromString(\"" + this.getProperty(propName).toString() + "\")";
+                    info.realValueLiteral = info.valueLiteral;
+
+                    if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
                     return info;
                 }
 
@@ -484,11 +490,11 @@
     </Script>
     <Properties>
         <PropertyGroup name="Typography">
-            <Property name="defaultTextFont" type="Font" displayName="Default Font">Arial|bold|normal|16px</Property>
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">Arial|normal|normal|14px</Property>
             <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000FF</Property>
         </PropertyGroup>
         <PropertyGroup name="Fill &amp; Stroke">
-            <Property name="defaultFillColor" type="Color" displayName="Default Fill Color">#CCCCCCFF</Property>
+            <Property name="defaultFillColor" type="Color" displayName="Default Fill Color">#336699FF</Property>
             <Property name="defaultStrokeColor" type="Color" displayName="Default Line Color">#000000FF</Property>
             <Property name="defaultStrokeStyle" type="StrokeStyle" displayName="Default Line Style">1|</Property>
         </PropertyGroup>
@@ -505,6 +511,7 @@
                 <Property name="visibilityMode" type="Enum" displayName="Visibility Mode" p:enumValues="['visible|Always Visible', 'expression|Controlled By Expression']">visible</Property>
                 <Property name="visibilityExpression" type="PlainText" displayName="Visibility Expression" p:disabled="$boundMode.value != 'expression'"></Property>
                 <Property name="advancedStylingExpressions" type="PlainText" displayName="Advanced Styling" p:help="Each line represents a custom style rule in the format of [name]=[expression], without brackets."></Property>
+                <Property name="advancedTransformExpression" type="PlainText" displayName="Advanced Transform" p:help="Transform expression using JavaScript array syntax. Ex: [scale(0,4), translate(10, 10)]"></Property>
             </PropertyGroup>
             <PropertyGroup name="Snapping Contribution">
                 <Property name="extraSnappingLeft" displayName="Left" type="PlainText"></Property>
@@ -519,7 +526,7 @@
             </PropertyGroup>
         </Properties>
         <Actions>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
 
@@ -648,6 +655,29 @@
                         contribution.addBehavior(targetElementName + visibilityElementName, "Visibility", [this.getProperty("visibilityExpression").value]);
                     }
 
+                    //CUSTOM STYLES
+                    var customStyles = this.getProperty("advancedStylingExpressions").value;
+                    if (customStyles) {
+                        var stylingElementName = this.def.meta.stylingElementName || "";
+                        var lines = customStyles.split(/[\r\n]+/);
+                        for (var line of lines) {
+                            if (line.match(/^[ \t]*([^ \t\r\n=:]+)[ \t]*[=:][ \t]*([^\r\n]+)$/)) {
+                                var name = RegExp.$1;
+                                var expr = RegExp.$2;
+                                contribution.addBehavior(targetElementName + stylingElementName, "CustomStyle", [JSON.stringify(name), expr]);
+                            } else {
+                                console.log("Invalid line: ", line);
+                            }
+                        }
+                    }
+
+                    //CUSTOM TRANSFORM
+                    var advancedTransformExpression = this.getProperty("advancedTransformExpression").value;
+                    if (advancedTransformExpression) {
+                        var transformElementName = this.def.meta.transformElementName || "";
+                        contribution.addBehavior(targetElementName + transformElementName, "Transform", [advancedTransformExpression]);
+                    }
+
                     return contribution;
                 ]]></Impl>
             </Action>
@@ -690,7 +720,7 @@
                     ]]>
                 </Impl>
             </Action>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":baseShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
@@ -715,6 +745,7 @@
     <Shape id="rectangle" displayName="Rectangle" icon="" inherits="basePathRelatedShape">
         <Properties>
             <PropertyGroup name="Common">
+                <Property name="box" type="Dimension">200,100</Property>
                 <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
                 <Property name="radiusMode" type="Enum" displayName="Radius Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Handle', 'secondary|Use Secondary Handle', 'expression|Use Advanced Expression']">fixed</Property>
             </PropertyGroup>
@@ -733,7 +764,7 @@
             </For>
         </Behaviors>
         <Actions>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":basePathRelatedShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
@@ -764,6 +795,7 @@
     <Shape id="baseTextShape" displayName="Base Text Shape" system="true" icon="" inherits="baseShape">
         <Properties>
             <PropertyGroup name="Text">
+                <Property name="box" type="Dimension">150,30</Property>
                 <Property name="textColor" type="Color" displayName="Text Color"><E>$$defaultTextColor</E></Property>
                 <Property name="textFont" type="Font" displayName="Text Font"><E>$$defaultTextFont</E></Property>
                 <Property name="text" displayName="Text Content" type="RichText" p:editInfo="({targetName: 'text', bound: Bound.fromBox($box), font: $textFont, align: $textAlignment, richText: true})">Text Content</Property>
@@ -777,11 +809,11 @@
                 <Property name="textAlignmentMode" type="Enum" displayName="Text Alignment Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Text Alignment', 'secondary|Use Secondary Text Alignment', 'expression|Use Advanced Expression']">primary</Property>
                 <Property name="textAlignmentExpression" type="PlainText" displayName="Text Alignment Expression" p:disabled="$textAlignmentMode.value != 'expression'"></Property>
                 <Property name="textMode" displayName="Text Content Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable', 'expression|Use Advanced Expression']">editable</Property>
-                <Property name="textExpression" type="PlainText" displayName="Text Expression" p:disabled="$textMode.value != 'expression'"></Property>
+                <Property name="textExpression" type="PlainText" displayName="Text Content Expression" p:disabled="$textMode.value != 'expression'"></Property>
             </PropertyGroup>
         </Properties>
         <Actions>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
 
@@ -852,9 +884,9 @@
         <p:Content xmlns="http://www.w3.org/2000/svg">
         </p:Content>
     </Shape>
-    <Shape id="text" displayName="Text" icon="" inherits="baseTextShape" p:textElementName="text" p:skipBoundBehavior="true" p:visibilityElementName="text">
+    <Shape id="text" displayName="Text" icon="" inherits="baseTextShape" p:stylingElementName="text" p:textElementName="text" p:skipBoundBehavior="true" p:visibilityElementName="text">
         <Actions>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":baseTextShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
@@ -896,7 +928,7 @@
     <Shape id="bitmap" displayName="Bitmap" inherits="baseShape" icon="" p:skipBoundBehavior="true">
         <Properties>
             <PropertyGroup name="Bitmap Image">
-                <Property name="imageData" type="ImageData">0,0,data:image/gif;base64,R0lGODlhAQABAAAAACw=</Property>
+                <Property name="imageData" type="ImageData">150,124,collection://bitmap/sample-bitmap.png</Property>
                 <Property name="imageDataMode" displayName="Image Data Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable']">editable</Property>
                 <Property name="imageScaleMode" displayName="Image Scale Mode" type="Enum" p:enumValues="['scalable|Scalable', 'npatch|N-Patch Scalable']" p:disabled="$boundMode.value == 'fixed'">npatch</Property>
                 <Property name="imageDataName" type="PlainText" displayName="Data Display Name"></Property>
@@ -911,14 +943,54 @@
             </For>
         </Behaviors>
         <Actions>
-            <Action id="useClipboardImage" displayName="Use Clipboard Image" p:disabled="true">
+            <Action id="useClipboardImage" displayName="Use Clipboard Image">
                 <Impl>
                     <![CDATA[
                     this.def.collection.copyClipboardImage(this, "imageData", "box");
                     ]]>
                 </Impl>
             </Action>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="selectImageFile" displayName="Select Image From File...">
+                <Impl>
+                    <![CDATA[
+                        var thiz = this;
+                        ImageData.prompt(function(data) {
+                            if (!data) return;
+                            thiz.setProperty("imageData", data);
+                            thiz.setProperty("box", new Dimension(data.w, data.h));
+                        });
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="toOriginalSize" displayName="To Original Size">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        this.setProperty("box", new Dimension(data.w, data.h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="fixRatioW" displayName="Correct Ratio by Width">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        var box = this.getProperty("box");
+                        var h = Math.round(box.w * data.h / data.w);
+                        this.setProperty("box", new Dimension(box.w, h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="fixRatioH" displayName="Correct Ratio by Height">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        var box = this.getProperty("box");
+                        var w = Math.round(box.h * data.w / data.h);
+                        this.setProperty("box", new Dimension(w, box.h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
 
@@ -1011,7 +1083,7 @@
     <Shape id="vector" displayName="Vector" inherits="basePathRelatedShape" icon="" p:skipBoundBehavior="true">
         <Properties>
             <PropertyGroup name="Vector Image">
-                <Property name="svgPathData" displayName="SVG Path 1" type="ImageData" p:disabled="true">0,0,json:[]</Property>
+                <Property name="svgPathData" displayName="SVG Path 1" type="ImageData" p:disabled="true">155,110,json:[{"commands":[{"command":"M","points":[{"x":0,"y":69}]},{"command":"C","points":[{"x":0,"y":69,"fixed":true},{"x":90.00000064,"y":-40,"fixed":true},{"x":143,"y":16},{"x":195.99999,"y":71.999998,"fixed":true},{"x":34.999994,"y":29.999997999999998,"fixed":true},{"x":95,"y":63},{"x":155.000005,"y":96.000001,"fixed":true},{"x":131.000005,"y":108.99998500000001,"fixed":true},{"x":131,"y":109}]}],"style":"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"}]</Property>
                 <Property name="imageScaleMode" displayName="Image Scale Mode" type="Enum" p:enumValues="['scalable|Scalable', 'npatch|N-Patch Scalable']" p:disabled="$boundMode.value == 'fixed'">scalable</Property>
                 <Property name="strokeInside" displayName="Stroke Inside" type="Bool">true</Property>
             </PropertyGroup>
@@ -1061,7 +1133,7 @@
             <Action id="useSVGClipboard" displayName="Use Clipboard as SVG Image">
                 <Impl>this.def.collection.copyClipboardSVGImage(this, "svgPathData", "box");</Impl>
             </Action>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
 
@@ -1178,7 +1250,7 @@
                     return snaps;
                 ]]></Impl>
             </Action>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
                     var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
 
@@ -1229,31 +1301,68 @@
                 <Property name="name" type="PlainText" displayName="Property Name"><E>collection.generateElementName(F._target)</E></Property>
                 <Property name="type" type="Enum" displayName="Type" p:enumValues="['Alignment|Alignment', 'Bool|Bool', 'Color|Color', 'Enum|Enum', 'Font|Font', 'Handle|Handle', 'ImageData|ImageData', 'PlainText|PlainText', 'RichText|RichText', 'ShadowStyle|ShadowStyle', 'StrokeStyle|StrokeStyle']">PlainText</Property>
                 <Property name="displayName" type="PlainText" displayName="Display Name"><E>collection.generateElementName(F._target)</E></Property>
-                <Property name="value" type="PlainText" displayName="Initial Value"></Property>
+
+                <Property name="alignmentValue" type="Alignment" displayName="Initial Value" p:disabled="$type.value != 'Alignment'">0,0</Property>
+                <Property name="boolValue" type="Enum" displayName="Initial Value" p:disabled="$type.value != 'Bool'" p:enumValues="['true|True', 'false|False']">false</Property>
+                <Property name="colorValue" type="Color" displayName="Initial Value" p:disabled="$type.value != 'Color'"><E>$$defaultFillColor</E></Property>
+                <Property name="enumValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'Enum'">value1|Value One
+value2|Value Two</Property>
+                <Property name="fontValue" type="Font" displayName="Initial Value" p:disabled="$type.value != 'Font'"><E>$$defaultTextFont</E></Property>
+                <Property name="handleValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'Handle'">0,0</Property>
+                <Property name="imageValueWidth" type="PlainText" displayName="Initial Width" p:disabled="$type.value != 'ImageData'">100</Property>
+                <Property name="imageValueHeight" type="PlainText" displayName="Initial Height" p:disabled="$type.value != 'ImageData'">100</Property>
+                <Property name="imageValueData" type="PlainText" displayName="Initial Data" p:disabled="$type.value != 'ImageData'">data:</Property>
+                <Property name="plainTextValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'PlainText'">Lorem ipsum</Property>
+                <Property name="richTextValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'RichText'"><![CDATA[<strong>Lorem</strong> ipsum]]></Property>
+                <Property name="shadowStyleValue" type="ShadowStyle" displayName="Initial Value" p:disabled="$type.value != 'ShadowStyle'">1|1|3</Property>
+                <Property name="strokeStyleValue" type="StrokeStyle" displayName="Initial Value" p:disabled="$type.value != 'StrokeStyle'">1|</Property>
+
                 <Property name="meta" type="PlainText" displayName="Meta Expressions"></Property>
+                <Property name="global" type="Bool" displayName="Use as Collection Property">false</Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
             <For ref="text">
-                <Font>Font.fromString("Arial|normal|normal|16px")</Font>
-                <Fill>Color.fromString("#000000FF")</Fill>
-                <Color>Color.fromString("#000000FF")</Color>
+                <Font>$type.value != 'Font' ? Font.fromString("Arial|normal|normal|16px") : $fontValue</Font>
+                <Fill>$type.value != 'Color' ? Color.fromString("#000000FF") : $colorValue</Fill>
+                <Color>$type.value != 'Color' ? Color.fromString("#000000FF") : $colorValue</Color>
                 <RichTextContent>
-                    <Arg><![CDATA[RichText.fromString('<span style="color: #F00;">$</span>' + $name.value)]]></Arg>
+                    <Arg><![CDATA[RichText.fromString('<span style="color: #F00;">' +  ($global.value ? '$$' : '$') + '</span>' + $name.value)]]></Arg>
                     <Arg>new Bound(0, -10, 200, 20)</Arg>
                     <Arg>new Alignment(0, 1)</Arg>
                 </RichTextContent>
             </For>
         </Behaviors>
         <Actions>
-            <Action id="buildShapeContribution" displayName="Build Shape Contribution">
+            <Action id="buildShapeContribution">
                 <Impl><![CDATA[
+                    var type = this.getProperty("type").value;
+
+                    var value = "";
+                    if (type == "Alignment") value = this.getProperty("alignmentValue").toString();
+                    if (type == "Bool") value = this.getProperty("boolValue").value;
+                    if (type == "Color") value = this.getProperty("colorValue").toString();
+                    if (type == "Enum") {
+                        var lines = this.getProperty("enumValue").value.split(/[\r\n]+/);
+                        value = "['" + lines.join("', '") + "']";
+                    }
+                    if (type == "Font") value = this.getProperty("fontValue").toString();
+                    if (type == "Handle") value = this.getProperty("handleValue").value;
+                    if (type == "ImageData") {
+                        value = new ImageData(parseInt(this.getProperty("imageValueWidth"), 10), parseInt(this.getProperty("imageValueHeight"), 10), this.getProperty("imageValueData")).toString();
+                    }
+                    if (type == "PlainText") value = this.getProperty("plainTextValue").value;
+                    if (type == "RichText") value = this.getProperty("richTextValue").value;
+                    if (type == "ShadowStyle") value = this.getProperty("shadowStyleValue").toString();
+                    if (type == "StrokeStyle") value = this.getProperty("strokeStyleValue").toString();
+
                     var prop = {
                         name: this.getProperty("name"),
                         displayName: this.getProperty("displayName"),
-                        type: window[this.getProperty("type").value],
-                        value: this.getProperty("value").value,
-                        meta: {}
+                        type: window[type],
+                        value: value,
+                        meta: {},
+                        global: this.getProperty("global").value
                     };
 
                     var contribution = {
