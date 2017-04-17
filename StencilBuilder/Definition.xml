@@ -509,7 +509,7 @@
             </PropertyGroup>
             <PropertyGroup name="Visibility &amp; Styling">
                 <Property name="visibilityMode" type="Enum" displayName="Visibility Mode" p:enumValues="['visible|Always Visible', 'expression|Controlled By Expression']">visible</Property>
-                <Property name="visibilityExpression" type="PlainText" displayName="Visibility Expression" p:disabled="$boundMode.value != 'expression'"></Property>
+                <Property name="visibilityExpression" type="PlainText" displayName="Visibility Expression" p:disabled="$visibilityMode.value != 'expression'"></Property>
                 <Property name="advancedStylingExpressions" type="PlainText" displayName="Advanced Styling" p:help="Each line represents a custom style rule in the format of [name]=[expression], without brackets."></Property>
                 <Property name="advancedTransformExpression" type="PlainText" displayName="Advanced Transform" p:help="Transform expression using JavaScript array syntax. Ex: [scale(0,4), translate(10, 10)]"></Property>
             </PropertyGroup>
@@ -522,7 +522,7 @@
                 <Property name="extraSnappingHCenter" displayName="HCenter" type="PlainText"></Property>
             </PropertyGroup>
             <PropertyGroup name="Meta">
-                <Property name="elementName" type="PlainText" displayName="Element Name"><E>collection.generateElementName(F._target)</E></Property>
+                <Property name="elementName" type="PlainText" displayName="Element Name" p:renew="true"><E>collection.generateElementName(F._target)</E></Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -1295,7 +1295,7 @@
             <rect id="handle" fill="#FFDE08" fill-opacity="0.8" stroke-width="10" stroke-opacity="0" stroke="#FFFFFF" width="10" height="10" />
         </p:Content>
     </Shape>
-    <Shape id="property" displayName="Property" icon="">
+    <Shape id="property" displayName="Property" icon="" p:excludeSizeCalculation="true">
         <Properties>
             <PropertyGroup name="Common">
                 <Property name="name" type="PlainText" displayName="Property Name"><E>collection.generateElementName(F._target)</E></Property>
