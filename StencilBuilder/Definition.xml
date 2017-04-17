@@ -54,6 +54,12 @@
 
                     if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
                     return info;
+                } else if (mode.match(/^\$.+/)) {
+                    info.valueLiteral = mode;
+                    info.realValueLiteral = info.valueLiteral;
+
+                    if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
+                    return info;
                 } else {
                     info.valueLiteral = type.name + ".fromString(\"" + this.getProperty(propName).toString() + "\")";
                     info.realValueLiteral = info.valueLiteral;
@@ -770,7 +776,7 @@
                     contribution = parentAction.implFunction.call(this);
 
                     var converter = contribution._boundExpressionLiteral ? function (e) {
-                        return "(" + e + ").x - (" + contribution._boundExpressionLiteral + ").x";
+                        return "Math.max(0, (" + e + ").x - (" + contribution._boundExpressionLiteral + ").x)";
                     } : null;
 
                     var meta = {minX: "0", lockY: "true"};
