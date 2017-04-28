@@ -157,7 +157,10 @@
                 var thiz = target;
 
                 var text = clipboard.readText();
+
+                console.log("SVG", text);
                 var dom = Canvas.domParser.parseFromString(text, "text/xml");
+
                 if (!dom || dom.documentElement.namespaceURI != PencilNamespaces.svg) {
                     return;
                 }
@@ -289,7 +292,7 @@
                 }
 
                 //parse the original data
-                var RE = /([A-Z])([^A-Z]*)/gi;
+                var RE = /([A-Z])([^A-DF-Z]*)/gi;
                 var commands = [];
                 var result = null;
                 var current = {x: 0, y: 0};
@@ -300,7 +303,7 @@
                     };
                     var data = result[2].trim();
                     if (data) {
-                        var DATA_RE = /(\-?[0-9\.]+)(\,(\-?[0-9\.]+))?/g;
+                        var DATA_RE = /(\-?[0-9\.eE\-]+)(\,(\-?[0-9\.eE\-]+))?/g;
                         var points = [];
                         var result2 = null;
                         while ((result2 = DATA_RE.exec(data))) {
@@ -486,12 +489,73 @@
                         _name: "path",
                         _uri: PencilNamespaces.svg,
                         d: d,
+                        "stroke-linecap": "square",
                         style: keepPathStyle ? info.style : ""
                     });
                 }
 
                 return Dom.newDOMFragment(specs);
             };
+            collection.generateAdvancedRectPathData = function (box, strokeStyle, r, withTop, withRight, withBottom, withLeft) {
+                var x = r * 4 * (Math.sqrt(2) - 1) / 3;
+                var w = box.w - strokeStyle.w * ((withLeft ? 0.5 : 0) + (withRight ? 0.5 : 0));
+                var h = box.h - strokeStyle.w * ((withTop ? 0.5 : 0) + (withBottom ? 0.5 : 0));
+                var parts = [
+                ];
+                var close = true;
+                if (withTop) {
+                    parts.push(L(w - (withRight ? r : 0),0));
+                    if (withRight && r > 0) parts.push(c(x,0,r,r-x,r,r));
+                } else {
+                    parts.push(M(w,0));
+                    close = false;
+                }
+
+                if (withRight) {
+                    parts.push(L(w,h - (withBottom ? r : 0)));
+                    if (withBottom && r > 0) parts.push(c(0,x,x-r,r,0-r,r));
+                } else {
+                    parts.push(M(w,h));
+                    close = false;
+                }
+
+                if (withBottom) {
+                    parts.push(L(withLeft ? r : 0,h));
+                    if (withLeft && r > 0) parts.push(c(x-r,0,0-r,x-r,0-r,0-r));
+                } else {
+                    parts.push(M(0,h));
+                    close = false;
+                }
+
+                if (withLeft) {
+                    parts.push(L(0,withTop ? r : 0));
+                    if (withTop && r > 0) parts.push(c(0,0-x,r-x,0-r,r,0-r));
+                } else {
+                    parts.push(M(0,0));
+                    close = false;
+                }
+
+                if (close) parts.push(z);
+
+                var firstMove = -1;
+                for (var i = 0; i < parts.length; i ++) {
+                    if (parts[i].indexOf("M") == 0) {
+                        firstMove = i;
+                        break;
+                    }
+                }
+
+                if (firstMove > 0) {
+                    while (firstMove > 0) {
+                        parts.push(parts.shift());
+                        firstMove --;
+                    }
+                } else {
+                    parts.unshift(M(withLeft ? r : 0,0));
+                }
+
+                return parts;
+            }
         ]]>
     </Script>
     <Properties>
@@ -511,7 +575,7 @@
                 <Property name="box" type="Dimension">100,100</Property>
 
                 <Property name="boundMode" type="Enum" displayName="Bound Mode" p:enumValues="['fixed|Fixed', 'policy|Use Sizing Policy', 'simple|Use Simple Expression', 'expression|Use Advanced Expression']">policy</Property>
-                <Property name="boundExpression" type="PlainText" displayName="Bound Expression" p:disabled="$boundMode.value != 'expression'"></Property>
+                <Property name="boundExpression" type="PlainText" displayName="Bound Expression" p:disabled="$boundMode.value != 'expression' &amp;&amp; $boundMode.value != 'simple'"></Property>
             </PropertyGroup>
             <PropertyGroup name="Visibility &amp; Styling">
                 <Property name="visibilityMode" type="Enum" displayName="Visibility Mode" p:enumValues="['visible|Always Visible', 'expression|Controlled By Expression']">visible</Property>
@@ -610,6 +674,14 @@
                         var bounding = this.getBounding(svg);
                         var geo = this.getGeometry();
 
+                        var a = Svg.getAngle(geo.ctm.a, geo.ctm.b);
+
+                        if (a != 0) {
+                            this.rotateBy(0 - a);
+                            var bounding = this.getBounding(svg);
+                            var geo = this.getGeometry();
+                        }
+
                         var originalInfo = {
                             gw0: StencilCollectionBuilder._currentPage.width - 2 * pageMargin,
                             gh0: StencilCollectionBuilder._currentPage.height - 2 * pageMargin,
@@ -622,6 +694,10 @@
                         var policy = Group.getSizingPolicy(this);
 
                         boundExpressionLiteral = "collection.calculateBoundsFromPolicy($box, " + JSON.stringify(originalInfo) + ", " + JSON.stringify(policy) + ")";
+
+                        if (a != 0) {
+                            this.rotateBy(a);
+                        }
                     }
 
                     if (boundExpressionLiteral) {
@@ -631,6 +707,25 @@
                         if (this.def.meta.skipBoundBehavior != "true") {
                             var boundElementName = this.def.meta.boundElementName || "";
                             contribution._boundBehavior = contribution.addBehavior(targetElementName + boundElementName, "Bound", [boundExpressionLiteral]);
+
+                            var box = this.getProperty("box");
+                            if (box) {
+                                var currentGeo = this.getGeometry();
+                                var a = Svg.getAngle(currentGeo.ctm.a, currentGeo.ctm.b);
+
+                                if (a != 0) {
+                                    console.log("currentGeo.ctm", currentGeo.ctm);
+                                    console.log("Svg.pointInCTM", Svg.pointInCTM(0, 0, currentGeo.ctm));
+                                    var ctm2 = currentGeo.ctm.rotate(0 - a);
+                                    console.log("Svg.pointInCTM2", Svg.pointInCTM(0, 0, ctm2));
+                                    contribution._transformBehavior = contribution.addBehavior(targetElementName + boundElementName, "Transform", [`
+                                        (function () {
+                                            var b = ${boundExpressionLiteral};
+                                            return ["rotate(${a} " + (b.x + ${box.w / 2}) + " " + (b.y + ${box.h / 2}) + ")"];
+                                        }())
+                                    `]);
+                                }
+                            }
                         }
 
                         const EXTRA_SNAP_TYPES = ["Left", "Top", "Right", "Bottom", "VCenter", "HCenter"];
@@ -775,9 +870,9 @@
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":basePathRelatedShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
 
-                    var converter = contribution._boundExpressionLiteral ? function (e) {
-                        return "Math.max(0, (" + e + ").x - (" + contribution._boundExpressionLiteral + ").x)";
-                    } : null;
+                    var converter = function (e) {
+                        return "Math.max(0, (" + e + ").x)";
+                    };
 
                     var meta = {minX: "0", lockY: "true"};
 
@@ -796,6 +891,96 @@
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
             <rect id="rect" />
+        </p:Content>
+    </Shape>
+    <Shape id="pathRect" displayName="Rectangle" icon="" inherits="basePathRelatedShape" p:skipBoundBehavior="true">
+        <Properties>
+            <PropertyGroup name="Common">
+                <Property name="box" type="Dimension">200,100</Property>
+                <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
+                <Property name="radiusMode" type="Enum" displayName="Radius Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Handle', 'secondary|Use Secondary Handle', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="radiusExpression" displayName="Radius Expression" type="PlainText" p:disabled="$radiusMode.value != 'expression'"></Property>
+                <Property name="withTop" displayName="Border Top" type="Bool">true</Property>
+                <Property name="withRight" displayName="Border Right" type="Bool">true</Property>
+                <Property name="withBottom" displayName="Border Bottom" type="Bool">true</Property>
+                <Property name="withLeft" displayName="Border Left" type="Bool">true</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="path">
+                <Transform>[translate($withLeft.value ? ($strokeStyle.w / 2) : 0, $withTop.value ? ($strokeStyle.w / 2) : 0)]</Transform>
+                <Fill>$fillColor</Fill>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+                <D><![CDATA[
+                    (function () {
+                        return collection.generateAdvancedRectPathData($box, $strokeStyle, $radius.x, $withTop.value, $withRight.value, $withBottom.value, $withLeft.value);
+                    }())
+                ]]></D>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="buildShapeContribution">
+                <Impl><![CDATA[
+                    var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":basePathRelatedShape").actionMap["buildShapeContribution"];
+                    contribution = parentAction.implFunction.call(this);
+
+                    var converter = function (e) {
+                        return "Math.max(0, (" + e + ").x)";
+                    };
+
+                    var meta = {minX: "0", lockY: "true"};
+
+                    if (contribution._boundExpressionLiteral) {
+                        meta.minX = "(" + contribution._boundExpressionLiteral + ").x";
+                        meta.maxX = "(" + contribution._boundExpressionLiteral + ").x + Math.round((" + contribution._boundExpressionLiteral + ").w / 2)";
+                    }
+
+                    var radiusInfo = this.def.collection.generateContribution.call(this, "", contribution, "radius", "Corner Radius", Handle, "Radius", converter, meta);
+                    this.def.collection.contributeContentDomNode(this, "path", contribution);
+
+                    var boundLiteral = contribution._boundExpressionLiteral;
+                    if (!boundLiteral) {
+                        var svg = Dom.findUpward(this.svg, function (node) {
+                                return node.localName == "svg" && node.namespaceURI == PencilNamespaces.svg;
+                            });
+
+                        var ctm = this.svg.getTransformToElement(svg);
+                        var geo = this.getGeometry();
+                        boundLiteral = "new Bound(" + ([ctm.e - pageMargin, ctm.f - pageMargin, geo.dim.w, geo.dim.h].join(",")) + ")";
+                    }
+
+                    var elementName = contribution.targetElementName;
+
+
+                    var set = contribution.behaviorMap[elementName];
+                    var strokeLiteral = null;
+                    if (set) {
+                        for (var item of set.items) {
+                            if (item.behavior == "StrokeStyle") {
+                                strokeLiteral = item.args[0];
+                                break;
+                            }
+                        }
+                    }
+
+                    contribution.addBehavior(elementName, "D",
+                        ["(function () { var b = " + boundLiteral + ";\n"
+                            + "var s = " + strokeLiteral + ";\n"
+                            + "var r = " + radiusInfo.realValueLiteral + ";\n"
+                            + "return collection.generateAdvancedRectPathData(b, s, r.x, " + this.getProperty("withTop").value + ", " + this.getProperty("withRight").value + ", " + this.getProperty("withBottom").value + ", " + this.getProperty("withLeft").value + "); }())"]);
+
+                    contribution.addBehavior(elementName, "Transform",
+                        ["(function () { var s = " + strokeLiteral + ";\n"
+                            + "var b = " + boundLiteral + ";\n"
+                            + "return [translate(" + (this.getProperty("withLeft").value ? "s.w / 2" : "0") + " + b.x, " + (this.getProperty("withTop").value ? "s.w / 2" : "0") + " + b.y)];}())"]);
+
+                    return contribution;
+                ]]></Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <path id="path" />
         </p:Content>
     </Shape>
     <Shape id="baseTextShape" displayName="Base Text Shape" system="true" icon="" inherits="baseShape">
@@ -936,6 +1121,7 @@
             <PropertyGroup name="Bitmap Image">
                 <Property name="imageData" type="ImageData">150,124,collection://bitmap/sample-bitmap.png</Property>
                 <Property name="imageDataMode" displayName="Image Data Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable']">editable</Property>
+                <Property name="imageDataResourceNames" type="PlainText" displayName="Resource set names" p:disabled="$imageDataMode.value != 'editable'"></Property>
                 <Property name="imageScaleMode" displayName="Image Scale Mode" type="Enum" p:enumValues="['scalable|Scalable', 'npatch|N-Patch Scalable']" p:disabled="$boundMode.value == 'fixed'">npatch</Property>
                 <Property name="imageDataName" type="PlainText" displayName="Data Display Name"></Property>
             </PropertyGroup>
@@ -1023,6 +1209,12 @@
                             id: contribution.targetElementName + "CopyClipboard",
                             displayName: "Use Clipboard Data as " + imageDataName,
                             impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
+                        })
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Browse",
+                            displayName: "Select Resource Images for " + imageDataName + "...",
+                            impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
+                                + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         })
                     }
 
@@ -1113,6 +1305,8 @@
                         var delta = $strokeInside.value ? $strokeStyle.w / 2 : 0;
                         if ($imageScaleMode == "scalable") {
                             var b = $box.narrowed($strokeInside.value ? $strokeStyle.w : 0);
+                            b.w = Math.max(b.w, $strokeStyle.w);
+                            b.h = Math.max(b.h, $strokeStyle.w);
                             return [translate(delta, delta), scale(b.w / $svgPathData.w, b.h / $svgPathData.h)];
                         } else {
                             return [translate(delta, delta)];
@@ -1124,6 +1318,8 @@
                     (function () {
                         if ($imageScaleMode == "scalable") {
                             var b = $box.narrowed($strokeInside.value ? $strokeStyle.w : 0);
+                            b.w = Math.max(b.w, $strokeStyle.w);
+                            b.h = Math.max(b.h, $strokeStyle.w);
                             var r = (b.w / $svgPathData.w + b.h / $svgPathData.h) / 2;
                             return new StrokeStyle($strokeStyle.w / r, $strokeStyle.array)
                         } else {
@@ -1157,7 +1353,7 @@
                         boundLiteral = "new Bound(" + ([ctm.e - pageMargin, ctm.f - pageMargin, geo.dim.w, geo.dim.h].join(",")) + ")";
                     }
 
-                    var elementName = contribution.targetElementName ;
+                    var elementName = contribution.targetElementName;
                     this.def.collection.contributeContentDomNode(this, "svgGroup", contribution, "", {empty: true});
 
                     var imageScaleMode = this.getProperty("imageScaleMode").value;
@@ -1349,8 +1545,7 @@ value2|Value Two</Property>
                     if (type == "Bool") value = this.getProperty("boolValue").value;
                     if (type == "Color") value = this.getProperty("colorValue").toString();
                     if (type == "Enum") {
-                        var lines = this.getProperty("enumValue").value.split(/[\r\n]+/);
-                        value = "['" + lines.join("', '") + "']";
+                        value = this.getProperty("enumValue").value;
                     }
                     if (type == "Font") value = this.getProperty("fontValue").toString();
                     if (type == "Handle") value = this.getProperty("handleValue").value;
@@ -1370,6 +1565,20 @@ value2|Value Two</Property>
                         meta: {},
                         global: this.getProperty("global").value
                     };
+
+                    var metaExpressions = this.getProperty("meta").value;
+                    if (metaExpressions) {
+                        var lines = metaExpressions.split(/[\r\n]+/);
+                        for (var line of lines) {
+                            if (line.match(/^[ \t]*([^ \t\r\n=:]+)[ \t]*[=:][ \t]*([^\r\n]+)$/)) {
+                                var name = RegExp.$1;
+                                var expr = RegExp.$2;
+                                prop.meta[name] = expr;
+                            } else {
+                                console.log("Invalid line: ", line);
+                            }
+                        }
+                    }
 
                     var contribution = {
                         properties: [prop],
