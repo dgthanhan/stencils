@@ -901,9 +901,17 @@
                 <Property name="radiusMode" type="Enum" displayName="Radius Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Handle', 'secondary|Use Secondary Handle', 'expression|Use Advanced Expression']">fixed</Property>
                 <Property name="radiusExpression" displayName="Radius Expression" type="PlainText" p:disabled="$radiusMode.value != 'expression'"></Property>
                 <Property name="withTop" displayName="Border Top" type="Bool">true</Property>
+                <Property name="withTopMode" displayName="Top Border Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withTopExpression" displayName="Top Border Expression" type="PlainText" p:disabled="$withTopMode.value != 'expression'"></Property>
                 <Property name="withRight" displayName="Border Right" type="Bool">true</Property>
+                <Property name="withRightMode" displayName="Right Border Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withRightExpression" displayName="Right Border Expression" type="PlainText" p:disabled="$withRightMode.value != 'expression'"></Property>
                 <Property name="withBottom" displayName="Border Bottom" type="Bool">true</Property>
+                <Property name="withBottomMode" displayName="Bottom Border Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withBottomExpression" displayName="Bottom Border Expression" type="PlainText" p:disabled="$withBottomMode.value != 'expression'"></Property>
                 <Property name="withLeft" displayName="Border Left" type="Bool">true</Property>
+                <Property name="withLeftMode" displayName="Left Border Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withLeftExpression" displayName="Left Border Expression" type="PlainText" p:disabled="$withLeftMode.value != 'expression'"></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -964,16 +972,22 @@
                         }
                     }
 
+                    var border = function (name) {
+                        var mode = this.getProperty("with" + name + "Mode");
+                        if (mode == "fixed") return "" + this.getProperty("with" + name).value;
+                        return this.getProperty("with" + name + "Expression").value;
+                    }.bind(this);
+
                     contribution.addBehavior(elementName, "D",
                         ["(function () { var b = " + boundLiteral + ";\n"
                             + "var s = " + strokeLiteral + ";\n"
                             + "var r = " + radiusInfo.realValueLiteral + ";\n"
-                            + "return collection.generateAdvancedRectPathData(b, s, r.x, " + this.getProperty("withTop").value + ", " + this.getProperty("withRight").value + ", " + this.getProperty("withBottom").value + ", " + this.getProperty("withLeft").value + "); }())"]);
+                            + "return collection.generateAdvancedRectPathData(b, s, r.x, " + border("Top") + ", " + border("Right") + ", " + border("Bottom") + ", " + border("Left") + "); }())"]);
 
                     contribution.addBehavior(elementName, "Transform",
                         ["(function () { var s = " + strokeLiteral + ";\n"
                             + "var b = " + boundLiteral + ";\n"
-                            + "return [translate(" + (this.getProperty("withLeft").value ? "s.w / 2" : "0") + " + b.x, " + (this.getProperty("withTop").value ? "s.w / 2" : "0") + " + b.y)];}())"]);
+                            + "return [translate(((" + border("Left") + ") ? (s.w / 2) : 0) + b.x, ((" + border("Top") + ") ? (s.w / 2) : 0) + b.y)];}())"]);
 
                     return contribution;
                 ]]></Impl>
@@ -985,6 +999,9 @@
     </Shape>
     <Shape id="baseTextShape" displayName="Base Text Shape" system="true" icon="" inherits="baseShape">
         <Properties>
+            <PropertyGroup name="Bound">
+                <Property name="textBoundConversion" type="PlainText" displayName="Text Bound Conversion"></Property>
+            </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="box" type="Dimension">150,30</Property>
                 <Property name="textColor" type="Color" displayName="Text Color"><E>$$defaultTextColor</E></Property>
@@ -1001,6 +1018,12 @@
                 <Property name="textAlignmentExpression" type="PlainText" displayName="Text Alignment Expression" p:disabled="$textAlignmentMode.value != 'expression'"></Property>
                 <Property name="textMode" displayName="Text Content Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable', 'expression|Use Advanced Expression']">editable</Property>
                 <Property name="textExpression" type="PlainText" displayName="Text Content Expression" p:disabled="$textMode.value != 'expression'"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Icon">
+                <Property name="supportIcon" displayName="Support Icon" type="Bool" p:disabled="true">false</Property>
+                <Property name="iconSide" displayName="Icon Alignment" type="Enum" p:enumValues="['leading|Leading', 'trailing|Trailing', 'customizable|Customizable']" p:disabled="!$supportIcon.value">leading</Property>
+                <Property name="iconGap" displayName="Icon Gap Factor" type="PlainText" p:disabled="!$supportIcon.value">1</Property>
+                <Property name="iconImageDataResourceNames" type="PlainText" displayName="Icon Resource Set Names" p:disabled="!$supportIcon.value"></Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -1064,6 +1087,148 @@
                         textLiteral = this.getProperty("textExpression").value;
                     }
 
+                    var textBoundConversion = this.getProperty("textBoundConversion").value;
+                    if (textBoundConversion) {
+                        textBoundLiteral = `(${textBoundConversion}(${textBoundLiteral}))`;
+                    }
+
+                    var supportIcon = this.getProperty("supportIcon").value;
+                    if (supportIcon) {
+                        var prop = {
+                            name: contribution.targetElementName + "ImageData",
+                            displayName: "Text icon",
+                            type: ImageData,
+                            value: "0,0,data:",
+                            meta: {}
+                        };
+
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "CopyClipboard",
+                            displayName: "Use Clipboard Data as Text Icon",
+                            impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
+                        });
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Browse",
+                            displayName: "Select Resource Images for Text Icon...",
+                            impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("iconImageDataResourceNames").value)
+                                + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
+                        });
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Remove",
+                            displayName: "Remove Text Icon...",
+                            impl: "this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", new ImageData(0,0,\"data:\"));"
+                        });
+
+                        contribution.properties.push(prop);
+
+                        imageDataLiteral = "$" + prop.name;
+                        var iconSide = this.getProperty("iconSide").value;
+                        var iconGap = this.getProperty("iconGap").value;
+                        var iconSideLiteral = JSON.stringify(iconSide);
+                        if (iconSide == "customizable") {
+                            iconSideProp = {
+                                name: contribution.targetElementName + "IconSide",
+                                displayName: "Text icon side",
+                                type: Enum,
+                                value: "leading",
+                                meta: {
+                                    enumValues: "['leading|Leading', 'trailing|Trailing']"
+                                }
+                            };
+                            contribution.properties.push(iconSideProp);
+                            iconSideLiteral = "$" + iconSideProp.name;
+                        }
+
+                        var originalTextBoundLiteral = textBoundLiteral;
+
+                        textBoundLiteral = `(function (bound) {
+                            if ((${imageDataLiteral}).w > 0) {
+                                //depends ${textLiteral}, ${fontInfo.valueLiteral}
+                                var iconGap = Math.round(${iconGap} * (${fontInfo.valueLiteral}).getPixelHeight());
+                                console.log("iconGap", iconGap);
+                                var iconHeight = Math.round(1.2 * (${fontInfo.valueLiteral}).getPixelHeight());
+                                console.log("iconHeight", iconHeight);
+                                var side = ${iconSideLiteral};
+                                var align = ${alignment};
+                                if (side == "leading") {
+                                    bound.x += iconHeight + iconGap;
+                                    bound.w -= iconHeight + iconGap;
+                                } else {
+                                    bound.w -= iconHeight + iconGap;
+                                }
+                            }
+
+                            return bound;
+
+                        }(${textBoundLiteral}))`;
+
+
+                        contribution.contentFragment.appendChild(Dom.newDOMElement({
+                            _name: "g",
+                            _uri: PencilNamespaces.svg,
+                            id: contribution.targetElementName + "Icon",
+                            _children: [
+                                {
+                                    _name: "image",
+                                    _uri: PencilNamespaces.svg,
+                                    id: contribution.targetElementName + "IconImage",
+                                    x: 0,
+                                    y: 0
+                                }
+                            ]
+                        }));
+
+                        var textElementId = contribution.targetElementName + textElementName;
+
+                        var iconBoundLiteral = `(function (bound) {
+                            if ((${imageDataLiteral}).w > 0) {
+                                //depends ${textLiteral}, ${fontInfo.valueLiteral}
+                                var iconGap = Math.round(${iconGap} * (${fontInfo.valueLiteral}).getPixelHeight());
+                                console.log("iconGap", iconGap);
+                                var iconHeight = Math.round(1.2 * (${fontInfo.valueLiteral}).getPixelHeight());
+                                var y = bound.y + Math.round(bound.h - iconHeight) / 2;
+                                var side = ${iconSideLiteral};
+                                var align = ${alignment};
+                                if (side == "leading") {
+                                    if (align.h == 0) {
+                                        return new Bound(bound.x, y, iconHeight, iconHeight);
+                                    } else if (align.h == 1) {
+                                        var textWidth = F.getObjectBoundingBox("${textElementId}").w;
+                                        var w = iconHeight + textWidth + (textWidth ? iconGap : 0);
+                                        return new Bound(bound.x + Math.round((bound.w - w) / 2), y, iconHeight, iconHeight);
+                                    } else if (align.h == 2) {
+                                        var textWidth = F.getObjectBoundingBox("${textElementId}").w;
+                                        var w = iconHeight + textWidth + (textWidth ? iconGap : 0);
+                                        return new Bound(bound.x + bound.w - w, y, iconHeight, iconHeight);
+                                    }
+                                } else {
+                                    if (align.h == 0) {
+                                        var textWidth = F.getObjectBoundingBox("${textElementId}").w;
+                                        if (textWidth) textWidth += iconGap;
+                                        return new Bound(bound.x + textWidth, y, iconHeight, iconHeight);
+                                    } else if (align.h == 1) {
+                                        var textWidth = F.getObjectBoundingBox("${textElementId}").w;
+                                        var w = iconHeight + textWidth + (textWidth ? iconGap : 0);
+                                        return new Bound(bound.x + Math.round((bound.w + w) / 2) - iconHeight, y, iconHeight, iconHeight);
+                                    } else if (align.h == 2) {
+                                        return new Bound(bound.x + bound.w - iconHeight, y, iconHeight, iconHeight);
+                                    }
+                                }
+                            }
+
+                            return bound;
+
+                        }(${originalTextBoundLiteral}))`;
+
+
+
+                        contribution.addBehavior(contribution.targetElementName + "Icon", "Transform",
+                            ["var bound = (" + iconBoundLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (" + imageDataLiteral + ").w, bound.h / (" + imageDataLiteral + ").h)];"]);
+
+                        contribution.addBehavior(contribution.targetElementName + "IconImage", "Image",
+                            [imageDataLiteral]);
+
+                    }
 
                     contribution.addBehavior(contribution.targetElementName + textElementName, "RichTextContent",
                         [textLiteral, textBoundLiteral, alignment]);
@@ -1118,6 +1283,9 @@
     </Shape>
     <Shape id="bitmap" displayName="Bitmap" inherits="baseShape" icon="" p:skipBoundBehavior="true">
         <Properties>
+            <PropertyGroup name="Bound">
+                <Property name="imageBoundConversion" type="PlainText" displayName="Image Bound Conversion"></Property>
+            </PropertyGroup>
             <PropertyGroup name="Bitmap Image">
                 <Property name="imageData" type="ImageData">150,124,collection://bitmap/sample-bitmap.png</Property>
                 <Property name="imageDataMode" displayName="Image Data Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable']">editable</Property>
