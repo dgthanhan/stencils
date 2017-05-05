@@ -54,8 +54,17 @@
 
                     if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
                     return info;
-                } else if (mode.match(/^\$.+/)) {
-                    info.valueLiteral = mode;
+                } else if (mode.startsWith("#")) {
+                    info.prop = {
+                        name: mode.substring(1),
+                        displayName: mode.substring(1),
+                        type: type,
+                        value: currentValue.toString(),
+                        meta: meta || {}
+                    };
+                    contribution.properties.push(info.prop);
+
+                    info.valueLiteral = "$" + info.prop.name;
                     info.realValueLiteral = info.valueLiteral;
 
                     if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
@@ -63,6 +72,7 @@
                 } else {
                     info.valueLiteral = type.name + ".fromString(\"" + this.getProperty(propName).toString() + "\")";
                     info.realValueLiteral = info.valueLiteral;
+                    info._fixed = true;
 
                     if (behaviorNames) for (var behaviorName of behaviorNames.split(",")) contribution.addBehavior(targetElementName, behaviorName, [expressionConverter ? expressionConverter(info.valueLiteral) : info.valueLiteral]);
                     return info;
@@ -153,12 +163,11 @@
                 }
             };
 
-            collection.copyClipboardSVGImage = function (target, imageDataPropName, boxPropName) {
+            collection.copyClipboardSVGImage = function (target, imageDataPropName, boxPropName, dontParsePathData) {
                 var thiz = target;
 
                 var text = clipboard.readText();
 
-                console.log("SVG", text);
                 var dom = Canvas.domParser.parseFromString(text, "text/xml");
 
                 if (!dom || dom.documentElement.namespaceURI != PencilNamespaces.svg) {
@@ -180,21 +189,28 @@
                 width = Math.round(width);
                 height = Math.round(height);
 
-                var parsedData = [];
-                Dom.workOn("//svg:path[@d]", dom.documentElement, function (pathNode) {
-                    var d = pathNode.getAttribute("d");
-                    var parsed = thiz.def.collection.parsePathData(d);
-                    var pathInfo = {
-                        commands: parsed,
-                        style: pathNode.getAttribute("style")
-                    };
-                    parsedData.push(pathInfo);
-                });
+                var data = "";
 
-                var dim = new Dimension(width, height);
-                if (boxPropName) target.setProperty(boxPropName, dim);
+                if (!dontParsePathData) {
+                    var parsedData = [];
+                    Dom.workOn("//svg:path[@d]", dom.documentElement, function (pathNode) {
+                        var d = pathNode.getAttribute("d");
+                        var parsed = thiz.def.collection.parsePathData(d);
+                        var pathInfo = {
+                            commands: parsed,
+                            style: pathNode.getAttribute("style")
+                        };
+                        parsedData.push(pathInfo);
+                    });
 
-                var data = "json:" + JSON.stringify(parsedData);
+                    var dim = new Dimension(width, height);
+                    if (boxPropName) target.setProperty(boxPropName, dim);
+
+                    data = "json:" + JSON.stringify(parsedData);
+                } else {
+                    data = ImageData.SVG_IMAGE_DATA_PREFIX + "," + text;
+                }
+
                 var imageData = new ImageData(width, height, data);
                 target.setProperty(imageDataPropName, imageData);
             };
@@ -555,7 +571,40 @@
                 }
 
                 return parts;
-            }
+            };
+
+            collection.toColorizedDOMNode = function (svgXML, color) {
+                if (!svgXML) return document.createDocumentFragment();
+
+                var svg = Dom.parseDocument(svgXML);
+
+                if (color) {
+                    var c = color.toRGBAString();
+                    Dom.workOn("//svg:*", svg, function (node) {
+                        if (node.style.fill != "none") {
+                            node.style.fill = c;
+                        }
+                        if (node.style.stroke && node.style.stroke != "none") {
+                            node.style.stroke = c;
+                        }
+
+                        var a = node.getAttribute("fill");
+                        if (a != "none") node.setAttribute("fill", c);
+
+                        a = node.getAttribute("stroke");
+                        if (a && a != "none") node.setAttribute("stroke", c);
+                    });
+                }
+
+                var g = svg.createElementNS(PencilNamespaces.svg, "g");
+                while (svg.documentElement.firstChild) {
+                    var child = svg.documentElement.firstChild;
+                    svg.documentElement.removeChild(child);
+                    g.appendChild(child);
+                }
+
+                return g;
+            };
         ]]>
     </Script>
     <Properties>
@@ -849,6 +898,7 @@
                 <Property name="box" type="Dimension">200,100</Property>
                 <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
                 <Property name="radiusMode" type="Enum" displayName="Radius Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Handle', 'secondary|Use Secondary Handle', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="radiusExpression" displayName="Radius Expression" type="PlainText" p:disabled="$radiusMode.value != 'expression'"></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -1022,8 +1072,10 @@
             <PropertyGroup name="Icon">
                 <Property name="supportIcon" displayName="Support Icon" type="Bool" p:disabled="true">false</Property>
                 <Property name="iconSide" displayName="Icon Alignment" type="Enum" p:enumValues="['leading|Leading', 'trailing|Trailing', 'customizable|Customizable']" p:disabled="!$supportIcon.value">leading</Property>
+                <Property name="iconType" displayName="Icon Type" type="Enum" p:enumValues="['bitmap|Bitmap', 'svg|SVG']" p:disabled="!$supportIcon.value">bitmap</Property>
                 <Property name="iconGap" displayName="Icon Gap Factor" type="PlainText" p:disabled="!$supportIcon.value">1</Property>
                 <Property name="iconImageDataResourceNames" type="PlainText" displayName="Icon Resource Set Names" p:disabled="!$supportIcon.value"></Property>
+                <Property name="iconColor" displayName="Icon Color" type="Enum" p:enumValues="['asis|As-is', 'text|Same as text']" p:disabled="!$supportIcon.value || $iconType.value != 'svg'">bitmap</Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -1094,24 +1146,30 @@
 
                     var supportIcon = this.getProperty("supportIcon").value;
                     if (supportIcon) {
+                        var iconType = this.getProperty("iconType").value;
+                        var bitmap = iconType == CollectionResourceBrowserDialog.TYPE_BITMAP;
+
                         var prop = {
                             name: contribution.targetElementName + "ImageData",
                             displayName: "Text icon",
                             type: ImageData,
-                            value: "0,0,data:",
+                            value: bitmap ? "0,0,data:" : "0,0,data:image/svg+xml;utf8,<svg></svg>",
                             meta: {}
                         };
 
-                        contribution.actions.push({
-                            id: contribution.targetElementName + "CopyClipboard",
-                            displayName: "Use Clipboard Data as Text Icon",
-                            impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
-                        });
+                        if (bitmap) {
+                            contribution.actions.push({
+                                id: contribution.targetElementName + "CopyClipboard",
+                                displayName: "Use Clipboard Data as Text Icon",
+                                impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
+                            });
+                        }
+
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
                             displayName: "Select Resource Images for Text Icon...",
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("iconImageDataResourceNames").value)
-                                + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
+                                + ", CollectionResourceBrowserDialog."  + (bitmap ? "TYPE_BITMAP" : "TYPE_SVG") + ", CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });
                         contribution.actions.push({
                             id: contribution.targetElementName + "Remove",
@@ -1168,8 +1226,15 @@
                             _uri: PencilNamespaces.svg,
                             id: contribution.targetElementName + "Icon",
                             _children: [
+                                bitmap ?
                                 {
                                     _name: "image",
+                                    _uri: PencilNamespaces.svg,
+                                    id: contribution.targetElementName + "IconImage",
+                                    x: 0,
+                                    y: 0
+                                }:{
+                                    _name: "g",
                                     _uri: PencilNamespaces.svg,
                                     id: contribution.targetElementName + "IconImage",
                                     x: 0,
@@ -1223,11 +1288,32 @@
 
 
                         contribution.addBehavior(contribution.targetElementName + "Icon", "Transform",
-                            ["var bound = (" + iconBoundLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (" + imageDataLiteral + ").w, bound.h / (" + imageDataLiteral + ").h)];"]);
+                            ["var bound = (" + iconBoundLiteral + ");\n\nvar imageData = (" + imageDataLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (imageData.w || 1), bound.h / (imageData.h || 1))];"]);
 
-                        contribution.addBehavior(contribution.targetElementName + "IconImage", "Image",
-                            [imageDataLiteral]);
+                        //CUSTOM STYLES
+                        var customStyles = this.getProperty("advancedStylingExpressions").value;
+                        if (customStyles) {
+                            var lines = customStyles.split(/[\r\n]+/);
+                            for (var line of lines) {
+                                if (line.match(/^[ \t]*([^ \t\r\n=:]+)[ \t]*[=:][ \t]*([^\r\n]+)$/)) {
+                                    var name = RegExp.$1;
+                                    var expr = RegExp.$2;
+                                    contribution.addBehavior(contribution.targetElementName + "Icon", "CustomStyle", [JSON.stringify(name), expr]);
+                                } else {
+                                    console.log("Invalid line: ", line);
+                                }
+                            }
+                        }
 
+                        if (bitmap) {
+                            contribution.addBehavior(contribution.targetElementName + "IconImage", "Image",
+                                [imageDataLiteral]);
+                        } else {
+                            var transformColor = this.getProperty("iconColor").value == "text";
+                            var xmlLiteral = `(${imageDataLiteral}).getDataAsXML()`;
+                            contribution.addBehavior(contribution.targetElementName + "IconImage", "DomContent",
+                                ["collection.toColorizedDOMNode(" + xmlLiteral + ", " + (transformColor ? colorInfo.valueLiteral : "null") + ")"]);
+                        }
                     }
 
                     contribution.addBehavior(contribution.targetElementName + textElementName, "RichTextContent",
@@ -1247,7 +1333,6 @@
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":baseTextShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
 
-                    this.def.collection.contributeContentDomNode(this, "bg", contribution);
                     this.def.collection.contributeContentDomNode(this, "text", contribution, "text", {empty: true, noStyle: true});
 
                     return contribution;
@@ -1281,7 +1366,7 @@
             <g id="text" />
         </p:Content>
     </Shape>
-    <Shape id="bitmap" displayName="Bitmap" inherits="baseShape" icon="" p:skipBoundBehavior="true">
+    <Shape id="bitmap" displayName="Bitmap Image" inherits="baseShape" icon="" p:skipBoundBehavior="true">
         <Properties>
             <PropertyGroup name="Bound">
                 <Property name="imageBoundConversion" type="PlainText" displayName="Image Bound Conversion"></Property>
@@ -1446,7 +1531,190 @@
             <foreignObject x="0" y="0" width="100" height="100" id="imageFO"></foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="vector" displayName="Vector" inherits="basePathRelatedShape" icon="" p:skipBoundBehavior="true">
+    <Shape id="vectorImage" displayName="Vector Image" inherits="baseShape" icon="" p:skipBoundBehavior="true">
+        <Properties>
+            <PropertyGroup name="Bound">
+                <Property name="box" type="Dimension">50,50</Property>
+                <Property name="imageBoundConversion" type="PlainText" displayName="Image Bound Conversion"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Color">
+                <Property name="fillColor" type="Color" displayName="Icon Color" p:disabled="$fillColorMode.value == 'asis'"><E>$$defaultTextColor</E></Property>
+                <Property name="fillColorMode" type="Enum" displayName="Icon Color Mode" p:enumValues="['fixed|Fixed', 'asis|As-is', 'primary|Use Primary Fill Color', 'secondary|Use Secondary Fill Color', '#textColor|Use Primary Text Color', '#strokeColor|Use Primary Stroke Color', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="fillColorExpression" type="PlainText" displayName="Icon Color Expression" p:disabled="$fillColorMode.value != 'expression'"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Vector Image">
+                <Property name="imageData" type="ImageData">16,16,collection://vector/image-x-generic-symbolic.svg</Property>
+                <Property name="imageDataMode" displayName="Image Data Mode" type="Enum" p:enumValues="['fixed|Fixed', 'editable|Editable']">editable</Property>
+                <Property name="imageDataResourceNames" type="PlainText" displayName="Resource set names" p:disabled="$imageDataMode.value != 'editable'"></Property>
+                <Property name="imageDataName" type="PlainText" displayName="Data Display Name"></Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="bg">
+                <Bound>Bound.fromBox($box)</Bound>
+            </For>
+            <For ref="container">
+                <Scale>
+                    <Arg>$box.w / ($imageData.w || 1)</Arg>
+                    <Arg>$box.h / ($imageData.h || 1)</Arg>
+                </Scale>
+            </For>
+            <For ref="image">
+                <DomContent>collection.toColorizedDOMNode($imageData.getDataAsXML(), $fillColorMode.value == "asis" ? null : $fillColor)</DomContent>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="useClipboardImage" displayName="Use Clipboard Image">
+                <Impl>
+                    <![CDATA[
+                    this.def.collection.copyClipboardSVGImage(this, "imageData", null, "dontParsePathData");
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="selectImageFile" displayName="Select Image from File...">
+                <Impl>
+                    <![CDATA[
+                        var thiz = this;
+                        ImageData.prompt(function(data) {
+                            if (!data) return;
+                            thiz.setProperty("imageData", data);
+                        }, ["svg"]);
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="browseImageFile" displayName="Select Image from Collection Resources...">
+                <Impl>
+                    <![CDATA[
+                        var thiz = this;
+
+                        var options = {
+                            type: CollectionResourceBrowserDialog.TYPE_SVG,
+                            returnType: CollectionResourceBrowserDialog.RETURN_IMAGEDATA
+                        };
+
+                        CollectionResourceBrowserDialog.open(this.def.collection, options, function(data) {
+                            if (!data) return;
+                            thiz.setProperty("imageData", data);
+                        });
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="toOriginalSize" displayName="To Original Size">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        this.setProperty("box", new Dimension(data.w, data.h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="fixRatioW" displayName="Correct Ratio by Width">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        var box = this.getProperty("box");
+                        var h = Math.round(box.w * data.h / data.w);
+                        this.setProperty("box", new Dimension(box.w, h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="fixRatioH" displayName="Correct Ratio by Height">
+                <Impl>
+                    <![CDATA[
+                        var data = this.getProperty("imageData");
+                        var box = this.getProperty("box");
+                        var w = Math.round(box.h * data.w / data.h);
+                        this.setProperty("box", new Dimension(w, box.h));
+                    ]]>
+                </Impl>
+            </Action>
+            <Action id="buildShapeContribution">
+                <Impl><![CDATA[
+                    var pageMargin = StencilCollectionBuilder.INSTANCE.getPageMargin();
+
+                    var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":baseShape").actionMap["buildShapeContribution"];
+                    contribution = parentAction.implFunction.call(this);
+
+                    var colorInfo = this.def.collection.generateContribution.call(this, null, contribution, "fillColor", "Icon Color", Color);
+
+                    var imageDataMode = this.getProperty("imageDataMode").value;
+                    var imageDataLiteral = null;
+                    var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName);
+                    var imageDataName = this.getProperty("imageDataName").value || contribution.targetElementName;
+
+                    var prop = {
+                        name: contribution.targetElementName + "ImageData",
+                        displayName: "Image Data (" + imageDataName + ")",
+                        type: ImageData,
+                        value: importedImageData.toString(),
+                        meta: {}
+                    };
+
+                    if (imageDataMode == "fixed") {
+                        prop.meta.disabled = "true";
+                    } else {
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Browse",
+                            displayName: "Select Resource Images for " + imageDataName + "...",
+                            impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
+                                + ", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
+                        });
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Remove",
+                            displayName: "Remove " + imageDataName,
+                            impl: "this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", new ImageData(0,0,\"data:\"));"
+                        });
+
+                    }
+
+                    contribution.properties.push(prop);
+
+                    imageDataLiteral = "$" + prop.name;
+
+                    var boxExpressionLiteral = null;
+                    var boundLiteral = contribution._boundExpressionLiteral;
+                    if (!boundLiteral) {
+                        var svg = Dom.findUpward(this.svg, function (node) {
+                                return node.localName == "svg" && node.namespaceURI == PencilNamespaces.svg;
+                            });
+
+                        var ctm = this.svg.getTransformToElement(svg);
+                        var geo = this.getGeometry();
+                        boundLiteral = "new Bound(" + ([ctm.e - pageMargin, ctm.f - pageMargin, geo.dim.w, geo.dim.h].join(",")) + ")";
+                    }
+
+                    contribution.contentFragment.appendChild(Dom.newDOMElement({
+                        _name: "g",
+                        _uri: PencilNamespaces.svg,
+                        id: contribution.targetElementName,
+                        _children: [
+                            {
+                                _name: "g",
+                                _uri: PencilNamespaces.svg,
+                                id: contribution.targetElementName + "Image",
+                                x: 0,
+                                y: 0
+                            }
+                        ]
+                    }));
+
+                    contribution.addBehavior(contribution.targetElementName, "Transform",
+                        ["var bound = (" + boundLiteral + ");\n\nvar imageData = (" + imageDataLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (imageData.w || 1), bound.h / (imageData.h || 1))];"]);
+
+                    var xmlLiteral = `(${imageDataLiteral}).getDataAsXML()`;
+                    var asis = this.getProperty("fillColorMode").value == "asis";
+                    contribution.addBehavior(contribution.targetElementName + "Image", "DomContent",
+                        ["collection.toColorizedDOMNode(" + xmlLiteral + ", " + (asis ? "null" : colorInfo.valueLiteral) + ")"]);
+
+                    return contribution;
+                ]]></Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <rect fill="rgba(255, 255, 255, 0)" stroke="none" id="bg" />
+            <g id="container"><g id="image" /></g>
+        </p:Content>
+    </Shape>
+    <Shape id="vector" displayName="Vector Path" inherits="basePathRelatedShape" icon="" p:skipBoundBehavior="true">
         <Properties>
             <PropertyGroup name="Vector Image">
                 <Property name="svgPathData" displayName="SVG Path 1" type="ImageData" p:disabled="true">155,110,json:[{"commands":[{"command":"M","points":[{"x":0,"y":69}]},{"command":"C","points":[{"x":0,"y":69,"fixed":true},{"x":90.00000064,"y":-40,"fixed":true},{"x":143,"y":16},{"x":195.99999,"y":71.999998,"fixed":true},{"x":34.999994,"y":29.999997999999998,"fixed":true},{"x":95,"y":63},{"x":155.000005,"y":96.000001,"fixed":true},{"x":131.000005,"y":108.99998500000001,"fixed":true},{"x":131,"y":109}]}],"style":"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"}]</Property>
