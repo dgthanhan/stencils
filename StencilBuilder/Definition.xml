@@ -643,6 +643,12 @@
             <PropertyGroup name="Meta">
                 <Property name="elementName" type="PlainText" displayName="Element Name" p:renew="true"><E>collection.generateElementName(F._target)</E></Property>
             </PropertyGroup>
+            <PropertyGroup name="Clipping" order="9999">
+                <Property name="useAsClipPath" type="Enum" displayName="Use Shape as Clip Path" p:enumValues="['false|No', 'true|Yes']">false</Property>
+                <Property name="clipPathName" type="PlainText" displayName="Clip Path Name" p:disabled="$useAsClipPath.value != 'true'"></Property>
+                <Property name="clippedMode" type="Enum" displayName="Clipped by" p:disabled="$useAsClipPath.value == 'true'" p:enumValues="['none|Nothing', 'default|Default Shape\'s Clip Path', 'specific|Specific Clip Path:']">none</Property>
+                <Property name="clippedByClipPathName" type="PlainText" displayName="Specific Clip Path Name" p:disabled="$useAsClipPath.value == 'true' || $clippedMode.value != 'specific'"></Property>
+            </PropertyGroup>
         </Properties>
         <Actions>
             <Action id="buildShapeContribution">
@@ -655,6 +661,17 @@
                         });
 
                     var targetElementName = this.getProperty("elementName");
+                    var defaultClipPathName = "sbDefaultClipPath";
+
+                    var useAsClipPath = this.getProperty("useAsClipPath").value == "true";
+                    var clipPathName = this.getProperty("clipPathName").value;
+
+                    var clippedMode = this.getProperty("clippedMode").value;
+                    var clippedByClipPathName = this.getProperty("clippedByClipPathName").value;
+                    var clippedByName = null;
+                    if (clippedMode == 'default') clippedByName = defaultClipPathName;
+                    if (clippedMode == 'specific') clippedByName = clippedByClipPathName || defaultClipPathName;
+
                     var contribution = {
                         properties: [],
                         behaviorMap: {},
@@ -662,6 +679,8 @@
                         snaps: [],
                         contentFragment: document.createDocumentFragment(),
                         targetElementName: targetElementName,
+                        clipPathName: useAsClipPath ? (clipPathName || defaultClipPathName) : null,
+                        clippedByName: clippedByName,
                         _contributedDomNode: {},
                         addBehavior: function (ref, behaviorName, args) {
                             var set = this.behaviorMap[ref];
@@ -950,6 +969,22 @@
                 <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
                 <Property name="radiusMode" type="Enum" displayName="Radius Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Handle', 'secondary|Use Secondary Handle', 'expression|Use Advanced Expression']">fixed</Property>
                 <Property name="radiusExpression" displayName="Radius Expression" type="PlainText" p:disabled="$radiusMode.value != 'expression'"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Rounded Corners">
+                <Property name="withTopLeftCorner" displayName="Top Left Corner" type="Bool">true</Property>
+                <Property name="withTopLeftCornerMode" displayName="Top Left Corner Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withTopLeftCornerExpression" displayName="Top Left Corner Expression" type="PlainText" p:disabled="$withTopLeftCornerMode.value != 'expression'"></Property>
+                <Property name="withTopRightCorner" displayName="Top Right Corner" type="Bool">true</Property>
+                <Property name="withTopRightCornerMode" displayName="Top Right Corner Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withTopRightCornerExpression" displayName="Top Right Corner Expression" type="PlainText" p:disabled="$withTopRightCornerMode.value != 'expression'"></Property>
+                <Property name="withBottomRightCorner" displayName="Bottom Right Corner" type="Bool">true</Property>
+                <Property name="withBottomRightCornerMode" displayName="Bottom Right Corner Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withBottomRightCornerExpression" displayName="Bottom Right Corner Expression" type="PlainText" p:disabled="$withBottomRightCornerMode.value != 'expression'"></Property>
+                <Property name="withBottomLeftCorner" displayName="Bottom Left Corner" type="Bool">true</Property>
+                <Property name="withBottomLeftCornerMode" displayName="Bottom Left Corner Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
+                <Property name="withBottomLeftCornerExpression" displayName="Bottom Left Corner Expression" type="PlainText" p:disabled="$withBottomLeftCornerMode.value != 'expression'"></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Borders">
                 <Property name="withTop" displayName="Border Top" type="Bool">true</Property>
                 <Property name="withTopMode" displayName="Top Border Mode" type="Enum" p:enumValues="['fixed|Fixed', 'expression|Use Advanced Expression']">fixed</Property>
                 <Property name="withTopExpression" displayName="Top Border Expression" type="PlainText" p:disabled="$withTopMode.value != 'expression'"></Property>
@@ -1027,12 +1062,20 @@
                         if (mode == "fixed") return "" + this.getProperty("with" + name).value;
                         return this.getProperty("with" + name + "Expression").value;
                     }.bind(this);
+                    var corner = function (name) {
+                        var mode = this.getProperty("with" + name + "CornerMode");
+                        if (mode == "fixed") return "" + this.getProperty("with" + name + "Corner").value;
+                        return this.getProperty("with" + name + "CornerExpression").value;
+                    }.bind(this);
 
                     contribution.addBehavior(elementName, "D",
                         ["(function () { var b = " + boundLiteral + ";\n"
                             + "var s = " + strokeLiteral + ";\n"
                             + "var r = " + radiusInfo.realValueLiteral + ";\n"
-                            + "return collection.generateAdvancedRectPathData(b, s, r.x, " + border("Top") + ", " + border("Right") + ", " + border("Bottom") + ", " + border("Left") + "); }())"]);
+                            + "return collection.generateAdvancedRectPathData(b, s, r.x, "
+                                        + border("Top") + ", " + border("Right") + ", " + border("Bottom") + ", " + border("Left") + ", "
+                                        + corner("TopLeft") + ", " + corner("TopRight") + ", " + corner("BottomRight") + ", " + corner("BottomLeft")
+                                        + "); }())"]);
 
                     contribution.addBehavior(elementName, "Transform",
                         ["(function () { var s = " + strokeLiteral + ";\n"
@@ -1071,11 +1114,14 @@
             </PropertyGroup>
             <PropertyGroup name="Icon">
                 <Property name="supportIcon" displayName="Support Icon" type="Bool" p:disabled="true">false</Property>
+                <Property name="iconName" type="PlainText" displayName="Name" p:disabled="!$supportIcon.value">Text Icon</Property>
                 <Property name="iconSide" displayName="Icon Alignment" type="Enum" p:enumValues="['leading|Leading', 'trailing|Trailing', 'customizable|Customizable']" p:disabled="!$supportIcon.value">leading</Property>
                 <Property name="iconType" displayName="Icon Type" type="Enum" p:enumValues="['bitmap|Bitmap', 'svg|SVG']" p:disabled="!$supportIcon.value">bitmap</Property>
                 <Property name="iconGap" displayName="Icon Gap Factor" type="PlainText" p:disabled="!$supportIcon.value">1</Property>
+                <Property name="iconSizeFactor" displayName="Icon Size Factor" type="PlainText" p:disabled="!$supportIcon.value">1.2</Property>
                 <Property name="iconImageDataResourceNames" type="PlainText" displayName="Icon Resource Set Names" p:disabled="!$supportIcon.value"></Property>
-                <Property name="iconColor" displayName="Icon Color" type="Enum" p:enumValues="['asis|As-is', 'text|Same as text']" p:disabled="!$supportIcon.value || $iconType.value != 'svg'">bitmap</Property>
+                <Property name="iconColor" displayName="Icon Color Mode" type="Enum" p:enumValues="['asis|As-is', 'fixed|Fixed', 'text|Same as text', 'own|Use Separate Color']" p:disabled="!$supportIcon.value || $iconType.value != 'svg'">bitmap</Property>
+                <Property name="currentIconColor" displayName="Icon Color" type="Color" p:disabled="!$supportIcon.value || $iconType.value != 'svg' || ($iconColor.value != 'own' &amp;&amp; $iconColor.value != 'fixed')">#000000</Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -1147,6 +1193,7 @@
                     var supportIcon = this.getProperty("supportIcon").value;
                     if (supportIcon) {
                         var iconType = this.getProperty("iconType").value;
+                        var iconName = this.getProperty("iconName").value;
                         var bitmap = iconType == CollectionResourceBrowserDialog.TYPE_BITMAP;
 
                         var prop = {
@@ -1160,20 +1207,20 @@
                         if (bitmap) {
                             contribution.actions.push({
                                 id: contribution.targetElementName + "CopyClipboard",
-                                displayName: "Use Clipboard Data as Text Icon",
+                                displayName: "Use Clipboard Data as " + iconName,
                                 impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
                             });
                         }
 
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
-                            displayName: "Select Resource Images for Text Icon...",
+                            displayName: "Select Resource Images for " + iconName + "...",
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("iconImageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog."  + (bitmap ? "TYPE_BITMAP" : "TYPE_SVG") + ", CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });
                         contribution.actions.push({
                             id: contribution.targetElementName + "Remove",
-                            displayName: "Remove Text Icon...",
+                            displayName: "Remove " + iconName + "...",
                             impl: "this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", new ImageData(0,0,\"data:\"));"
                         });
 
@@ -1198,14 +1245,13 @@
                         }
 
                         var originalTextBoundLiteral = textBoundLiteral;
+                        var iconSizeFactor = this.getProperty("iconSizeFactor").value;
 
                         textBoundLiteral = `(function (bound) {
                             if ((${imageDataLiteral}).w > 0) {
                                 //depends ${textLiteral}, ${fontInfo.valueLiteral}
                                 var iconGap = Math.round(${iconGap} * (${fontInfo.valueLiteral}).getPixelHeight());
-                                console.log("iconGap", iconGap);
-                                var iconHeight = Math.round(1.2 * (${fontInfo.valueLiteral}).getPixelHeight());
-                                console.log("iconHeight", iconHeight);
+                                var iconHeight = Math.round(${iconSizeFactor} * (${fontInfo.valueLiteral}).getPixelHeight());
                                 var side = ${iconSideLiteral};
                                 var align = ${alignment};
                                 if (side == "leading") {
@@ -1249,8 +1295,7 @@
                             if ((${imageDataLiteral}).w > 0) {
                                 //depends ${textLiteral}, ${fontInfo.valueLiteral}
                                 var iconGap = Math.round(${iconGap} * (${fontInfo.valueLiteral}).getPixelHeight());
-                                console.log("iconGap", iconGap);
-                                var iconHeight = Math.round(1.2 * (${fontInfo.valueLiteral}).getPixelHeight());
+                                var iconHeight = Math.round(${iconSizeFactor} * (${fontInfo.valueLiteral}).getPixelHeight());
                                 var y = bound.y + Math.round(bound.h - iconHeight) / 2;
                                 var side = ${iconSideLiteral};
                                 var align = ${alignment};
@@ -1309,10 +1354,28 @@
                             contribution.addBehavior(contribution.targetElementName + "IconImage", "Image",
                                 [imageDataLiteral]);
                         } else {
-                            var transformColor = this.getProperty("iconColor").value == "text";
+                            var colorMode = this.getProperty("iconColor").value;
+                            var currentIconColor = this.getProperty("currentIconColor");
+
+                            var colorLiteral = "null";
+                            if (colorMode == "own") {
+                                var iconColorProp = {
+                                    name: contribution.targetElementName + "IconColor",
+                                    displayName: iconName + " Color",
+                                    type: Color,
+                                    value: currentIconColor.toString()
+                                };
+                                contribution.properties.push(iconColorProp);
+                                colorLiteral = "$" + iconColorProp.name;
+                            } else if (colorMode == "fixed") {
+                                colorLiteral = "Color.fromString(" + JSON.stringify(currentIconColor.toString()) + ")";
+                            } else if (colorMode == "text") {
+                                colorLiteral = colorInfo.valueLiteral;
+                            }
+
                             var xmlLiteral = `(${imageDataLiteral}).getDataAsXML()`;
                             contribution.addBehavior(contribution.targetElementName + "IconImage", "DomContent",
-                                ["collection.toColorizedDOMNode(" + xmlLiteral + ", " + (transformColor ? colorInfo.valueLiteral : "null") + ")"]);
+                                ["collection.toColorizedDOMNode(" + xmlLiteral + ", " + colorLiteral + ")"]);
                         }
                     }
 
@@ -1634,12 +1697,13 @@
                     var parentAction = this.def.collection.getShapeDefById(this.def.collection.id + ":baseShape").actionMap["buildShapeContribution"];
                     contribution = parentAction.implFunction.call(this);
 
-                    var colorInfo = this.def.collection.generateContribution.call(this, null, contribution, "fillColor", "Icon Color", Color);
+                    var imageDataName = this.getProperty("imageDataName").value || contribution.targetElementName;
+
+                    var colorInfo = this.def.collection.generateContribution.call(this, null, contribution, "fillColor", imageDataName + " Color", Color);
 
                     var imageDataMode = this.getProperty("imageDataMode").value;
                     var imageDataLiteral = null;
                     var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName);
-                    var imageDataName = this.getProperty("imageDataName").value || contribution.targetElementName;
 
                     var prop = {
                         name: contribution.targetElementName + "ImageData",
@@ -1943,8 +2007,7 @@
                 <Property name="alignmentValue" type="Alignment" displayName="Initial Value" p:disabled="$type.value != 'Alignment'">0,0</Property>
                 <Property name="boolValue" type="Enum" displayName="Initial Value" p:disabled="$type.value != 'Bool'" p:enumValues="['true|True', 'false|False']">false</Property>
                 <Property name="colorValue" type="Color" displayName="Initial Value" p:disabled="$type.value != 'Color'"><E>$$defaultFillColor</E></Property>
-                <Property name="enumValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'Enum'">value1|Value One
-value2|Value Two</Property>
+                <Property name="enumValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'Enum'">value1|Value One&#10;value2|Value Two</Property>
                 <Property name="fontValue" type="Font" displayName="Initial Value" p:disabled="$type.value != 'Font'"><E>$$defaultTextFont</E></Property>
                 <Property name="handleValue" type="PlainText" displayName="Initial Value" p:disabled="$type.value != 'Handle'">0,0</Property>
                 <Property name="imageValueWidth" type="PlainText" displayName="Initial Width" p:disabled="$type.value != 'ImageData'">100</Property>
