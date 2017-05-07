@@ -859,12 +859,12 @@
             <PropertyGroup name="Fill">
                 <Property name="fillColor" type="Color" displayName="Fill Color"><E>$$defaultFillColor</E></Property>
 
-                <Property name="fillColorMode" type="Enum" displayName="Fill Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Fill Color', 'secondary|Use Secondary Fill Color', 'expression|Use Advanced Expression']">primary</Property>
+                <Property name="fillColorMode" type="Enum" displayName="Fill Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Fill Color', 'secondary|Use Secondary Fill Color', '#textColor|Use Primary Text Color', '#strokeColor|Use Primary Stroke Color', 'expression|Use Advanced Expression']">primary</Property>
                 <Property name="fillColorExpression" type="PlainText" displayName="Fill Expression" p:disabled="$fillColorMode.value != 'expression'"></Property>
             </PropertyGroup>
             <PropertyGroup name="Stroke">
                 <Property name="strokeColor" type="Color" displayName="Stroke Color"><E>$$defaultStrokeColor</E></Property>
-                <Property name="strokeColorMode" type="Enum" displayName="Stroke Color Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Stroke Color', 'secondary|Use Secondary Stroke Color', 'expression|Use Advanced Expression']">primary</Property>
+                <Property name="strokeColorMode" type="Enum" displayName="Stroke Color Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Stroke Color', 'secondary|Use Secondary Stroke Color', '#textColor|Use Primary Text Color', '#fillColor|Use Primary Fill Color', 'expression|Use Advanced Expression']">primary</Property>
                 <Property name="strokeColorExpression" type="PlainText" displayName="Stroke Color Expression" p:disabled="$strokeColorMode.value != 'expression'"></Property>
 
                 <Property name="strokeStyle" type="StrokeStyle" displayName="Stroke Style"><E>$$defaultStrokeStyle</E></Property>
@@ -1103,7 +1103,7 @@
                 <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,1</Property>
                 <Property name="withTextShadow" displayName="With Text Shadow" type="Bool" p:disabled="true">false</Property>
 
-                <Property name="textColorMode" type="Enum" displayName="Text Color Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Text Color', 'secondary|Use Secondary Text Color', 'expression|Use Advanced Expression']">primary</Property>
+                <Property name="textColorMode" type="Enum" displayName="Text Color Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Text Color', 'secondary|Use Secondary Text Color', '#fillColor|Use Primary Fill Color', '#strokeColor|Use Primary Stroke Color', 'expression|Use Advanced Expression']">primary</Property>
                 <Property name="textColorExpression" type="PlainText" displayName="Text Color Expression" p:disabled="$textColorMode.value != 'expression'"></Property>
                 <Property name="textFontMode" type="Enum" displayName="Text Font Mode" p:enumValues="['fixed|Fixed', 'primary|Use Primary Text Font', 'secondary|Use Secondary Text Font', 'expression|Use Advanced Expression']">primary</Property>
                 <Property name="textFontExpression" type="PlainText" displayName="Text Font Expression" p:disabled="$textFontMode.value != 'expression'"></Property>
