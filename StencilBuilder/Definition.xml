@@ -709,6 +709,7 @@
                          }
                     };
 
+
                     //BOUND
                     var boundMode = this.getProperty("boundMode").value;
                     var boundExpression = this.getProperty("boundExpression").value;
@@ -782,10 +783,7 @@
                                 var a = Svg.getAngle(currentGeo.ctm.a, currentGeo.ctm.b);
 
                                 if (a != 0) {
-                                    console.log("currentGeo.ctm", currentGeo.ctm);
-                                    console.log("Svg.pointInCTM", Svg.pointInCTM(0, 0, currentGeo.ctm));
                                     var ctm2 = currentGeo.ctm.rotate(0 - a);
-                                    console.log("Svg.pointInCTM2", Svg.pointInCTM(0, 0, ctm2));
                                     contribution._transformBehavior = contribution.addBehavior(targetElementName + boundElementName, "Transform", [`
                                         (function () {
                                             var b = ${boundExpressionLiteral};
