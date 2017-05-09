@@ -1,0 +1,7 @@
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" id="icons.CommunityMaterialIcons" displayName="Community Material Icons" author="Contributors" description="Material icon resource bundle" url="https://materialdesignicons.com/">
+  <Script comments="Resource script"><![CDATA[
+collection.RESOURCE_LIST = [
+        {name: "<All>", prefix: "icons", type: "svg"}
+    ];
+]]></Script>
+</Shapes>

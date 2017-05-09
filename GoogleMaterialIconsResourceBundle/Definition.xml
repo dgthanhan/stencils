@@ -1,0 +1,23 @@
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" id="icons.GoogleMaterialIcons" displayName="Google Material Icons" author="Google" description="Material icon resource bundle" url="">
+  <Script comments="Resource script"><![CDATA[
+collection.RESOURCE_LIST = [
+        {name: "<All>", prefix: "icons", type: "svg"},
+        {name: "action", prefix: "icons/action/svg/production", type: "svg"},
+        {name: "alert", prefix: "icons/alert/svg/production", type: "svg"},
+        {name: "av", prefix: "icons/av/svg/production", type: "svg"},
+        {name: "communication", prefix: "icons/communication/svg/production", type: "svg"},
+        {name: "content", prefix: "icons/content/svg/production", type: "svg"},
+        {name: "device", prefix: "icons/device/svg/production", type: "svg"},
+        {name: "editor", prefix: "icons/editor/svg/production", type: "svg"},
+        {name: "file", prefix: "icons/file/svg/production", type: "svg"},
+        {name: "hardware", prefix: "icons/hardware/svg/production", type: "svg"},
+        {name: "image", prefix: "icons/image/svg/production", type: "svg"},
+        {name: "maps", prefix: "icons/maps/svg/production", type: "svg"},
+        {name: "navigation", prefix: "icons/navigation/svg/production", type: "svg"},
+        {name: "notification", prefix: "icons/notification/svg/production", type: "svg"},
+        {name: "places", prefix: "icons/places/svg/production", type: "svg"},
+        {name: "social", prefix: "icons/social/svg/production", type: "svg"},
+        {name: "toggle", prefix: "icons/toggle/svg/production", type: "svg"},
+    ];
+]]></Script>
+</Shapes>
