@@ -1213,6 +1213,9 @@
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
                             displayName: "Select Resource Images for " + iconName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("iconImageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog."  + (bitmap ? "TYPE_BITMAP" : "TYPE_SVG") + ", CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });
@@ -1527,6 +1530,9 @@
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
                             displayName: "Select Resource Images for " + imageDataName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         })
@@ -1717,6 +1723,9 @@
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
                             displayName: "Select Resource Images for " + imageDataName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });

@@ -447,7 +447,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
 };
 ]]></Script>
   <Script comments="Resource script"><![CDATA[
-collection.RESOURCE_LIST = [{"name":"96x96","prefix":"resources/96x96"},{"name":"scalable","prefix":"resources/scalable"}];
+collection.RESOURCE_LIST = [{"name":"scalable","prefix":"resources/scalable"}];
 
 collection.browseResource = function (setNames, type, returnType, callback) {
     var options = {
@@ -477,7 +477,7 @@ collection.browseResource = function (setNames, type, returnType, callback) {
       <Property name="lineStyle" displayName="Default Line Style" type="StrokeStyle">2|</Property>
     </PropertyGroup>
   </Properties>
-  <Shape id="label" displayName="Label" icon="icons/label.png?token=1494305683890">
+  <Shape id="label" displayName="Label" icon="icons/label.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,20</Property>
@@ -618,7 +618,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Icon...">
@@ -646,7 +646,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="textinput" displayName="Text Input" icon="icons/textinput.png?token=1494305683890">
+  <Shape id="textinput" displayName="Text Input" icon="icons/textinput.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">280,36</Property>
@@ -782,7 +782,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -810,7 +810,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="button" displayName="Button" icon="icons/button.png?token=1494305683890">
+  <Shape id="button" displayName="Button" icon="icons/button.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">100,36</Property>
@@ -952,7 +952,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -980,7 +980,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="checkbox" displayName="Checkbox" icon="icons/checkbox.png?token=1494305683890">
+  <Shape id="checkbox" displayName="Checkbox" icon="icons/checkbox.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,20</Property>
@@ -1099,7 +1099,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector0" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 3.782; fill: rgb(237, 237, 237); fill-opacity: 0;"/>
     </Content>
   </Shape>
-  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1494305683890">
+  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,20</Property>
@@ -1212,7 +1212,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle1" rx="4.999999999999999" ry="4.999999999999999" style="fill: rgb(61, 128, 204); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0;" width="10" height="10"/>
     </Content>
   </Shape>
-  <Shape id="comboentry" displayName="Combo Entry" icon="icons/comboentry.png?token=1494305683890">
+  <Shape id="comboentry" displayName="Combo Entry" icon="icons/comboentry.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">280,36</Property>
@@ -1356,7 +1356,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector0" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0; fill: rgb(51, 102, 255); fill-opacity: 1;"/>
     </Content>
   </Shape>
-  <Shape id="spinner" displayName="Spinner" icon="icons/spinner.png?token=1494305683890">
+  <Shape id="spinner" displayName="Spinner" icon="icons/spinner.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">71,36</Property>
@@ -1571,7 +1571,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector3" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0; fill: rgb(51, 102, 255); fill-opacity: 1;"/>
     </Content>
   </Shape>
-  <Shape id="toggleoff" displayName="Toggle Off" icon="icons/toggleoff.png?token=1494305683890">
+  <Shape id="toggleoff" displayName="Toggle Off" icon="icons/toggleoff.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">55,24</Property>
@@ -1680,7 +1680,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle1" rx="8" ry="8" style="fill: rgb(61, 128, 204); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0;" width="16" height="16"/>
     </Content>
   </Shape>
-  <Shape id="toggleon" displayName="Toggle On" icon="icons/toggleon.png?token=1494305683890">
+  <Shape id="toggleon" displayName="Toggle On" icon="icons/toggleon.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">55,24</Property>
@@ -1789,7 +1789,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle1" rx="8" ry="8" style="fill: rgb(61, 128, 204); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0;" width="16" height="16"/>
     </Content>
   </Shape>
-  <Shape id="commandinput" displayName="Command Input" icon="icons/commandinput.png?token=1494305683890">
+  <Shape id="commandinput" displayName="Command Input" icon="icons/commandinput.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,36</Property>
@@ -1999,7 +1999,7 @@ var imageData = ($text1ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text1Browse" displayName="Select Resource Images for Command Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text1Browse" displayName="Select Resource Images for Command Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text1ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text1Remove" displayName="Remove Command Icon...">
@@ -2029,7 +2029,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text1text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="panel" displayName="Panel" icon="icons/panel.png?token=1494305683890">
+  <Shape id="panel" displayName="Panel" icon="icons/panel.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">400,250</Property>
@@ -2089,7 +2089,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle0" rx="0" ry="0" style="fill: rgb(237, 237, 237); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;" width="398" height="248"/>
     </Content>
   </Shape>
-  <Shape id="windowframe" displayName="Window Frame" icon="icons/windowframe.png?token=1494305683890">
+  <Shape id="windowframe" displayName="Window Frame" icon="icons/windowframe.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">594,494</Property>
@@ -2301,7 +2301,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle2" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;" width="12" height="12"/>
     </Content>
   </Shape>
-  <Shape id="progressoutside" displayName="Progress (outside)" icon="icons/progressoutside.png?token=1494305683890">
+  <Shape id="progressoutside" displayName="Progress (outside)" icon="icons/progressoutside.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,8</Property>
@@ -2447,7 +2447,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="progressinside" displayName="Progress (inside)" icon="icons/progressinside.png?token=1494305683890">
+  <Shape id="progressinside" displayName="Progress (inside)" icon="icons/progressinside.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,14</Property>
@@ -2594,7 +2594,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="progressundetermined" displayName="Progress (undetermined)" icon="icons/progressundetermined.png?token=1494305683890">
+  <Shape id="progressundetermined" displayName="Progress (undetermined)" icon="icons/progressundetermined.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,8</Property>
@@ -2683,7 +2683,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect1" d="M 3.44 0 L 82.56 0 c 1.8998595394179298 0 3.44 1.54014046058207 3.44 3.44 L 86 4.5600000000000005 c 0 1.8998595394179298 -1.54014046058207 3.44 -3.44 3.44 L 3.44 8 c -1.54014046058207 0 -3.44 -1.54014046058207 -3.44 -3.44 L 0 3.44 c 0 -1.8998595394179298 1.54014046058207 -3.44 3.44 -3.44 z" style="fill: rgb(61, 128, 204); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 0;"/>
     </Content>
   </Shape>
-  <Shape id="toolbarbutton" displayName="Toolbar Button" icon="icons/toolbarbutton.png?token=1494305683890">
+  <Shape id="toolbarbutton" displayName="Toolbar Button" icon="icons/toolbarbutton.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">36,36</Property>
@@ -2834,7 +2834,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -2864,7 +2864,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="scaleround" displayName="Scale (round)" icon="icons/scaleround.png?token=1494305683890">
+  <Shape id="scaleround" displayName="Scale (round)" icon="icons/scaleround.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,8</Property>
@@ -2956,7 +2956,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" id="rectangle0" rx="8" ry="8" style="fill: rgb(77, 160, 255); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;" width="14" height="14"/>
     </Content>
   </Shape>
-  <Shape id="scalediamond" displayName="Scale (diamond)" icon="icons/scalediamond.png?token=1494305683890">
+  <Shape id="scalediamond" displayName="Scale (diamond)" icon="icons/scalediamond.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,8</Property>
@@ -3053,7 +3053,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector0" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2.34146; fill: rgb(77, 160, 255); fill-opacity: 1;"/>
     </Content>
   </Shape>
-  <Shape id="avatarsquare" displayName="Avatar (Square)" icon="icons/avatarsquare.png?token=1494305683890">
+  <Shape id="avatarsquare" displayName="Avatar (Square)" icon="icons/avatarsquare.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">100,100</Property>
@@ -3137,7 +3137,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector0" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 8.13679; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
     </Content>
   </Shape>
-  <Shape id="avatarrounded" displayName="Avatar (Rounded)" icon="icons/avatarrounded.png?token=1494305683890">
+  <Shape id="avatarrounded" displayName="Avatar (Rounded)" icon="icons/avatarrounded.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">100,100</Property>
@@ -3221,7 +3221,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="vector0" style="stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 8.13679; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
     </Content>
   </Shape>
-  <Shape id="icon" displayName="Icon" icon="icons/icon.png?token=1494305683890">
+  <Shape id="icon" displayName="Icon" icon="icons/icon.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">48,48</Property>
@@ -3265,7 +3265,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -3292,7 +3292,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="iconrounded" displayName="Icon (Rounded)" icon="icons/iconrounded.png?token=1494305683890">
+  <Shape id="iconrounded" displayName="Icon (Rounded)" icon="icons/iconrounded.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">64,64</Property>
@@ -3342,7 +3342,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -3376,7 +3376,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="filedropzone" displayName="File Drop Zone" icon="icons/filedropzone.png?token=1494305683890">
+  <Shape id="filedropzone" displayName="File Drop Zone" icon="icons/filedropzone.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">240,120</Property>
@@ -3450,7 +3450,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -3485,7 +3485,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="imageuploadzone" displayName="Image Upload Zone" icon="icons/imageuploadzone.png?token=1494305683890">
+  <Shape id="imageuploadzone" displayName="Image Upload Zone" icon="icons/imageuploadzone.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,120</Property>
@@ -3559,7 +3559,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -3594,7 +3594,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="popovertop" displayName="Popover (top)" icon="icons/popovertop.png?token=1494305683890">
+  <Shape id="popovertop" displayName="Popover (top)" icon="icons/popovertop.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">180,90</Property>
@@ -3683,7 +3683,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="popoverbottom" displayName="Popover (bottom)" icon="icons/popoverbottom.png?token=1494305683890">
+  <Shape id="popoverbottom" displayName="Popover (bottom)" icon="icons/popoverbottom.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">180,90</Property>
@@ -3772,7 +3772,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="popoverleft" displayName="Popover (left)" icon="icons/popoverleft.png?token=1494305683890">
+  <Shape id="popoverleft" displayName="Popover (left)" icon="icons/popoverleft.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">180,90</Property>
@@ -3861,7 +3861,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="popoverright" displayName="Popover (right)" icon="icons/popoverright.png?token=1494305683890">
+  <Shape id="popoverright" displayName="Popover (right)" icon="icons/popoverright.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">180,90</Property>
@@ -3950,7 +3950,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumblargefirst" displayName="Breadcrumb (large, first)" icon="icons/breadcrumblargefirst.png?token=1494305683890">
+  <Shape id="breadcrumblargefirst" displayName="Breadcrumb (large, first)" icon="icons/breadcrumblargefirst.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">110,60</Property>
@@ -4082,7 +4082,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -4118,7 +4118,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumblargemiddle" displayName="Breadcrumb (large, middle)" icon="icons/breadcrumblargemiddle.png?token=1494305683890">
+  <Shape id="breadcrumblargemiddle" displayName="Breadcrumb (large, middle)" icon="icons/breadcrumblargemiddle.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">130,60</Property>
@@ -4271,7 +4271,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -4309,7 +4309,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumblargelast" displayName="Breadcrumb (large, last)" icon="icons/breadcrumblargelast.png?token=1494305683890">
+  <Shape id="breadcrumblargelast" displayName="Breadcrumb (large, last)" icon="icons/breadcrumblargelast.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,60</Property>
@@ -4462,7 +4462,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -4500,7 +4500,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumbsmallfirst" displayName="Breadcrumb (small, first)" icon="icons/breadcrumbsmallfirst.png?token=1494305683890">
+  <Shape id="breadcrumbsmallfirst" displayName="Breadcrumb (small, first)" icon="icons/breadcrumbsmallfirst.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">110,40</Property>
@@ -4632,7 +4632,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -4668,7 +4668,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumbsmallmiddle" displayName="Breadcrumb (small, middle)" icon="icons/breadcrumbsmallmiddle.png?token=1494305683890">
+  <Shape id="breadcrumbsmallmiddle" displayName="Breadcrumb (small, middle)" icon="icons/breadcrumbsmallmiddle.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">130,40</Property>
@@ -4821,7 +4821,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -4859,7 +4859,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="breadcrumbsmalllast" displayName="Breadcrumb (small, last)" icon="icons/breadcrumbsmalllast.png?token=1494305683890">
+  <Shape id="breadcrumbsmalllast" displayName="Breadcrumb (small, last)" icon="icons/breadcrumbsmalllast.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,40</Property>
@@ -5012,7 +5012,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -5049,7 +5049,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="toggleoffsquare" displayName="Toggle (off, square)" icon="icons/toggleoffsquare.png?token=1494305683890">
+  <Shape id="toggleoffsquare" displayName="Toggle (off, square)" icon="icons/toggleoffsquare.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">54,24</Property>
@@ -5139,7 +5139,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect1" d="M 0 0 L 26 0 L 26 22 L 0 22" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;"/>
     </Content>
   </Shape>
-  <Shape id="toggleonsquare" displayName="Toggle (on, square)" icon="icons/toggleonsquare.png?token=1494305683890">
+  <Shape id="toggleonsquare" displayName="Toggle (on, square)" icon="icons/toggleonsquare.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">54,24</Property>
@@ -5229,7 +5229,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect1" d="M 0 0 L 25 0 L 25 22 L 0 22 L 0 0 z" style="fill: rgb(61, 128, 204); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;"/>
     </Content>
   </Shape>
-  <Shape id="navigationback" displayName="Navigation (back)" icon="icons/navigationback.png?token=1494305683890">
+  <Shape id="navigationback" displayName="Navigation (back)" icon="icons/navigationback.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">80,36</Property>
@@ -5362,7 +5362,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -5398,7 +5398,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="navigationnext" displayName="Navigation (next)" icon="icons/navigationnext.png?token=1494305683890">
+  <Shape id="navigationnext" displayName="Navigation (next)" icon="icons/navigationnext.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">80,36</Property>
@@ -5531,7 +5531,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -5567,7 +5567,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="videocontrolbarbasic" displayName="Video Control Bar (basic)" icon="icons/videocontrolbarbasic.png?token=1494305683890">
+  <Shape id="videocontrolbarbasic" displayName="Video Control Bar (basic)" icon="icons/videocontrolbarbasic.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">700,50</Property>
@@ -5830,7 +5830,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="videocontrolbarfull" displayName="Video Control Bar (full)" icon="icons/videocontrolbarfull.png?token=1494305683890">
+  <Shape id="videocontrolbarfull" displayName="Video Control Bar (full)" icon="icons/videocontrolbarfull.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">500,40</Property>
@@ -6021,7 +6021,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="videoframe" displayName="Video Frame" icon="icons/videoframe.png?token=1494305683890">
+  <Shape id="videoframe" displayName="Video Frame" icon="icons/videoframe.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">700,400</Property>
@@ -6106,7 +6106,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="ratingstars" displayName="Rating (stars)" icon="icons/ratingstars.png?token=1494305683890">
+  <Shape id="ratingstars" displayName="Rating (stars)" icon="icons/ratingstars.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">196,36</Property>
@@ -6299,7 +6299,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="ratingheart" displayName="Rating (heart)" icon="icons/ratingheart.png?token=1494305683890">
+  <Shape id="ratingheart" displayName="Rating (heart)" icon="icons/ratingheart.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">196,36</Property>
@@ -6492,7 +6492,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="menuitemfirst" displayName="Menu Item (first)" icon="icons/menuitemfirst.png?token=1494305683890">
+  <Shape id="menuitemfirst" displayName="Menu Item (first)" icon="icons/menuitemfirst.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,40</Property>
@@ -6727,7 +6727,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="labelBrowse" displayName="Select Resource Images for Menu Item Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="labelBrowse" displayName="Select Resource Images for Menu Item Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("labelImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="labelRemove" displayName="Remove Menu Item Icon...">
@@ -6763,7 +6763,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="menuitemmiddle" displayName="Menu Item (middle)" icon="icons/menuitemmiddle.png?token=1494305683890">
+  <Shape id="menuitemmiddle" displayName="Menu Item (middle)" icon="icons/menuitemmiddle.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,32</Property>
@@ -6998,7 +6998,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="labelBrowse" displayName="Select Resource Images for Menu Item Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="labelBrowse" displayName="Select Resource Images for Menu Item Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("labelImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="labelRemove" displayName="Remove Menu Item Icon...">
@@ -7034,7 +7034,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="menuitembottom" displayName="Menu Item (bottom)" icon="icons/menuitembottom.png?token=1494305683890">
+  <Shape id="menuitembottom" displayName="Menu Item (bottom)" icon="icons/menuitembottom.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,40</Property>
@@ -7269,7 +7269,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="labelBrowse" displayName="Select Resource Images for Menu Item Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="labelBrowse" displayName="Select Resource Images for Menu Item Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("labelImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="labelRemove" displayName="Remove Menu Item Icon...">
@@ -7305,7 +7305,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="menuitemorphan" displayName="Menu Item (orphan)" icon="icons/menuitemorphan.png?token=1494305683890">
+  <Shape id="menuitemorphan" displayName="Menu Item (orphan)" icon="icons/menuitemorphan.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -7540,7 +7540,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="labelBrowse" displayName="Select Resource Images for Menu Item Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="labelBrowse" displayName="Select Resource Images for Menu Item Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("labelImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="labelRemove" displayName="Remove Menu Item Icon...">
@@ -7576,7 +7576,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="menuseprator" displayName="Menu Seprator" icon="icons/menuseprator.png?token=1494305683890">
+  <Shape id="menuseprator" displayName="Menu Seprator" icon="icons/menuseprator.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,16</Property>
@@ -7692,7 +7692,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect0" d="M 200 7 M 0 7 M 0 0 L 200 0" style="fill: rgb(237, 237, 237); fill-opacity: 0; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;"/>
     </Content>
   </Shape>
-  <Shape id="messagepanel" displayName="Message Panel" icon="icons/messagepanel.png?token=1494305683890">
+  <Shape id="messagepanel" displayName="Message Panel" icon="icons/messagepanel.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">520,70</Property>
@@ -7797,7 +7797,7 @@ return bound.narrowed($textFont.getPixelHeight());
       </For>
     </Behaviors>
     <Actions>
-      <Action id="vectorImage0Browse" displayName="Select Resource Images for Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="vectorImage0Remove" displayName="Remove Icon">
@@ -7826,7 +7826,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="tabheader" displayName="Tab Header" icon="icons/tabheader.png?token=1494305683890">
+  <Shape id="tabheader" displayName="Tab Header" icon="icons/tabheader.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,50</Property>
@@ -7989,7 +7989,7 @@ var imageData = ($text0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Tab Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Tab Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Tab Icon...">
@@ -8023,7 +8023,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="tabbody" displayName="Tab Body" icon="icons/tabbody.png?token=1494305683890">
+  <Shape id="tabbody" displayName="Tab Body" icon="icons/tabbody.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">600,400</Property>
@@ -8091,7 +8091,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect0" d="M 0 0 M 598 0 L 598 399 L 0 399 L 0 0" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;"/>
     </Content>
   </Shape>
-  <Shape id="menubar" displayName="Menu Bar" icon="icons/menubar.png?token=1494305683890">
+  <Shape id="menubar" displayName="Menu Bar" icon="icons/menubar.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">600,50</Property>
@@ -8161,7 +8161,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" id="pathRect0" d="M 0 0 L 598 0 L 598 48 L 0 48 L 0 0 z" style="fill: rgb(237, 237, 237); fill-opacity: 1; stroke: rgb(61, 128, 204); stroke-opacity: 1; stroke-width: 2;"/>
     </Content>
   </Shape>
-  <Shape id="menubaritem" displayName="Menu Bar Item" icon="icons/menubaritem.png?token=1494305683890">
+  <Shape id="menubaritem" displayName="Menu Bar Item" icon="icons/menubaritem.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,50</Property>
@@ -8317,7 +8317,7 @@ var imageData = ($vectorImage0ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Text Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Text Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("scalable", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Text Icon...">
@@ -8351,7 +8351,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="tooltiptop" displayName="Tooltip (top)" icon="icons/tooltiptop.png?token=1494305683890">
+  <Shape id="tooltiptop" displayName="Tooltip (top)" icon="icons/tooltiptop.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,35</Property>
@@ -8433,7 +8433,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="tooltipbottom" displayName="Tooltip (bottom)" icon="icons/tooltipbottom.png?token=1494305683890">
+  <Shape id="tooltipbottom" displayName="Tooltip (bottom)" icon="icons/tooltipbottom.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,35</Property>
@@ -8515,7 +8515,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="tooltipleft" displayName="Tooltip (left)" icon="icons/tooltipleft.png?token=1494305683890">
+  <Shape id="tooltipleft" displayName="Tooltip (left)" icon="icons/tooltipleft.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">115,30</Property>
@@ -8597,7 +8597,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="tooltipright" displayName="Tooltip (right)" icon="icons/tooltipright.png?token=1494305683890">
+  <Shape id="tooltipright" displayName="Tooltip (right)" icon="icons/tooltipright.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">115,30</Property>
@@ -8679,7 +8679,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="browser" displayName="Browser" icon="icons/browser.png?token=1494305683890">
+  <Shape id="browser" displayName="Browser" icon="icons/browser.png?token=1494391412836">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">1366,768</Property>
@@ -8998,7 +8998,7 @@ var imageData = ($vectorImage4ImageData);
       </For>
     </Behaviors>
     <Actions>
-      <Action id="text0Browse" displayName="Select Resource Images for Site Icon...">
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="text0Browse" displayName="Select Resource Images for Site Icon..." p:content-action="true">
         <Impl><![CDATA[this.def.collection.browseResource("", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("text0ImageData", imageData)}.bind(this));]]></Impl>
       </Action>
       <Action id="text0Remove" displayName="Remove Site Icon...">
