@@ -123,6 +123,10 @@
                             if (options.noStyle) node.removeAttribute("style");
                         }
 
+                        if (!options || !options.keepFilter) {
+                            node.removeAttribute("filter");
+                        }
+
                         if (target.getProperty("boundMode") == "fixed") {
                             var svg = Dom.findUpward(target.svg, function (node) {
                                     return node.localName == "svg" && node.namespaceURI == PencilNamespaces.svg;
@@ -146,6 +150,54 @@
                         contribution.contentFragment.appendChild(node);
                     }
                 }
+            };
+            collection.performPostProcessing = function (contribution) {
+                var shadowModeProp = this.getProperty("shadowStyleMode");
+                if (!shadowModeProp) {
+                    return;
+                }
+                var shadowMode = shadowModeProp.value;
+                if (shadowMode == "none") return;
+
+                if (!contribution.contentFragment) return;
+
+                var shadowStyleInfo = this.def.collection.generateContribution.call(this, "", contribution, "shadowStyle", "Shadow Style", ShadowStyle);
+                var globalGroupNode = Dom.newDOMElement({
+                    _name: "g",
+                    _uri: PencilNamespaces.svg,
+                    id: contribution.targetElementName + "_globalGroup",
+                    "p:filter": "url(#" + contribution.targetElementName + "_shadowFilter" + ")"});
+
+                while (contribution.contentFragment.firstChild) {
+                    globalGroupNode.appendChild(contribution.contentFragment.removeChild(contribution.contentFragment.firstChild));
+                }
+
+                contribution.contentFragment.appendChild(Dom.newDOMElement({
+                    _name: "defs", _uri: PencilNamespaces.svg,
+                    _children: [
+                        { _name: "filter", _uri: PencilNamespaces.svg, id: contribution.targetElementName + "_shadowFilter", x: "-50%", width: "200%", y: "-50%", height: "200%" }
+                    ]
+                }));
+                contribution.contentFragment.appendChild(globalGroupNode);
+
+                contribution.addBehavior(contribution.targetElementName + "_shadowFilter", "DomContent",
+                    [`(function () {
+                        var shadowStyle = ${shadowStyleInfo.valueLiteral};
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())`]);
+                contribution.addBehavior(contribution.targetElementName + "_globalGroup", "ApplyFilter",
+                    [`(${shadowStyleInfo.valueLiteral}.opacity) ? true : false`]);
             };
             collection.copyClipboardImage = function (target, imageDataPropName, boxPropName) {
                 try {
@@ -649,7 +701,36 @@
                 <Property name="clippedMode" type="Enum" displayName="Clipped by" p:disabled="$useAsClipPath.value == 'true'" p:enumValues="['none|Nothing', 'default|Default Shape\'s Clip Path', 'specific|Specific Clip Path:']">none</Property>
                 <Property name="clippedByClipPathName" type="PlainText" displayName="Specific Clip Path Name" p:disabled="$useAsClipPath.value == 'true' || $clippedMode.value != 'specific'"></Property>
             </PropertyGroup>
+            <PropertyGroup name="Shadow">
+                <Property name="shadowStyle" type="ShadowStyle" displayName="Shadow Style" p:disabled="$shadowStyleMode.value == 'none' || $shadowStyleMode.value == 'expression'">0|0|0</Property>
+                <Property name="shadowStyleMode" type="Enum" displayName="Shadow Mode" p:enumValues="['none|None', 'fixed|Fixed', 'primary|Use Primary Shadow Style', 'secondary|Use Secondary Shadow Style', 'expression|Use Advanced Expression']">none</Property>
+                <Property name="shadowStyleExpression" type="PlainText" displayName="Shadow Style Expression" p:disabled="$shadowStyleMode.value == 'none' || $shadowStyleMode.value == 'expression'"></Property>
+            </PropertyGroup>
         </Properties>
+        <Behaviors>
+            <For ref="shapeShadow">
+                <DomContent>
+                    (function () {
+                        if (['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0) {
+                            return Dom.newDOMFragment(
+                            [
+                                { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: $shadowStyle.size },
+                                { _name: "feOffset", _uri: PencilNamespaces.svg, dx: $shadowStyle.dx, dy: $shadowStyle.dy },
+                                { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                    { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: $shadowStyle.opacity }
+                                ]},
+                                { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                    { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                    { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                                ]}
+                            ]);
+                        } else {
+                            return Dom.newDOMFragment([]);
+                        }
+                    }())
+                </DomContent>
+            </For>
+        </Behaviors>
         <Actions>
             <Action id="buildShapeContribution">
                 <Impl><![CDATA[
@@ -850,6 +931,9 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="shapeShadow" x="-50%" width="200%" y="-50%" height="200%"></filter>
+            </defs>
         </p:Content>
     </Shape>
     <Shape id="basePathRelatedShape" displayName="Base Path Related Element" system="true" icon="" inherits="baseShape">
@@ -907,6 +991,7 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <p:ParentContent />
         </p:Content>
     </Shape>
     <Shape id="rectangle" displayName="Rectangle" icon="" inherits="basePathRelatedShape">
@@ -929,6 +1014,7 @@
                     <Arg>$radius.x</Arg>
                     <Arg>$radius.x</Arg>
                 </Radius>
+                <ApplyFilter>['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0</ApplyFilter>
             </For>
         </Behaviors>
         <Actions>
@@ -957,7 +1043,8 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
-            <rect id="rect" />
+            <p:ParentContent />
+            <rect id="rect" p:filter="url(#shapeShadow)" />
         </p:Content>
     </Shape>
     <Shape id="pathRect" displayName="Rectangle" icon="" inherits="basePathRelatedShape" p:skipBoundBehavior="true">
@@ -1008,6 +1095,7 @@
                         return collection.generateAdvancedRectPathData($box, $strokeStyle, $radius.x, $withTop.value, $withRight.value, $withBottom.value, $withLeft.value);
                     }())
                 ]]></D>
+                <ApplyFilter>['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0</ApplyFilter>
             </For>
         </Behaviors>
         <Actions>
@@ -1085,7 +1173,8 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
-            <path id="path" />
+            <p:ParentContent />
+            <path id="path" p:filter="url(#shapeShadow)" />
         </p:Content>
     </Shape>
     <Shape id="baseTextShape" displayName="Base Text Shape" system="true" icon="" inherits="baseShape">
@@ -1388,6 +1477,7 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <p:ParentContent />
         </p:Content>
     </Shape>
     <Shape id="text" displayName="Text" icon="" inherits="baseTextShape" p:stylingElementName="text" p:textElementName="text" p:skipBoundBehavior="true" p:visibilityElementName="text">
@@ -1422,12 +1512,14 @@
                         $withTextShadow.value ? "1px 1px 0px rgba(255, 255, 255, 0.4)" : ""
                     </Arg>
                 </CustomStyle>
+                <ApplyFilter>['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0</ApplyFilter>
             </For>
         </Behaviors>
 
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <p:ParentContent />
             <rect id="bg" fill="#FFFFFF" fill-opacity="0" stroke-width="0" />
-            <g id="text" />
+            <g id="text" p:filter="url(#shapeShadow)" />
         </p:Content>
     </Shape>
     <Shape id="bitmap" displayName="Bitmap Image" inherits="baseShape" icon="" p:skipBoundBehavior="true">
@@ -1536,6 +1628,11 @@
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         })
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "CopyClipboard",
+                            displayName: "Remove " + imageDataName,
+                            impl: "this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", new ImageData(0,0,\"data:\"));"
+                        })
                     }
 
                     contribution.properties.push(prop);
@@ -1595,6 +1692,7 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <p:ParentContent />
             <foreignObject x="0" y="0" width="100" height="100" id="imageFO"></foreignObject>
         </p:Content>
     </Shape>
@@ -1628,6 +1726,7 @@
             </For>
             <For ref="image">
                 <DomContent>collection.toColorizedDOMNode($imageData.getDataAsXML(), $fillColorMode.value == "asis" ? null : $fillColor)</DomContent>
+                <ApplyFilter>['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0</ApplyFilter>
             </For>
         </Behaviors>
         <Actions>
@@ -1767,6 +1866,10 @@
                             }
                         ]
                     }));
+                    var imageBoundConversion = this.getProperty("imageBoundConversion").value;
+                    if (imageBoundConversion) {
+                        boundLiteral = `(${imageBoundConversion}(${boundLiteral}))`;
+                    }
 
                     contribution.addBehavior(contribution.targetElementName, "Transform",
                         ["var bound = (" + boundLiteral + ");\n\nvar imageData = (" + imageDataLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (imageData.w || 1), bound.h / (imageData.h || 1))];"]);
@@ -1781,8 +1884,9 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
+            <p:ParentContent />
             <rect fill="rgba(255, 255, 255, 0)" stroke="none" id="bg" />
-            <g id="container"><g id="image" /></g>
+            <g id="container"><g id="image" p:filter="url(#shapeShadow)" /></g>
         </p:Content>
     </Shape>
     <Shape id="vector" displayName="Vector Path" inherits="basePathRelatedShape" icon="" p:skipBoundBehavior="true">
@@ -1836,6 +1940,7 @@
                     }())
                 </StrokeStyle>
                 <Fill>$fillColor</Fill>
+                <ApplyFilter>['fixed', 'primary', 'secondary'].indexOf($shadowStyleMode.value) >= 0</ApplyFilter>
             </For>
         </Behaviors>
         <Actions>
@@ -1926,7 +2031,8 @@
             </Action>
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
-            <g id="svgGroup" />
+            <p:ParentContent />
+            <g id="svgGroup" p:filter="url(#shapeShadow)" />
         </p:Content>
     </Shape>
     <Shape id="handle" displayName="Handle" icon="">
