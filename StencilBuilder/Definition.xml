@@ -657,6 +657,9 @@
 
                 return g;
             };
+            collection.textWidth = function (elementName) {
+
+            };
         ]]>
     </Script>
     <Properties>
@@ -818,6 +821,15 @@
                             }
                         }
                         boundExpressionLiteral = "collection.toBounds($box, \"" + boundExpression + "\"" + trailing + ")";
+
+                        var combinedSnippet = "";
+
+                        boundExpression.replace(/([a-zA-Z0-9]+)\./g, function (zero, one) {
+                            var snippet = StencilCollectionBuilder.INSTANCE.boundDependencyCache[one];
+                            if (snippet) combinedSnippet += " " + snippet;
+                        });
+
+                        if (combinedSnippet) boundExpressionLiteral += "/" + "* @depends:" +  combinedSnippet + " *" + "/";
                     } else if (boundMode == "expression") {
                         boundExpressionLiteral = boundExpression;
                     } else if (boundMode == "policy") {
@@ -1200,7 +1212,7 @@
                 <Property name="textExpression" type="PlainText" displayName="Text Content Expression" p:disabled="$textMode.value != 'expression'"></Property>
             </PropertyGroup>
             <PropertyGroup name="Icon">
-                <Property name="supportIcon" displayName="Support Icon" type="Bool" p:disabled="true">false</Property>
+                <Property name="supportIcon" displayName="Support Icon" type="Bool">false</Property>
                 <Property name="iconName" type="PlainText" displayName="Name" p:disabled="!$supportIcon.value">Text Icon</Property>
                 <Property name="iconSide" displayName="Icon Alignment" type="Enum" p:enumValues="['leading|Leading', 'trailing|Trailing', 'customizable|Customizable']" p:disabled="!$supportIcon.value">leading</Property>
                 <Property name="iconType" displayName="Icon Type" type="Enum" p:enumValues="['bitmap|Bitmap', 'svg|SVG']" p:disabled="!$supportIcon.value">bitmap</Property>
@@ -1244,6 +1256,8 @@
                         textBoundLiteral = "new Bound(" + ([0, 0, geo.dim.w, geo.dim.h].join(",")) + ")";
                     }
 
+                    var boundDependencySnippet = alignment + ", " + font;
+
                     var textMode = this.getProperty("textMode").value;
                     var textProp = null;
                     var textLiteral = null;
@@ -1268,6 +1282,8 @@
 
                         contribution.properties.push(textProp);
                         textLiteral = "$" + contribution.targetElementName;
+
+                        boundDependencySnippet += ", " + textLiteral;
                     } else {
                         textLiteral = this.getProperty("textExpression").value;
                     }
@@ -1308,6 +1324,22 @@
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("iconImageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog."  + (bitmap ? "TYPE_BITMAP" : "TYPE_SVG") + ", CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });
+
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "BrowseFile",
+                            displayName: "Select Vector Image from File for " + iconName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
+                            impl: `
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("${contribution.targetElementName}ImageData", data);
+                            });
+                            `
+                        });
+
                         contribution.actions.push({
                             id: contribution.targetElementName + "Remove",
                             displayName: "Remove " + iconName + "...",
@@ -1333,6 +1365,8 @@
                             contribution.properties.push(iconSideProp);
                             iconSideLiteral = "$" + iconSideProp.name;
                         }
+
+                        boundDependencySnippet += ", " + imageDataLiteral;
 
                         var originalTextBoundLiteral = textBoundLiteral;
                         var iconSizeFactor = this.getProperty("iconSizeFactor").value;
@@ -1471,6 +1505,8 @@
 
                     contribution.addBehavior(contribution.targetElementName + textElementName, "RichTextContent",
                         [textLiteral, textBoundLiteral, alignment]);
+
+                    StencilCollectionBuilder.INSTANCE.boundDependencyCache[contribution.targetElementName] = boundDependencySnippet;
 
                     return contribution;
                 ]]></Impl>
@@ -1618,7 +1654,7 @@
                             id: contribution.targetElementName + "CopyClipboard",
                             displayName: "Use Clipboard Data as " + imageDataName,
                             impl: "this.def.collection.copyClipboardImage(this, \"" + contribution.targetElementName + "ImageData" + "\");"
-                        })
+                        });
                         contribution.actions.push({
                             id: contribution.targetElementName + "Browse",
                             displayName: "Select Resource Images for " + imageDataName + "...",
@@ -1627,12 +1663,26 @@
                             },
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
-                        })
+                        });
                         contribution.actions.push({
-                            id: contribution.targetElementName + "CopyClipboard",
+                            id: contribution.targetElementName + "BrowseFile",
+                            displayName: "Select Bitmap from File for " + imageDataName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
+                            impl: `
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("${contribution.targetElementName}ImageData", data);
+                            });
+                            `
+                        });
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "Remove",
                             displayName: "Remove " + imageDataName,
                             impl: "this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", new ImageData(0,0,\"data:\"));"
-                        })
+                        });
                     }
 
                     contribution.properties.push(prop);
@@ -1828,6 +1878,23 @@
                             impl: "this.def.collection.browseResource(" + JSON.stringify(this.getProperty("imageDataResourceNames").value)
                                 + ", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty(\"" + contribution.targetElementName + "ImageData" + "\", imageData)}.bind(this));"
                         });
+
+
+                        contribution.actions.push({
+                            id: contribution.targetElementName + "BrowseFile",
+                            displayName: "Select Vector Image from File for " + imageDataName + "...",
+                            meta: {
+                                "content-action": "true"
+                            },
+                            impl: `
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("${contribution.targetElementName}ImageData", data);
+                            });
+                            `
+                        });
+
                         contribution.actions.push({
                             id: contribution.targetElementName + "Remove",
                             displayName: "Remove " + imageDataName,
@@ -2049,6 +2116,7 @@
                 <Property name="lockX" type="PlainText" displayName="lockX Expression"></Property>
                 <Property name="lockY" type="PlainText" displayName="lockY Expression"></Property>
                 <Property name="noScale" type="Bool" displayName="No Scale">false</Property>
+                <Property name="disabled" type="PlainText" displayName="disabled Expression"></Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -2078,7 +2146,7 @@
                         meta: {}
                     };
 
-                    const META_NAMES = ["minX", "maxX", "minY", "maxY", "lockX", "lockY"];
+                    const META_NAMES = ["minX", "maxX", "minY", "maxY", "lockX", "lockY", "disabled"];
                     for (var name of META_NAMES) {
                         var v = this.getProperty(name).value;
                         if (v) prop.meta[name] = v;
