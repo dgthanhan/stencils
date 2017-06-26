@@ -486,7 +486,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
       <Property name="defaultTextColor" displayName="Default Text Color" type="Color">#000000FF</Property>
     </PropertyGroup>
   </Properties>
-  <Shape id="phoneframe" displayName="Phone Frame" icon="icons/phoneframe.png?token=1498461859150">
+  <Shape id="phoneframe" displayName="Phone Frame" icon="icons/phoneframe.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">456,922</Property>
@@ -659,7 +659,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#0ecf0dc3791b454da54b26978188dee2)" id="rectangle6" rx="0" ry="0" style="fill: rgb(96, 96, 96); fill-opacity: 1; stroke: rgb(96, 96, 96); stroke-opacity: 1; stroke-width: 0;" width="2" height="113"/>
     </Content>
   </Shape>
-  <Shape id="systemheaderbar" displayName="System Header Bar" icon="icons/systemheaderbar.png?token=1498461859150">
+  <Shape id="systemheaderbar" displayName="System Header Bar" icon="icons/systemheaderbar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,24</Property>
@@ -787,7 +787,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#02d7c207c39849a3a411eaee22e64549)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="titlebar" displayName="Title Bar" icon="icons/titlebar.png?token=1498461859150">
+  <Shape id="titlebar" displayName="Title Bar" icon="icons/titlebar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1065,7 +1065,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="bottomsoftkeybar" displayName="Bottom Softkey Bar" icon="icons/bottomsoftkeybar.png?token=1498461859150">
+  <Shape id="bottomsoftkeybar" displayName="Bottom Softkey Bar" icon="icons/bottomsoftkeybar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1184,7 +1184,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="bottomnavigationbar" displayName="Bottom Navigation Bar" icon="icons/bottomnavigationbar.png?token=1498461859150">
+  <Shape id="bottomnavigationbar" displayName="Bottom Navigation Bar" icon="icons/bottomnavigationbar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1271,7 +1271,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#73b3e7f8e0034c1bbcd544c8c98e2426)" id="pathRect0" d="M 410 55.5 M 0 55.5 M 0 0 L 410 0" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 0.101961; stroke-width: 1;"/>
     </Content>
   </Shape>
-  <Shape id="bottomnavigationitem" displayName="Bottom Navigation Item" icon="icons/bottomnavigationitem.png?token=1498461859150">
+  <Shape id="bottomnavigationitem" displayName="Bottom Navigation Item" icon="icons/bottomnavigationitem.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">137,56</Property>
@@ -1388,7 +1388,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#ade38a0e1d114a3c959fe1faf269dd76)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="button" displayName="Button" icon="icons/button.png?token=1498461859150">
+  <Shape id="button" displayName="Button" icon="icons/button.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,36</Property>
@@ -1490,7 +1490,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#9b78d6452edd4ddb95a6408fc9807334)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="fab" displayName="FAB" icon="icons/fab.png?token=1498461859150">
+  <Shape id="fab" displayName="FAB" icon="icons/fab.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">56,56</Property>
@@ -1609,7 +1609,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="card" displayName="Card" icon="icons/card.png?token=1498461859150">
+  <Shape id="card" displayName="Card" icon="icons/card.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">394,260</Property>
@@ -1700,7 +1700,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="chip" displayName="Chip" icon="icons/chip.png?token=1498461859150">
+  <Shape id="chip" displayName="Chip" icon="icons/chip.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">140,32</Property>
@@ -1900,7 +1900,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#ebb58f9867884bae9ec1cb0f0b21135d)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="datatablecell" displayName="Data Table Cell" icon="icons/datatablecell.png?token=1498461859150">
+  <Shape id="datatablecell" displayName="Data Table Cell" icon="icons/datatablecell.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -2202,7 +2202,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="datatableheader" displayName="Data Table Header" icon="icons/datatableheader.png?token=1498461859150">
+  <Shape id="datatableheader" displayName="Data Table Header" icon="icons/datatableheader.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">394,64</Property>
@@ -2409,7 +2409,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1498461859150">
+  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">320,200</Property>
@@ -2592,7 +2592,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#eccf49333f084421a73efd337de06c78)" id="text3text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="fullscreendialogtitlebar" displayName="Full Screen Dialog Title Bar" icon="icons/fullscreendialogtitlebar.png?token=1498461859150">
+  <Shape id="fullscreendialogtitlebar" displayName="Full Screen Dialog Title Bar" icon="icons/fullscreendialogtitlebar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -2788,7 +2788,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#361a08c5df1a47248490d4a3e1095beb)" id="text1text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="listitem" displayName="List Item" icon="icons/listitem.png?token=1498461859150">
+  <Shape id="listitem" displayName="List Item" icon="icons/listitem.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,72</Property>
@@ -3023,7 +3023,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#62173d57ac03462a82dd98bc338a0a56)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="checkboxes" displayName="Checkboxes" icon="icons/checkboxes.png?token=1498461859150">
+  <Shape id="checkboxes" displayName="Checkboxes" icon="icons/checkboxes.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">24,24</Property>
@@ -3156,7 +3156,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1498461859150">
+  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">24,24</Property>
@@ -3289,7 +3289,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="avatar" displayName="Avatar" icon="icons/avatar.png?token=1498461859150">
+  <Shape id="avatar" displayName="Avatar" icon="icons/avatar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">40,40</Property>
@@ -3421,7 +3421,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#f428dbf8eab9407597e1fccd4ad24b86)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1498461859150">
+  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,18</Property>
@@ -3528,7 +3528,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="toggle-on" displayName="Toggle - On" icon="icons/toggle-on.png?token=1498461859150">
+  <Shape id="toggle-on" displayName="Toggle - On" icon="icons/toggle-on.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">36,20</Property>
@@ -3624,7 +3624,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="toggle-off" displayName="Toggle - Off" icon="icons/toggle-off.png?token=1498461859150">
+  <Shape id="toggle-off" displayName="Toggle - Off" icon="icons/toggle-off.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">36,20</Property>
@@ -3717,7 +3717,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="inputtext-single" displayName="Input Text - Single" icon="icons/inputtext-single.png?token=1498461859150">
+  <Shape id="inputtext-single" displayName="Input Text - Single" icon="icons/inputtext-single.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -3919,7 +3919,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#de6d15fb821045af82a3e79330489ca5)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="snackbar" displayName="Snackbar" icon="icons/snackbar.png?token=1498461859150">
+  <Shape id="snackbar" displayName="Snackbar" icon="icons/snackbar.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,48</Property>
@@ -4044,7 +4044,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#c4b1e4a3bb7c410480808f4a5bec5fac)" id="textActiontext" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="progress" displayName="Progress" icon="icons/progress.png?token=1498461859150">
+  <Shape id="progress" displayName="Progress" icon="icons/progress.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">360,4</Property>
@@ -4157,7 +4157,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#11e24a116ecd49ea8b8b091ae1cf9113)" id="rectangle3" rx="0" ry="0" style="fill: rgb(0, 188, 212); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="360" height="17"/>
     </Content>
   </Shape>
-  <Shape id="progress-indeterminate" displayName="Progress - Indeterminate" icon="icons/progress-indeterminate.png?token=1498461859150">
+  <Shape id="progress-indeterminate" displayName="Progress - Indeterminate" icon="icons/progress-indeterminate.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">360,4</Property>
@@ -4245,7 +4245,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#df0d6e5dca804389844c3ef50228da6f)" id="rectangle1" rx="0" ry="0" style="fill: rgb(0, 188, 212); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="134" height="4"/>
     </Content>
   </Shape>
-  <Shape id="tabitem" displayName="Tab Item" icon="icons/tabitem.png?token=1498461859150">
+  <Shape id="tabitem" displayName="Tab Item" icon="icons/tabitem.png?token=1498488292889">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,72</Property>
@@ -4481,7 +4481,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-activenavigationitem-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-activenavigationitem-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Active Item</PropertyValue>
     <PropertyValue name="active">true</PropertyValue>
   </Shortcut>
@@ -4494,7 +4494,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-invertedactivebottomitem-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-invertedactivebottomitem-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Active Item</PropertyValue>
     <PropertyValue name="active">true</PropertyValue>
   </Shortcut>
@@ -4502,7 +4502,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.0980392156862745)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-invertednormalbottomitem-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-invertednormalbottomitem-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="button" displayName="Raised Button" icon="icons/raisedbutton.png">
     <PropertyValue name="fillColor">
@@ -4559,11 +4559,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-fabnocolor-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-fabnocolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="fab" displayName="FAB Mini color" icon="icons/fabminicolor.png">
     <PropertyValue name="box">40,40</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-fabminicolor-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-fabminicolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="fab" displayName="FAB Mini No color" icon="icons/fabmininocolor.png">
     <PropertyValue name="box">40,40</PropertyValue>
@@ -4573,7 +4573,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-fabmininocolor-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-fabmininocolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="card" displayName="Card Raised" icon="icons/cardraised.png">
     <PropertyValue name="shadowStyle">0|4|5|0.4</PropertyValue>
@@ -4583,28 +4583,28 @@ return snaps;
   </Shortcut>
   <Shortcut to="chip" displayName="Chip Raised" icon="icons/chipraised.png">
     <PropertyValue name="shadowStyle">0|2|1|0.2</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-chipraised-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-chipraised-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Chip Raised</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip no image" icon="icons/chipnoimage.png">
     <PropertyValue name="box">112,32</PropertyValue>
     <PropertyValue name="bitmap0ImageData">0,0,data:</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-chipnoimage-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-chipnoimage-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip no delete" icon="icons/chipnodelete.png">
     <PropertyValue name="box">109,32</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-chipnodelete-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-chipnodelete-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="withDelete">false</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip simple" icon="icons/chipsimple.png">
     <PropertyValue name="box">80,32</PropertyValue>
     <PropertyValue name="bitmap0ImageData">0,0,data:</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-chipsimple-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-chipsimple-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="withDelete">false</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC Header Uncheck" icon="icons/dcheaderuncheck.png">
     <PropertyValue name="box">259,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dcheaderuncheck-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dcheaderuncheck-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
@@ -4612,13 +4612,13 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Dessert (100g serving)</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dcheaderuncheck-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dcheaderuncheck-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header up" icon="icons/dcheaderup.png">
     <PropertyValue name="box">103,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dcheaderup-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dcheaderup-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
@@ -4628,46 +4628,46 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="text0">Calories</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/tabitem-dcheaderup-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dcheaderup-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dcheaderup-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header down active" icon="icons/dcheaderdownactive.png">
     <PropertyValue name="box">121,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dcheaderdownactive-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dcheaderdownactive-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="textFont">
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Fat (g)</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/tabitem-dcheaderdownactive-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dcheaderdownactive-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dcheaderdownactive-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell unchecked" icon="icons/dccellunchecked.png">
     <PropertyValue name="box">259,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellunchecked-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellunchecked-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Frozen yogurt</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellunchecked-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellunchecked-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number dropdown" icon="icons/dccellnumberdropdown.png">
     <PropertyValue name="box">103,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellnumberdropdown-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellnumberdropdown-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">159</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellnumberdropdown-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellnumberdropdown-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">24,24,collection://vectors/tabitem-dccellnumberdropdown-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number" icon="icons/dccellnumber.png">
     <PropertyValue name="box">121,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellnumber-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellnumber-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">6.0</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellnumber-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellnumber-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -4676,9 +4676,9 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellcheckedhover-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellcheckedhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Ice cream sandwich</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellcheckedhover-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellcheckedhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number dropdown hover" icon="icons/dccellnumberdropdownhover.png">
@@ -4686,10 +4686,10 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellnumberdropdownhover-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellnumberdropdownhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">1.829</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellnumberdropdownhover-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellnumberdropdownhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">24,24,collection://vectors/tabitem-dccellnumberdropdownhover-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
@@ -4698,16 +4698,16 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccellnumberhover-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccellnumberhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">9.0</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccellnumberhover-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccellnumberhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header comment" icon="icons/dcheadercomment.png">
     <PropertyValue name="box">246,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dcheadercomment-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dcheadercomment-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
@@ -4716,15 +4716,15 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="text0">Comments</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/tabitem-dcheadercomment-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dcheadercomment-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dcheadercomment-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell text edit icon" icon="icons/dccelltextediticon.png">
     <PropertyValue name="box">246,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccelltextediticon-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccelltextediticon-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Super tasty</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccelltextediticon-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccelltextediticon-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">24,24,collection://vectors/tabitem-dccelltextediticon-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
@@ -4733,9 +4733,9 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://bitmaps/tabitem-dccelltexthover-vectorimage0imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/tabitem-dccelltexthover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">I like ice cream more</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://bitmaps/tabitem-dccelltexthover-vectorimage1imagedata.png</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/tabitem-dccelltexthover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -5178,4 +5178,7 @@ collection.browseResource = function (setNames, type, returnType, callback) {
 };
 
 ]]></Script>
+  <Fonts>
+    <Font name="Android Roboto" thin="fonts/Android-Roboto/Android-Roboto-100-normal.ttf" thinItalic="fonts/Android-Roboto/Android-Roboto-100-italic.ttf" light="fonts/Android-Roboto/Android-Roboto-300-normal.ttf" lightItalic="fonts/Android-Roboto/Android-Roboto-300-italic.ttf" regular="fonts/Android-Roboto/Android-Roboto-normal-normal.ttf" regularItalic="fonts/Android-Roboto/Android-Roboto-normal-italic.ttf" medium="fonts/Android-Roboto/Android-Roboto-500-normal.ttf" mediumItalic="fonts/Android-Roboto/Android-Roboto-500-italic.ttf" bold="fonts/Android-Roboto/Android-Roboto-bold-normal.ttf" boldItalic="fonts/Android-Roboto/Android-Roboto-bold-italic.ttf" black="fonts/Android-Roboto/Android-Roboto-900-normal.ttf" blackItalic="fonts/Android-Roboto/Android-Roboto-900-italic.ttf"/>
+  </Fonts>
 </Shapes>

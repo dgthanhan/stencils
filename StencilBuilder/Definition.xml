@@ -1636,7 +1636,7 @@
 
                     var imageDataMode = this.getProperty("imageDataMode").value;
                     var imageDataLiteral = null;
-                    var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName);
+                    var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName, false);
                     var imageDataName = this.getProperty("imageDataName").value || contribution.targetElementName;
 
                     var prop = {
@@ -1856,7 +1856,7 @@
 
                     var imageDataMode = this.getProperty("imageDataMode").value;
                     var imageDataLiteral = null;
-                    var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName);
+                    var importedImageData = StencilCollectionBuilder.INSTANCE.toCollectionReadyImageData(this.getProperty("imageData"), contribution.targetElementName, true);
 
                     var prop = {
                         name: contribution.targetElementName + "ImageData",
