@@ -707,7 +707,7 @@
             <PropertyGroup name="Shadow">
                 <Property name="shadowStyle" type="ShadowStyle" displayName="Shadow Style" p:disabled="$shadowStyleMode.value == 'none' || $shadowStyleMode.value == 'expression'">0|0|0</Property>
                 <Property name="shadowStyleMode" type="Enum" displayName="Shadow Mode" p:enumValues="['none|None', 'fixed|Fixed', 'primary|Use Primary Shadow Style', 'secondary|Use Secondary Shadow Style', 'expression|Use Advanced Expression']">none</Property>
-                <Property name="shadowStyleExpression" type="PlainText" displayName="Shadow Style Expression" p:disabled="$shadowStyleMode.value == 'none' || $shadowStyleMode.value == 'expression'"></Property>
+                <Property name="shadowStyleExpression" type="PlainText" displayName="Shadow Style Expression" p:disabled="$shadowStyleMode.value != 'expression'"></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
