@@ -1718,7 +1718,7 @@
                             ]
                         }));
                         contribution.addBehavior(contribution.targetElementName, "Transform",
-                            ["var bound = (" + boundLiteral + ");\n\n[translate(bound.x, bound.y), scale(bound.w / (" + imageDataLiteral + ").w, bound.h / (" + imageDataLiteral + ").h)];"]);
+                            ["var bound = (" + boundLiteral + ");\nvar imageData = (" + imageDataLiteral + ");\n\n[translate(bound.x, bound.y), scale(imageData.w <= 0 ? 1 : bound.w / imageData.w, imageData.h <= 0 ? 1 : bound.h / imageData.h)];"]);
 
                         contribution.addBehavior(contribution.targetElementName + "image", "Image",
                             [imageDataLiteral]);
