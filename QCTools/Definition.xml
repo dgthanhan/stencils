@@ -1,0 +1,1174 @@
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" id="evolus.QCTools" displayName="Evolus QC Tools" author="dgthanhan" description="Small collection for bug reporting" url="">
+  <Script comments="Built-in util script"><![CDATA[
+collection.BOUND_CALCULATOR = {
+    L: function (box, v) { return (box.x || 0) + v;},
+    T: function (box, v) { return (box.y || 0) + v;},
+    R: function (box, v) { return (box.x || 0) + box.w - v;},
+    B: function (box, v) { return (box.y || 0) + box.h - v;},
+    C: function (box, v) { return (box.x || 0) + box.w / 2 + v;},
+    M: function (box, v) { return (box.y || 0) + box.h / 2 + v;},
+    H0X: function (box, v, h0, h1) {
+        return h0.x + v;
+    },
+    H0Y: function (box, v, h0, h1) {
+        return h0.y + v;
+    },
+    H1X: function (box, v, h0, h1) {
+        return h1.x + v;
+    },
+    H1Y: function (box, v, h0, h1) {
+        return h1.y + v;
+    },
+
+    calculate: function (box, spec, h0, h1) {
+        var matchResult = null;
+        if (matchResult = spec.match(/^(([a-zA-Z0-9]+)\.)?([A-Z0-9]*[A-Z])([0-9\-]+)$/)) {
+            var bounding = box;
+            var targetName = RegExp.$2;
+            var func = RegExp.$3;
+            var delta = RegExp.$4;
+            if (targetName) {
+                var shapeNode = Dom.findUpward(F._target, {eval: function (node) {
+                    return node.hasAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
+                }});
+
+                if (shapeNode) {
+                    var name = targetName;
+                    if (targetName.match(/^text.*/)) name += "text"; //HACK: use text element natural bound
+
+                    var node = Dom.getSingle(".//svg:*[@p:name='" + name + "']", shapeNode);
+                    if (node) {
+                        var bbox = node.getBBox();
+                        if (bbox.width > 0 && bbox.height > 0) {
+                            bounding = {
+                                x: bbox.x,
+                                y: bbox.y,
+                                w: bbox.width,
+                                h: bbox.height
+                            };
+                        }
+                    }
+                }
+            }
+
+            return collection.BOUND_CALCULATOR[func](bounding, parseInt(delta, 10), h0, h1);
+        }
+        return 0;
+    }
+};
+collection.toBounds = function (box, textBounds, h0, h1) {
+    var literal = textBounds.value || textBounds.toString();
+    var parts = literal.split(",");
+    var x = collection.BOUND_CALCULATOR.calculate(box, parts[0], h0, h1);
+    var y = collection.BOUND_CALCULATOR.calculate(box, parts[1], h0, h1);
+    var w = collection.BOUND_CALCULATOR.calculate(box, parts[2], h0, h1) - x;
+    var h = collection.BOUND_CALCULATOR.calculate(box, parts[3], h0, h1) - y;
+
+    return new Bound(x, y, w, h);
+};
+collection.calculateBoundsFromPolicy = function (box, originalInfo, policy) {
+    var hLayout = Group.calculateLayout(originalInfo.x0, originalInfo.w0, originalInfo.gw0, policy.xPolicy, policy.wPolicy, box.w, originalInfo.w0);
+    var vLayout = Group.calculateLayout(originalInfo.y0, originalInfo.h0, originalInfo.gh0, policy.yPolicy, policy.hPolicy, box.h, originalInfo.h0);
+
+    return new Bound(Math.round(hLayout.pos), Math.round(vLayout.pos), Math.round(hLayout.size), Math.round(vLayout.size));
+};
+collection.copyClipboardImage = function (target, imageDataPropName, boxPropName) {
+    try {
+        var image = clipboard.readImage();
+        if (image) {
+            var id = Pencil.controller.nativeImageToRefSync(image);
+
+            var size = image.getSize();
+            var newImageData = new ImageData(size.width, size.height, ImageData.idToRefString(id));
+            target.setProperty(imageDataPropName, newImageData);
+            if (boxPropName) target.setProperty(boxPropName, new Dimension(size.width, size.height));
+        }
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+collection.buildNPatchModel = function (cells, originalSize, newSize) {
+    var totalScaleSize = 0;
+    for (var cell of cells) totalScaleSize += (cell.to - cell.from);
+
+    var r = (newSize - (originalSize - totalScaleSize)) / totalScaleSize;
+
+    var models = [];
+    var total = 0;
+    var scaledTotal = 0;
+    var last = false;
+
+    //add a sentinel
+    cells = cells.concat([{from: originalSize, to: originalSize + 1}]);
+
+    for (var i = 0; i < cells.length; i ++) {
+        var cell = cells[i];
+        if (cell.from == cell.to) continue;
+
+        var last = (i == cell.length - 2);
+
+        var model = null;
+        if (cell.from > total) {
+            model = {
+                start: total,
+                size: cell.from - total,
+                scaledStart: scaledTotal,
+                scale: false
+            };
+
+            models.push(model);
+            total = cell.from;
+            scaledTotal += model.size;
+        }
+
+        if (cell.from >= originalSize) break;
+
+        var scaledSize = (last ? (newSize - (originalSize - cell.to) - scaledTotal) : (r * (cell.to - cell.from)));
+
+        model = {
+            start: total,
+            size: cell.to - cell.from,
+            scaledStart: scaledTotal,
+            scaledSize: scaledSize,
+            scale: true
+        };
+
+        model.r = model.scaledSize / model.size;
+
+        models.push(model);
+        total = cell.to;
+        scaledTotal += model.scaledSize;
+    }
+
+    return models;
+};
+
+collection.parsePathData = function (pathDataLiteral) {
+    function normalize(pin) {
+        pin.x = Math.round(pin.x);
+        if (typeof(pin.y) == "number") pin.y = Math.round(pin.y);
+    }
+    function normalizeAll(pins) {
+        for (var pin of pins) normalize(pin);
+    }
+
+    function processMultiPoints(points, current, chunk, relative) {
+        var count = Math.ceil(points.length / chunk);
+        for (var i = 0; i < count; i ++) {
+            var pin = points[i * chunk + (chunk - 1)];
+
+            for (var j = 0; j < (chunk - 1); j ++) {
+                var p = points[i * chunk + j];
+                if (relative) {
+                    p.x += current.x;
+                    p.y += current.y;
+                }
+
+                p.fixed = true;
+            }
+
+            normalize(pin);
+
+            if (relative) {
+                pin.x += current.x;
+                pin.y += current.y;
+            }
+            current = pin;
+        }
+
+        return current;
+    }
+
+    //parse the original data
+    var RE = /([A-Z])([^A-Z]*)/gi;
+    var commands = [];
+    var result = null;
+    var current = {x: 0, y: 0};
+    while ((result = RE.exec(pathDataLiteral))) {
+        var c = result[1];
+        var command = {
+            command: c.toUpperCase()
+        };
+        var data = result[2].trim();
+        if (data) {
+            var DATA_RE = /(-?[0-9.]+)(,(-?[0-9.]+))?/g;
+            var points = [];
+            var result2 = null;
+            while ((result2 = DATA_RE.exec(data))) {
+                var x = parseFloat(result2[1]);
+                var y = result2[3];
+                if (y) y = parseFloat(y);
+                points.push({
+                    x: x,
+                    y: y
+                });
+            }
+
+            if (c == "M" || c == "L" || c == "T") {
+                normalizeAll(points);
+                command.points = points;
+                current = points[points.length - 1];
+            } else if (c == "m" || c == "l" || c == "t") {
+                for (var p of points) {
+                    p.x += current.x;
+                    p.y += current.y;
+
+                    current = p;
+                }
+                normalizeAll(points);
+                command.points = points;
+            } else if (c == "H") {
+                for (var p of points) {
+                    console.log("HX:", p.x);
+                    p.y = current.y;
+                    current = p;
+                }
+                normalizeAll(points);
+                command.points = points;
+                command.command = "L";
+            } else if (c == "h") {
+                for (var p of points) {
+                    p.x += current.x;
+                    p.y = current.y;
+                    current = p;
+                }
+                normalizeAll(points);
+                command.points = points;
+                command.command = "L";
+            } else if (c == "V") {
+                for (var p of points) {
+                    p.y = p.x;
+                    p.x = current.x;
+                    current = p;
+                }
+                normalizeAll(points);
+                command.points = points;
+                command.command = "L";
+            } else if (c == "v") {
+                for (var p of points) {
+                    p.y = p.x + current.y;
+                    p.x = current.x;
+                    current = p;
+                }
+                normalizeAll(points);
+                command.points = points;
+                command.command = "L";
+            } else if (c == "c" || c == "C") {
+                current = processMultiPoints(points, current, 3, c == "c");
+                command.points = points;
+            } else if (c == "s" || c == "S") {
+                current = processMultiPoints(points, current, 2, c == "s");
+
+                command.points = points;
+            } else if (c == "q" || c == "Q") {
+                current = processMultiPoints(points, current, 2, c == "q");
+                command.points = points;
+            } else if ((c == "a" || c == "A") && points.length == 5) {
+                for (var p of points) {
+                    p.fixed = true;
+                    p.noRelativeRecalcuate = true;
+                    console.log("p.y", p.y);
+                }
+                var pin = points[4];
+                pin.fixed = false;
+                pin.noRelativeRecalcuate = false;
+                if (c == "a") {
+                    pin.x += current.y;
+                    pin.y += current.y;
+                }
+                current = pin;
+
+                normalizeAll(points);
+                command.points = points;
+                command.command = "A";
+            }
+        }
+
+        commands.push(command);
+    }
+
+    return commands;
+
+};
+
+collection.calculateScaledPosition = function (value, models) {
+    if (!models || models.length == 0) return value;
+    var m = null;
+
+    if (value < models[0].start) {
+        m = models[0];
+    } else {
+        for (var model of models) {
+            if (model.start <= value && value < (model.start + model.size)) {
+                m = model;
+                break;
+            }
+        }
+
+        if (!m) m = models[models.length - 1];
+    }
+
+    if (m) {
+        var d = value - m.start;
+
+        if (m.scale) d *= m.r;
+
+        return d + m.scaledStart;
+    }
+
+    return value;
+};
+
+
+collection.scalePathData = function (pathCommands, xCells, yCells, originalSize, newSize) {
+    xCells = xCells || [];
+    yCells = yCells || [];
+
+    var xModel = collection.buildNPatchModel(xCells, originalSize.w, newSize.w);
+    var yModel = collection.buildNPatchModel(yCells, originalSize.h, newSize.h);
+
+    var newData = "";
+
+    for (var command of pathCommands) {
+        if (command.points) {
+            var last = -1;
+            for (var i = 0; i < command.points.length; i ++) {
+                var pin = command.points[i];
+                if (pin.fixed) {
+                    continue;
+                }
+
+                var x = collection.calculateScaledPosition(pin.x, xModel);
+                var y = collection.calculateScaledPosition(pin.y, yModel);
+
+                for (var j = last + 1; j < i; j ++) {
+                    if (command.points[j].noRelativeRecalcuate) continue;
+                    command.points[j].x = x + command.points[j].x - pin.x;
+                    if (typeof(command.points[j].y) == "number") command.points[j].y = y + command.points[j].y - pin.y;
+                }
+
+                pin.x = x;
+                pin.y = y;
+                last = i;
+            }
+        }
+
+        if (newData) newData += " ";
+        newData += command.command;
+        if (command.points) {
+            for (var i = 0; i < command.points.length; i ++) {
+                var y = command.points[i].y;
+                newData += (i > 0 ? " " : "") + command.points[i].x + (typeof(y) == "number" ? ("," + y) : "");
+            }
+        }
+    }
+
+    return newData;
+};
+collection.generatePathDOM = function (svgPathData, size, keepPathStyle) {
+    var specs = [];
+    var json = svgPathData.data;
+    if (!json.startsWith("json:")) return specs;
+    var parsedPathData = JSON.parse(json.substring(5));
+
+    for (var info of parsedPathData) {
+        var d = collection.scalePathData(info.commands, svgPathData.xCells, svgPathData.yCells, svgPathData, size);
+        specs.push({
+            _name: "path",
+            _uri: PencilNamespaces.svg,
+            d: d,
+            style: keepPathStyle ? info.style : ""
+        });
+    }
+
+    return Dom.newDOMFragment(specs);
+};
+collection.generateAdvancedRectPathData = function (box, strokeStyle, r, withTop, withRight, withBottom, withLeft, withTopLeftCorner, withTopRightCorner, withBottomRightCorner, withBottomLeftCorner) {
+    var x = r * 4 * (Math.sqrt(2) - 1) / 3;
+    var w = box.w - strokeStyle.w * ((withLeft ? 0.5 : 0) + (withRight ? 0.5 : 0));
+    var h = box.h - strokeStyle.w * ((withTop ? 0.5 : 0) + (withBottom ? 0.5 : 0));
+    var parts = [
+    ];
+    var close = true;
+    if (withTop) {
+        parts.push(L(w - (withRight && withTopRightCorner ? r : 0),0));
+        if (withRight && withTopRightCorner && r > 0) parts.push(c(x,0,r,r-x,r,r));
+    } else {
+        parts.push(M(w,0));
+        close = false;
+    }
+
+    if (withRight) {
+        parts.push(L(w,h - (withBottom && withBottomRightCorner ? r : 0)));
+        if (withBottom && withBottomRightCorner && r > 0) parts.push(c(0,x,x-r,r,0-r,r));
+    } else {
+        parts.push(M(w,h));
+        close = false;
+    }
+
+    if (withBottom) {
+        parts.push(L(withLeft && withBottomLeftCorner ? r : 0,h));
+        if (withLeft && withBottomLeftCorner && r > 0) parts.push(c(x-r,0,0-r,x-r,0-r,0-r));
+    } else {
+        parts.push(M(0,h));
+        close = false;
+    }
+
+    if (withLeft) {
+        parts.push(L(0,withTop && withTopLeftCorner ? r : 0));
+        if (withTop && withTopLeftCorner && r > 0) parts.push(c(0,0-x,r-x,0-r,r,0-r));
+    } else {
+        parts.push(M(0,0));
+        close = false;
+    }
+
+    if (close) parts.push(z);
+
+    var firstMove = -1;
+    for (var i = 0; i < parts.length; i ++) {
+        if (parts[i].indexOf("M") == 0) {
+            firstMove = i;
+            break;
+        }
+    }
+
+    if (firstMove > 0) {
+        while (firstMove > 0) {
+            parts.push(parts.shift());
+            firstMove --;
+        }
+    } else {
+        parts.unshift(M(withLeft ? r : 0,0));
+    }
+
+    return parts;
+};
+collection.toColorizedDOMNode = function (svgXML, color) {
+    if (!svgXML) return document.createDocumentFragment();
+
+    var svg = Dom.parseDocument(svgXML);
+
+    if (color) {
+        var c = color.toRGBAString();
+        Dom.workOn("//svg:*", svg, function (node) {
+            if (node.style.fill != "none") {
+                node.style.fill = c;
+            }
+            if (node.style.stroke && node.style.stroke != "none") {
+                node.style.stroke = c;
+            }
+
+            var a = node.getAttribute("fill");
+            if (a != "none") node.setAttribute("fill", c);
+
+            a = node.getAttribute("stroke");
+            if (a && a != "none") node.setAttribute("stroke", c);
+        });
+    }
+
+    var g = svg.createElementNS(PencilNamespaces.svg, "g");
+    while (svg.documentElement.firstChild) {
+        var child = svg.documentElement.firstChild;
+        svg.documentElement.removeChild(child);
+        g.appendChild(child);
+    }
+
+    return g;
+};
+]]></Script>
+  <Properties>
+    <PropertyGroup name="Collection Properties"/>
+  </Properties>
+  <Shape id="devicescreenshot" displayName="Device Screenshot" icon="icons/devicescreenshot.png?token=1499420356235">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">370,660</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">#CCCCCCFF</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property name="bitmap0ImageData" displayName="Image Data (bitmap0)" type="ImageData">10,10,collection://bitmaps/devicescreenshot-bitmap0.png</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">#666666FF</Property>
+        <Property name="textFont" displayName="Text Font" type="Font">Android Roboto|normal|normal|14px|none</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="infoText" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;infoTexttext&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:370,&quot;gh0&quot;:660,&quot;w0&quot;:370,&quot;h0&quot;:26,&quot;x0&quot;:0,&quot;y0&quot;:667}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;end&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;fixed&quot;}),font: $textFont,align: $textAlignment,richText: true})">Screenshot information</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#666666FF</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+        </Bound>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+      <For ref="rectangle0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="rectangle0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="bitmap0">
+        <Transform>
+          <Arg><![CDATA[var bound = (collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"}));
+var imageData = ($bitmap0ImageData);
+
+[translate(bound.x, bound.y), scale(imageData.w <= 0 ? 1 : bound.w / imageData.w, imageData.h <= 0 ? 1 : bound.h / imageData.h)];]]></Arg>
+        </Transform>
+      </For>
+      <For ref="bitmap0image">
+        <Image>
+          <Arg><![CDATA[$bitmap0ImageData]]></Arg>
+        </Image>
+      </For>
+      <For ref="infoTexttext">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$infoText]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":26,"x0":0,"y0":667}, {"xPolicy":"start","yPolicy":"end","wPolicy":"start-end","hPolicy":"fixed"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+      <For ref="rectangle1">
+        <Bound>
+          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed(($strokeStyle).w / 2)]]></Arg>
+        </Bound>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="adbCaptureAction" displayName="Take Device Screenshot" p:content-action="true">
+        <Impl><![CDATA[var tmp = require("tmp");
+var path = require("path");
+var fs = require("fs");
+var exec = require("child_process").execSync;
+
+var fileName = "qc-capture.png";
+var remotePath = "/sdcard/" + fileName;
+var localPath = tmp.tmpNameSync();
+fs.mkdirSync(localPath);
+
+this.setProperty("infoText", new RichText("Capturing..."));
+this.setProperty("bitmap0ImageData", new ImageData(0, 0, ""));
+
+var thiz = this;
+
+window.setTimeout(function () {
+    try {
+        var adbPath = Config.get(Config.DEVICE_ADB_PATH, "adb");
+
+        exec(adbPath + " shell screencap -p " + remotePath);
+        exec(adbPath + " pull " + remotePath + " " + localPath);
+        exec(adbPath + " shell rm " + remotePath);
+        var localFilePath = path.join(localPath, fileName);
+        ImageData.fromExternalToImageData(localFilePath, function (imageData) {
+            fs.unlinkSync(localFilePath);
+            fs.rmdirSync(localPath);
+
+            thiz.setProperty("bitmap0ImageData", imageData);
+            var box = thiz.getProperty("box");
+            var r = box.h / imageData.h;
+            box.w = Math.round(imageData.w * r);
+            thiz.setProperty("box", box);
+        });
+
+        var props = exec(adbPath + " shell getprop", {encoding: "UTF-8"});
+        if (props) {
+            var lines = props.split(/[\r\n]+/);
+            var map = {};
+            for (var line of lines) {
+                if (line.match(/^\[([^\]]+)\]: \[([^\]]+)\][\r\n \t]*$/)) {
+                    var name = RegExp.$1;
+                    var value = RegExp.$2;
+                    map[name] = value;
+                } else {
+                    console.log("Invalid line: ", line);
+                }
+            }
+
+            console.log(map);
+
+            var info = "<div>Android: <strong>" + map["ro.build.version.release"] + "</strong> / API: <strong>" + map["ro.build.version.sdk"] + "</strong>";
+            info += " / Device: <strong>" + map["ro.product.manufacturer"] + " " + map["ro.product.model"] + "</strong>";
+            info += "<br/>" + new Date();
+            info += "</div>";
+
+            thiz.setProperty("infoText", new RichText(info));
+        }
+
+    } catch (error) {
+        Dialog.error("ADB capturing error: " + error);
+        return;
+    }
+}, 10);
+]]></Impl>
+      </Action>
+      <Action id="bitmap0CopyClipboard" displayName="Use Clipboard Data as bitmap0">
+        <Impl><![CDATA[this.def.collection.copyClipboardImage(this, "bitmap0ImageData");]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="bitmap0Browse" displayName="Select Resource Images for bitmap0..." p:content-action="true">
+        <Impl><![CDATA[this.def.collection.browseResource("", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("bitmap0ImageData", imageData)}.bind(this));]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="bitmap0BrowseFile" displayName="Select Bitmap from File for bitmap0..." p:content-action="true">
+        <Impl><![CDATA[
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("bitmap0ImageData", data);
+                            });
+                            ]]></Impl>
+      </Action>
+      <Action id="bitmap0Remove" displayName="Remove bitmap0">
+        <Impl><![CDATA[this.setProperty("bitmap0ImageData", new ImageData(0,0,"data:"));]]></Impl>
+      </Action>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="rectangle0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="rectangle0_globalGroup" p:filter="url(#rectangle0_shadowFilter)">
+        <rect p:filter="url(#606b1f1bf5584f4a86eaa36247344c7f)" id="rectangle0" rx="0" ry="0" style="fill: rgb(204, 204, 204); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="370" height="660"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" id="bitmap0">
+        <image id="bitmap0image" x="0" y="0"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#2f6e29107f834101b082933a53c93e87)" id="infoTexttext" dominant-baseline="auto"/>
+      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#1ae6bfdb922f4f5b952c6c775647f105)" id="rectangle1" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(102, 102, 102); stroke-opacity: 1; stroke-width: 1;" width="369" height="659"/>
+    </Content>
+  </Shape>
+  <Shape id="box" displayName="Box" icon="icons/box.png?token=1499420356235">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">200,100</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">#FFFFFF00</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="radius" displayName="Corner Radius" type="Handle" p:minX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x" p:lockY="true" p:maxX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x + Math.round((collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).w / 2)">0,0</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|0|1</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#FF0000FF</Property>
+        <Property name="topLeftCorner" displayName="Rounded Top-Left Corner" type="Bool">true</Property>
+        <Property name="topRightCorner" displayName="Rounded Top-Right Corner" type="Bool">true</Property>
+        <Property name="bottomRightCorner" displayName="Rounded Bottom-Right Corner" type="Bool">true</Property>
+        <Property name="bottomLeftCorner" displayName="Rounded Bottom-Left Corner" type="Bool">true</Property>
+        <Property name="topBorder" displayName="Top Border" type="Bool">true</Property>
+        <Property name="rightBorder" displayName="Right Border" type="Bool">true</Property>
+        <Property name="bottomBorder" displayName="Bottom Border" type="Bool">true</Property>
+        <Property name="leftBorder" displayName="Left Border" type="Bool">true</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="padding" displayName="padding" type="Handle" p:minY="0" p:maxY="$box.h" p:lockX="true" p:noScale="true">0,10</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">#990000DE</Property>
+        <Property name="textFont" displayName="Text Font" type="Font">Android Roboto|normal|normal|14px|none</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: Bound.fromBox($box, $padding.y),font: $textFont,align: $textAlignment,richText: true})"/>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="pathRect0">
+        <Visibility>
+          <Arg><![CDATA[(!$leftBorder.value && !$rightBorder.value) || (!$topBorder.value && !$bottomBorder.value)]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, ($radius).x)]]></Arg>
+        </Radius>
+        <D>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle;
+var r = $radius;
+return collection.generateAdvancedRectPathData(b, s, r.x, true, true, true, true, $topLeftCorner.value && $topBorder.value && $leftBorder.value, $topRightCorner.value && $topBorder.value && $rightBorder.value, $bottomRightCorner.value && $bottomBorder.value && $rightBorder.value, $bottomLeftCorner.value && $bottomBorder.value && $leftBorder.value); }())]]></Arg>
+        </D>
+        <Transform>
+          <Arg><![CDATA[(function () { var s = $strokeStyle;
+var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+return [translate(((true) ? (s.w / 2) : 0) + b.x, ((true) ? (s.w / 2) : 0) + b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="pathRect0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="pathRect0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="pathRect1">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, ($radius).x)]]></Arg>
+        </Radius>
+        <D>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle;
+var r = $radius;
+return collection.generateAdvancedRectPathData(b, s, r.x, $topBorder.value, $rightBorder.value, $bottomBorder.value, $leftBorder.value, $topLeftCorner.value, $topRightCorner.value, $bottomRightCorner.value, $bottomLeftCorner.value); }())]]></Arg>
+        </D>
+        <Transform>
+          <Arg><![CDATA[(function () { var s = $strokeStyle;
+var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+return [translate((($leftBorder.value) ? (s.w / 2) : 0) + b.x, (($topBorder.value) ? (s.w / 2) : 0) + b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="pathRect1_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = ((!$leftBorder.value && !$rightBorder.value) || (!$topBorder.value && !$bottomBorder.value)) ? ShadowStyle.fromString("0|0|0|0") : $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="pathRect1_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[(((!$leftBorder.value && !$rightBorder.value) || (!$topBorder.value && !$bottomBorder.value)) ? ShadowStyle.fromString("0|0|0|0") : $shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[Bound.fromBox($box, $padding.y)]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(Bound.fromBox($box, $padding.y)).narrowed(($strokeStyle).w / 2)]]></Arg>
+        </Bound>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+var __bound_pathRect1 = this.def.collection.calculateBoundsFromPolicy(__prop_box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true),
+new SnappingData("Left0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "L0"), "Left", true, this.id).makeLocal(true),
+new SnappingData("Left1", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "R0"), "Left", true, this.id).makeLocal(true),
+new SnappingData("Top0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "T0"), "Top", false, this.id).makeLocal(true),
+new SnappingData("Top1", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "B0"), "Top", false, this.id).makeLocal(true),
+new SnappingData("Right0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "R0"), "Right", true, this.id).makeLocal(true),
+new SnappingData("Right1", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "L0"), "Right", true, this.id).makeLocal(true),
+new SnappingData("Bottom0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "B0"), "Bottom", false, this.id).makeLocal(true),
+new SnappingData("Bottom1", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "T0"), "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "C0"), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_pathRect1, "M0"), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <clipPath id="sbDefaultClipPath">
+          <rect xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#53b43251c0024f488628f8dbb2391f4c)" id="rectangle0" rx="0" ry="0" style="fill: rgb(0, 0, 0); fill-opacity: 0.109804; stroke: rgb(204, 0, 0); stroke-opacity: 1; stroke-width: 0;" height="100" width="200"/>
+        </clipPath>
+      </defs>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="pathRect0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="pathRect0_globalGroup" p:filter="url(#pathRect0_shadowFilter)">
+        <path p:filter="url(#c37c813187514127a09e2ea825697849)" id="pathRect0" d="M 0 0 L 198 0 L 198 98 L 0 98 L 0 0 z" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2;"/>
+      </g>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="pathRect1_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="pathRect1_globalGroup" p:filter="url(#pathRect1_shadowFilter)">
+        <path p:filter="url(#9206b30f4ada4bba8f175e0662ff1529)" id="pathRect1" d="M 0 0 L 198 0 L 198 98 L 0 98 L 0 0 z" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" style="clip-path: url(#sbDefaultClipPath);">
+        <g xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#181d3b8ce71b470cb34a893300caa341)" id="text0text" dominant-baseline="auto"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shortcut to="box" displayName="Indicator - U" icon="icons/indicator-u.png">
+    <PropertyValue name="box">200,10</PropertyValue>
+    <PropertyValue name="strokeStyle">4|</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="topBorder">false</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Indicator - U2" icon="icons/indicator-u2.png">
+    <PropertyValue name="box">200,10</PropertyValue>
+    <PropertyValue name="strokeStyle">4|</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="bottomBorder">false</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Indicator - C" icon="icons/indicator-c.png">
+    <PropertyValue name="box">12,50</PropertyValue>
+    <PropertyValue name="strokeStyle">4|</PropertyValue>
+    <PropertyValue name="shadowStyle">-1|0|1|0.5</PropertyValue>
+    <PropertyValue name="rightBorder">false</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Indicator - C2" icon="icons/indicator-c2.png">
+    <PropertyValue name="box">12,50</PropertyValue>
+    <PropertyValue name="strokeStyle">4|</PropertyValue>
+    <PropertyValue name="shadowStyle">1|0|1|0.5</PropertyValue>
+    <PropertyValue name="leftBorder">false</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Red text" icon="icons/redtext.png">
+    <PropertyValue name="box">247,55</PropertyValue>
+    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textColor">#CC0000FF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Green text" icon="icons/greentext.png">
+    <PropertyValue name="box">247,55</PropertyValue>
+    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textColor">#009900FF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Red text box" icon="icons/redtextbox.png">
+    <PropertyValue name="box">247,67</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,8</PropertyValue>
+    <PropertyValue name="textAlignment">0,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Green text box" icon="icons/greentextbox.png">
+    <PropertyValue name="box">247,67</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
+    <PropertyValue name="padding">0,8</PropertyValue>
+    <PropertyValue name="textAlignment">0,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 1" icon="icons/index1.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">1</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 2" icon="icons/index2.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">2</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 3" icon="icons/index3.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">3</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 4" icon="icons/index4.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">4</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 5" icon="icons/index5.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">5</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 1g" icon="icons/index1g.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">1</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 2g" icon="icons/index2g.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">2</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 3g" icon="icons/index3g.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">3</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 4g" icon="icons/index4g.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">4</PropertyValue>
+  </Shortcut>
+  <Shortcut to="box" displayName="Index 5g" icon="icons/index5g.png">
+    <PropertyValue name="box">24,24</PropertyValue>
+    <PropertyValue name="fillColor">#009900FF</PropertyValue>
+    <PropertyValue name="strokeStyle">0|</PropertyValue>
+    <PropertyValue name="radius">12,0</PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
+    <PropertyValue name="padding">0,0</PropertyValue>
+    <PropertyValue name="textAlignment">1,1</PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="text0">5</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Common:arrow" displayName="Connector" icon="icons/connector.png">
+    <PropertyValue name="endPin">52,17</PropertyValue>
+    <PropertyValue name="withStartArrow">false</PropertyValue>
+    <PropertyValue name="withEndArrow">false</PropertyValue>
+    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Common:arrow" displayName="Connector 2" icon="icons/connector2.png">
+    <PropertyValue name="endPin">52,17</PropertyValue>
+    <PropertyValue name="withEndArrow">false</PropertyValue>
+    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Common:arrow" displayName="Connector 3" icon="icons/connector3.png">
+    <PropertyValue name="endPin">52,17</PropertyValue>
+    <PropertyValue name="withStartArrow">false</PropertyValue>
+    <PropertyValue name="withEndArrow">false</PropertyValue>
+    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Common:arrow" displayName="Connector 4" icon="icons/connector4.png">
+    <PropertyValue name="endPin">52,17</PropertyValue>
+    <PropertyValue name="withEndArrow">false</PropertyValue>
+    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Flowchart:process" displayName="Text Arrow" icon="icons/textarrow.png">
+    <PropertyValue name="box">248,72</PropertyValue>
+    <PropertyValue name="outputPin1Origin">124,0</PropertyValue>
+    <PropertyValue name="outputPin1">123.99999999999999,0</PropertyValue>
+    <PropertyValue name="outputPin2Origin">248,36</PropertyValue>
+    <PropertyValue name="outputPin2">247.99999999999997,36.00000000000001</PropertyValue>
+    <PropertyValue name="outputPin3Origin">124,72</PropertyValue>
+    <PropertyValue name="outputPin3">123.99999999999999,72.00000000000001</PropertyValue>
+    <PropertyValue name="outputPin4Origin">0,36</PropertyValue>
+    <PropertyValue name="outputPin4">0,36.00000000000001</PropertyValue>
+    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="textContent">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="textColor">#FF0000FF</PropertyValue>
+    <PropertyValue name="textAlign">0,1</PropertyValue>
+  </Shortcut>
+  <Shortcut to="Evolus.Flowchart:process" displayName="Text Arrow Green" icon="icons/textarrowgreen.png">
+    <PropertyValue name="box">248,72</PropertyValue>
+    <PropertyValue name="outputPin1Origin">124,0</PropertyValue>
+    <PropertyValue name="outputPin1">123.99999999999999,0</PropertyValue>
+    <PropertyValue name="outputPin2Origin">248,36</PropertyValue>
+    <PropertyValue name="outputPin2">247.99999999999997,36.00000000000001</PropertyValue>
+    <PropertyValue name="outputPin3Origin">124,72</PropertyValue>
+    <PropertyValue name="outputPin3">123.99999999999999,72.00000000000001</PropertyValue>
+    <PropertyValue name="outputPin4Origin">0,36</PropertyValue>
+    <PropertyValue name="outputPin4">0,36.00000000000001</PropertyValue>
+    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
+    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
+    <PropertyValue name="textContent">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+    <PropertyValue name="textColor">#009900FF</PropertyValue>
+    <PropertyValue name="textAlign">0,1</PropertyValue>
+  </Shortcut>
+  <Script comments="Resource script"><![CDATA[
+collection.RESOURCE_LIST = [{"name":"Built-in bitmaps","type":"bitmap","prefix":"bitmaps"}];
+
+collection.browseResource = function (setNames, type, returnType, callback) {
+    var options = {
+        prefixes: [],
+        type: type || CollectionResourceBrowserDialog.TYPE_BITMAP,
+        returnType: returnType || CollectionResourceBrowserDialog.RETURN_IMAGEDATA
+    };
+
+    setNames = (setNames || "").trim();
+
+    for (var resource of collection.RESOURCE_LIST) {
+        if ((!resource.type || resource.type == options.type) && (!setNames || setNames.indexOf(resource.name) >= 0)) {
+            options.prefixes.push(resource);
+        }
+    }
+
+    CollectionResourceBrowserDialog.open(collection, options, callback);
+};
+
+]]></Script>
+</Shapes>
