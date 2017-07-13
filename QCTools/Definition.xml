@@ -477,28 +477,134 @@ collection.toColorizedDOMNode = function (svgXML, color) {
     return g;
 };
 ]]></Script>
+  <Script comments="Extra script"><![CDATA[
+collection.fixedHeightBoundFromPoints = function (a, b, h) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    var w = Math.round(Math.sqrt(dx * dx + dy * dy));
+
+    return new Bound(0, 0,  w, h);
+};
+
+collection.toPolar = function (a, b) {
+    var dx = b.x - a.x;
+    var dy = b.y - a.y;
+
+    return {
+        r: Math.round(Math.sqrt(dx * dx + dy * dy)),
+        t: dx == 0 ? ((dy > 0 ? 1 : -1) * Math.PI / 2) : (Math.atan(dy / dx) + (dx > 0 ? 0 : Math.PI))
+    };
+};
+
+collection.toRotationTransformFromPoints = function (a, b, h) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    
+    return [
+        translate(a.x, a.y),
+        rotate(collection.toPolar(a, b).t * 180 / Math.PI),
+        translate(0, 0 - h / 2)
+    ];
+};
+
+collection.findIntersection = function (a, b, c, d) {
+    var denominator = (a.x - b.x) * (c.y - d.y) - (a.y - b.y) * (c.x - d.x);
+    if (denominator == 0) return null;
+    
+    var x = ((a.x * b.y - a.y * b.x) * (c.x - d.x) - (a.x - b.x) * (c.x * d.y - c.y * d.x)) / denominator;
+    var y = ((a.x * b.y - a.y * b.x) * (c.y - d.y) - (a.y - b.y) * (c.x * d.y - c.y * d.x)) / denominator;
+    
+    return {x: x, y: y};
+};
+
+collection.findIntersectionInside = function (a, b, c, d) {
+    var p = collection.findIntersection(a, b, c, d);
+    if (!p) return null;
+    if (p.x < Math.min(a.x, b.x) || p.x > Math.max(a.x, b.x)) return null;
+    if (p.y < Math.min(a.y, b.y) || p.y > Math.max(a.y, b.y)) return null;
+    if (p.x < Math.min(c.x, d.x) || p.x > Math.max(c.x, d.x)) return null;
+    if (p.y < Math.min(c.y, d.y) || p.y > Math.max(c.y, d.y)) return null;
+    
+    return p;
+};
+
+collection.findIntersectionWithRect = function (p, ra, rb, shiftDelta) {
+    var c = {x: (ra.x + rb.x) / 2, y: (ra.y + rb.y) / 2};
+    var i = null;
+    
+    var shiftAmount = typeof(shiftDelta) === "number" ? shiftDelta : 0;
+    
+    i = collection.findIntersectionInside(c, p, ra, {x: rb.x, y: ra.y});
+    if (i) return collection.shiftAlong(c, p, i, shiftAmount);
+    
+    i = collection.findIntersectionInside(c, p, {x: rb.x, y: ra.y}, rb);
+    if (i) return collection.shiftAlong(c, p, i, shiftAmount);
+    
+    i = collection.findIntersectionInside(c, p, rb, {x: ra.x, y: rb.y});
+    if (i) return collection.shiftAlong(c, p, i, shiftAmount);
+    
+    i = collection.findIntersectionInside(c, p, {x: ra.x, y: rb.y}, ra);
+    if (i) return collection.shiftAlong(c, p, i, shiftAmount);
+    
+    return null;
+};
+
+collection.length = function (a, b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
+};
+collection.shiftAlong = function (a, b, x, delta) {
+    var dx = b.x - a.x;
+    var dy = b.y - a.y;
+
+    var ab = collection.length(a, b);
+    var ax = collection.length(a, x);
+    var r = (ax + delta) / ab;
+    return {
+        x: a.x + r * dx,
+        y: a.y + r * dy
+    };
+};
+collection.getContainerBound = function (a, b, dx, dy) {
+    var x = Math.min(a.x, b.x + dx);
+    var y = Math.min(a.y, b.y + dy);
+    var w = Math.max(a.x, b.x + dx) - x;
+    var h = Math.max(a.y, b.y + dy) - y;
+    
+    
+    return new Bound(x, y, w, h);
+};
+
+]]></Script>
   <Properties>
-    <PropertyGroup name="Collection Properties"/>
+    <PropertyGroup name="Collection Properties">
+      <Property name="defaultTextFont" displayName="Default Text Font" type="Font">CaveatBrush|normal|normal|18px|none</Property>
+      <Property name="defaultProblemColor" displayName="Default Problem Color" type="Color">#FF0000FF</Property>
+      <Property name="defaultGoodColor" displayName="Default Good Color" type="Color">#009900FF</Property>
+    </PropertyGroup>
   </Properties>
-  <Shape id="devicescreenshot" displayName="Device Screenshot" icon="icons/devicescreenshot.png?token=1499420356235">
+  <Shape id="devicescreenshot" displayName="Device Screenshot" icon="icons/devicescreenshot.png?token=1499935098582">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">370,660</Property>
         <Property name="fillColor" displayName="Background Color" type="Color">#CCCCCCFF</Property>
         <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
         <Property name="bitmap0ImageData" displayName="Image Data (bitmap0)" type="ImageData">10,10,collection://bitmaps/devicescreenshot-bitmap0.png</Property>
-        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
-        <Property name="textColor" displayName="Text Color" type="Color">#666666FF</Property>
-        <Property name="textFont" displayName="Text Font" type="Font">Android Roboto|normal|normal|14px|none</Property>
-        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="infoText" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;infoTexttext&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:370,&quot;gh0&quot;:660,&quot;w0&quot;:370,&quot;h0&quot;:26,&quot;x0&quot;:0,&quot;y0&quot;:667}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;end&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;fixed&quot;}),font: $textFont,align: $textAlignment,richText: true})">Screenshot information</Property>
-        <Property name="strokeColor" displayName="Line Color" type="Color">#666666FF</Property>
-        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#FFFFFFFF</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,2</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">#999999FF</Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultTextFont.resized(-0.2222222222222222)</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="infoText" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;infoTexttext&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:370,&quot;gh0&quot;:660,&quot;w0&quot;:370,&quot;h0&quot;:16,&quot;x0&quot;:0,&quot;y0&quot;:644}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;end&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;fixed&quot;}),font: $textFont,align: $textAlignment,richText: true})">Screenshot information</Property>
       </PropertyGroup>
     </Properties>
     <Behaviors>
       <For ref="rectangle0">
         <Bound>
-          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+          <Arg><![CDATA[(new Bound(0, 0, $box.w, $box.h - $textFont.getPixelHeight() - 5)).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
         </Bound>
         <Fill>
           <Arg><![CDATA[$fillColor]]></Arg>
@@ -539,7 +645,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
       </For>
       <For ref="bitmap0">
         <Transform>
-          <Arg><![CDATA[var bound = (collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"}));
+          <Arg><![CDATA[var bound = (new Bound(0, 0, $box.w, $box.h - $textFont.getPixelHeight() - 5));
 var imageData = ($bitmap0ImageData);
 
 [translate(bound.x, bound.y), scale(imageData.w <= 0 ? 1 : bound.w / imageData.w, imageData.h <= 0 ? 1 : bound.h / imageData.h)];]]></Arg>
@@ -550,25 +656,9 @@ var imageData = ($bitmap0ImageData);
           <Arg><![CDATA[$bitmap0ImageData]]></Arg>
         </Image>
       </For>
-      <For ref="infoTexttext">
-        <Fill>
-          <Arg><![CDATA[$textColor]]></Arg>
-        </Fill>
-        <Color>
-          <Arg><![CDATA[$textColor]]></Arg>
-        </Color>
-        <Font>
-          <Arg><![CDATA[$textFont]]></Arg>
-        </Font>
-        <RichTextContent>
-          <Arg><![CDATA[$infoText]]></Arg>
-          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":26,"x0":0,"y0":667}, {"xPolicy":"start","yPolicy":"end","wPolicy":"start-end","hPolicy":"fixed"})]]></Arg>
-          <Arg><![CDATA[$textAlignment]]></Arg>
-        </RichTextContent>
-      </For>
       <For ref="rectangle1">
         <Bound>
-          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":660,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed(($strokeStyle).w / 2)]]></Arg>
+          <Arg><![CDATA[(new Bound(0, 0, $box.w, $box.h - $textFont.getPixelHeight() - 5)).narrowed(($strokeStyle).w / 2)]]></Arg>
         </Bound>
         <Fill>
           <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
@@ -582,6 +672,22 @@ var imageData = ($bitmap0ImageData);
         <Radius>
           <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
         </Radius>
+      </For>
+      <For ref="infoTexttext">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$infoText]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":370,"gh0":660,"w0":370,"h0":16,"x0":0,"y0":644}, {"xPolicy":"start","yPolicy":"end","wPolicy":"start-end","hPolicy":"fixed"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
       </For>
     </Behaviors>
     <Actions>
@@ -615,7 +721,8 @@ window.setTimeout(function () {
 
             thiz.setProperty("bitmap0ImageData", imageData);
             var box = thiz.getProperty("box");
-            var r = box.h / imageData.h;
+            var textFont = thiz.getProperty("textFont");
+            var r = (box.h - textFont.getPixelHeight() - 5) / imageData.h;
             box.w = Math.round(imageData.w * r);
             thiz.setProperty("box", box);
         });
@@ -638,7 +745,6 @@ window.setTimeout(function () {
 
             var info = "<div>Android: <strong>" + map["ro.build.version.release"] + "</strong> / API: <strong>" + map["ro.build.version.sdk"] + "</strong>";
             info += " / Device: <strong>" + map["ro.product.manufacturer"] + " " + map["ro.product.model"] + "</strong>";
-            info += "<br/>" + new Date();
             info += "</div>";
 
             thiz.setProperty("infoText", new RichText(info));
@@ -693,11 +799,11 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" id="bitmap0">
         <image id="bitmap0image" x="0" y="0"/>
       </g>
+      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#1ae6bfdb922f4f5b952c6c775647f105)" id="rectangle1" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2;" width="368" height="658"/>
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#2f6e29107f834101b082933a53c93e87)" id="infoTexttext" dominant-baseline="auto"/>
-      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#1ae6bfdb922f4f5b952c6c775647f105)" id="rectangle1" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(102, 102, 102); stroke-opacity: 1; stroke-width: 1;" width="369" height="659"/>
     </Content>
   </Shape>
-  <Shape id="box" displayName="Box" icon="icons/box.png?token=1499420356235">
+  <Shape id="box" displayName="Box" icon="icons/box.png?token=1499935098582">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,100</Property>
@@ -705,7 +811,9 @@ return snaps;
         <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
         <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="radius" displayName="Corner Radius" type="Handle" p:minX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x" p:lockY="true" p:maxX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x + Math.round((collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:200,&quot;h0&quot;:100,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).w / 2)">0,0</Property>
         <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|0|1</Property>
-        <Property name="strokeColor" displayName="Line Color" type="Color">#FF0000FF</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
         <Property name="topLeftCorner" displayName="Rounded Top-Left Corner" type="Bool">true</Property>
         <Property name="topRightCorner" displayName="Rounded Top-Right Corner" type="Bool">true</Property>
         <Property name="bottomRightCorner" displayName="Rounded Bottom-Right Corner" type="Bool">true</Property>
@@ -716,7 +824,9 @@ return snaps;
         <Property name="leftBorder" displayName="Left Border" type="Bool">true</Property>
         <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="padding" displayName="padding" type="Handle" p:minY="0" p:maxY="$box.h" p:lockX="true" p:noScale="true">0,10</Property>
         <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
-        <Property name="textColor" displayName="Text Color" type="Color">#990000DE</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">
+          <E>$$defaultProblemColor.shaded(0.4).hollowed(0.12941176470588234)</E>
+        </Property>
         <Property name="textFont" displayName="Text Font" type="Font">Android Roboto|normal|normal|14px|none</Property>
         <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: Bound.fromBox($box, $padding.y),font: $textFont,align: $textAlignment,richText: true})"/>
       </PropertyGroup>
@@ -906,6 +1016,963 @@ return snaps;
       </g>
     </Content>
   </Shape>
+  <Shape id="arrow1" displayName="Arrow 1" icon="icons/arrow1.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$defaultProblemColor.hollowed(0.25098039215686274)</E>
+        </Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#FFFFFFFF</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property name="a" displayName="a" type="Handle">7,31</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="b" displayName="b" type="Handle" p:connectTo="*">325,31</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Transform>
+          <Arg><![CDATA[collection.toRotationTransformFromPoints($a, $b, 54)]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 54);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("199,66,28-124,0-66,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":151,\"y\":17},{\"x\":142,\"y\":1},{\"x\":198,\"y\":32},{\"x\":143,\"y\":65},{\"x\":151,\"y\":49}]},{\"command\":\"L\",\"points\":[{\"x\":2,\"y\":37}]},{\"command\":\"C\",\"points\":[{\"x\":-0.49410823,\"y\":35.090171,\"fixed\":true},{\"x\":0.59942249,\"y\":33.326039,\"fixed\":true},{\"x\":2,\"y\":32}]},{\"command\":\"Z\"}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 54);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat(collection.toRotationTransformFromPoints($a, $b, 54));}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions/>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#3e45f01b2e2645c9987496a19358818a)" id="vector0" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; fill: rgb(255, 0, 0); fill-opacity: 0.74902;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="arrow2" displayName="Arrow 2" icon="icons/arrow2.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$defaultProblemColor.hollowed(0.25098039215686274)</E>
+        </Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#FFFFFFFF</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property name="a" displayName="a" type="Handle">10,26</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="b" displayName="b" type="Handle" p:connectTo="*">204,26</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Transform>
+          <Arg><![CDATA[collection.toRotationTransformFromPoints($a, $b, 31)]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 31);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("91,31,8-61,0-31,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":68,\"y\":8},{\"x\":65,\"y\":1},{\"x\":90,\"y\":15},{\"x\":65,\"y\":29},{\"x\":69,\"y\":22},{\"x\":1,\"y\":17}]},{\"command\":\"C\",\"points\":[{\"x\":0.04896455,\"y\":16.195284,\"fixed\":true},{\"x\":0.54416581,\"y\":15.41598,\"fixed\":true},{\"x\":1,\"y\":15}]},{\"command\":\"Z\"}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 31);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat(collection.toRotationTransformFromPoints($a, $b, 31));}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions/>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#772fe2e0955a4b599a6538747dba1457)" id="vector0" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; fill: rgb(255, 0, 0); fill-opacity: 0.74902;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="arrow3" displayName="Arrow 3" icon="icons/arrow3.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property name="a" displayName="a" type="Handle">10,26</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="b" displayName="b" type="Handle" p:connectTo="*">204,26</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(collection.fixedHeightBoundFromPoints($a, $b, 23)).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+        </Bound>
+        <Transform>
+          <Arg><![CDATA[collection.toRotationTransformFromPoints($a, $b, 23)]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+      <For ref="vector0">
+        <Transform>
+          <Arg><![CDATA[collection.toRotationTransformFromPoints($a, $b, 23)]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 23);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("61,23,22-29,,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":0,\"y\":13}]},{\"command\":\"C\",\"points\":[{\"x\":15.843038,\"y\":7.106708,\"fixed\":true},{\"x\":33.346907,\"y\":6.7360065,\"fixed\":true},{\"x\":49,\"y\":11}]},{\"command\":\"C\",\"points\":[{\"x\":50.572274,\"y\":11.467349,\"fixed\":true},{\"x\":52.13032,\"y\":11.982564,\"fixed\":true},{\"x\":54,\"y\":13}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":42,\"y\":0}]},{\"command\":\"C\",\"points\":[{\"x\":47.20583,\"y\":2.2323402,\"fixed\":true},{\"x\":52.17092,\"y\":2.2315465,\"fixed\":true},{\"x\":60,\"y\":9},{\"x\":62.178739,\"y\":11.339187599999999,\"fixed\":true},{\"x\":61.071171,\"y\":13.349744600000001,\"fixed\":true},{\"x\":60,\"y\":15},{\"x\":54.747217,\"y\":20.589354,\"fixed\":true},{\"x\":46.358807999999996,\"y\":20.626394,\"fixed\":true},{\"x\":41,\"y\":22}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints($a, $b, 23);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat(collection.toRotationTransformFromPoints($a, $b, 23));}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions/>
+    <Content>
+      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#39779aa3ecbf421cb2adab5bbce8975e)" id="rectangle0" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="224" height="37"/>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#950c1874216d42bea6d30bc835e0e333)" id="vector0" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="circle" displayName="Circle" icon="icons/circle.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">115,51</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":115,"gh0":51,"w0":115,"h0":51,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+        </Bound>
+        <Transform>
+          <Arg><![CDATA[
+]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+      <For ref="vector0">
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":115,"gh0":51,"w0":115,"h0":51,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+ var r = (b.w / 95 + b.h / 52) / 2; var style = $strokeStyle;
+ return new StrokeStyle(style.w / r, style.array);}())]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":115,"gh0":51,"w0":115,"h0":51,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("95,52,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":60,\"y\":7}]},{\"command\":\"C\",\"points\":[{\"x\":60,\"y\":7,\"fixed\":true},{\"x\":49.242939,\"y\":4.2865638,\"fixed\":true},{\"x\":36,\"y\":5}]},{\"command\":\"C\",\"points\":[{\"x\":29.034997,\"y\":5.114403,\"fixed\":true},{\"x\":13.431777,\"y\":9.1006707,\"fixed\":true},{\"x\":6,\"y\":17},{\"x\":0.55680883,\"y\":22.267335,\"fixed\":true},{\"x\":0.10697323,\"y\":29.131676,\"fixed\":true},{\"x\":1,\"y\":34},{\"x\":1.3457058,\"y\":39.894296,\"fixed\":true},{\"x\":7.5350073,\"y\":44.577207,\"fixed\":true},{\"x\":14,\"y\":47}]},{\"command\":\"C\",\"points\":[{\"x\":23.885623000000002,\"y\":51.752642,\"fixed\":true},{\"x\":51.77828,\"y\":54.335458,\"fixed\":true},{\"x\":81,\"y\":44},{\"x\":87.389772,\"y\":41.988422,\"fixed\":true},{\"x\":94.10687300000001,\"y\":36.312101,\"fixed\":true},{\"x\":95,\"y\":29}]},{\"command\":\"C\",\"points\":[{\"x\":95.028002,\"y\":19.562668,\"fixed\":true},{\"x\":86.291749,\"y\":13.212457,\"fixed\":true},{\"x\":76,\"y\":8},{\"x\":64.700948,\"y\":2.0184029,\"fixed\":true},{\"x\":58.177854,\"y\":0.39267693,\"fixed\":true},{\"x\":46,\"y\":1},{\"x\":33.525613,\"y\":0.59752732,\"fixed\":true},{\"x\":22.446687,\"y\":3.7553604,\"fixed\":true},{\"x\":22,\"y\":4}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":115,"gh0":51,"w0":115,"h0":51,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2; b.w -= s.w; b.h -= s.w;
+return [translate(b.x, b.y), scale(b.w / 95, b.h / 52)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#7bde84b5170c48ac9a25cbc428b998d9)" id="rectangle0" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="115" height="51"/>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#aa381de7b0ac47229423801c234295bc)" id="vector0" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 1.87637; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="textblockwitharrow" displayName="Text Block With Arrow" icon="icons/textblockwitharrow.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">200,100</Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="b" displayName="b" type="Handle" p:disabled="!$withArrow.value" p:connectTo="*">231,-32</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">#FFFFFF00</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultTextFont</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:100,&quot;w0&quot;:171,&quot;h0&quot;:71,&quot;x0&quot;:14,&quot;y0&quot;:15}, {&quot;xPolicy&quot;:&quot;relative&quot;,&quot;yPolicy&quot;:&quot;relative&quot;,&quot;wPolicy&quot;:&quot;relative&quot;,&quot;hPolicy&quot;:&quot;relative&quot;}),font: $textFont,align: $textAlignment,richText: true})">Fuerant peregrinum ne semine principio quia caeli porrexerat locum quisque</Property>
+        <Property name="withArrow" displayName="With Arrow" type="Bool">true</Property>
+        <Property name="withTextFrame" displayName="With Text Frame" type="Bool">true</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":200,"h0":100,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+        </Bound>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("0,0")).x)]]></Arg>
+        </Radius>
+      </For>
+      <For ref="vector0">
+        <Visibility>
+          <Arg><![CDATA[$withArrow.value]]></Arg>
+        </Visibility>
+        <Transform>
+          <Arg><![CDATA[collection.toRotationTransformFromPoints(collection.findIntersectionWithRect($b, {x: 0, y: 0}, {x: $box.w, y: $box.h}, $withTextFrame.value ? 10 : 0), $b, 23)]]></Arg>
+        </Transform>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints(collection.findIntersectionWithRect($b, {x: 0, y: 0}, {x: $box.w, y: $box.h}, $withTextFrame.value ? 10 : 0), $b, 23);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("61,23,22-29,,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":0,\"y\":13}]},{\"command\":\"C\",\"points\":[{\"x\":15.843038,\"y\":7.106708,\"fixed\":true},{\"x\":33.346907,\"y\":6.7360065,\"fixed\":true},{\"x\":49,\"y\":11}]},{\"command\":\"C\",\"points\":[{\"x\":50.572274,\"y\":11.467349,\"fixed\":true},{\"x\":52.13032,\"y\":11.982564,\"fixed\":true},{\"x\":54,\"y\":13}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":42,\"y\":0}]},{\"command\":\"C\",\"points\":[{\"x\":47.20583,\"y\":2.2323402,\"fixed\":true},{\"x\":52.17092,\"y\":2.2315465,\"fixed\":true},{\"x\":60,\"y\":9},{\"x\":62.178739,\"y\":11.339187599999999,\"fixed\":true},{\"x\":61.071171,\"y\":13.349744600000001,\"fixed\":true},{\"x\":60,\"y\":15},{\"x\":54.747217,\"y\":20.589354,\"fixed\":true},{\"x\":46.358807999999996,\"y\":20.626394,\"fixed\":true},{\"x\":41,\"y\":22}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.fixedHeightBoundFromPoints(collection.findIntersectionWithRect($b, {x: 0, y: 0}, {x: $box.w, y: $box.h}, $withTextFrame.value ? 10 : 0), $b, 23);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat(collection.toRotationTransformFromPoints(collection.findIntersectionWithRect($b, {x: 0, y: 0}, {x: $box.w, y: $box.h}, $withTextFrame.value ? 10 : 0), $b, 23));}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="vector1">
+        <Visibility>
+          <Arg><![CDATA[$withTextFrame.value]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":199,"h0":100,"x0":0,"y0":1}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("106,43,51-59,21-26,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":5,\"y\":8}]},{\"command\":\"C\",\"points\":[{\"x\":1.6921986,\"y\":11.379042,\"fixed\":true},{\"x\":1.3256978,\"y\":15.996567,\"fixed\":true},{\"x\":1,\"y\":16}]},{\"command\":\"L\",\"points\":[{\"x\":1,\"y\":28}]},{\"command\":\"C\",\"points\":[{\"x\":1,\"y\":28,\"fixed\":true},{\"x\":2.07788345,\"y\":35.704,\"fixed\":true},{\"x\":5,\"y\":39},{\"x\":9.9655433,\"y\":44.437416999999996,\"fixed\":true},{\"x\":30.4999816,\"y\":42.499956,\"fixed\":true},{\"x\":30,\"y\":42}]},{\"command\":\"L\",\"points\":[{\"x\":78,\"y\":40}]},{\"command\":\"C\",\"points\":[{\"x\":78,\"y\":40,\"fixed\":true},{\"x\":95.600504,\"y\":40.924624,\"fixed\":true},{\"x\":103,\"y\":34},{\"x\":105.82841,\"y\":31.171590000000002,\"fixed\":true},{\"x\":106.56065,\"y\":29.389089,\"fixed\":true},{\"x\":107,\"y\":29},{\"x\":107,\"y\":29,\"fixed\":true},{\"x\":106.67308,\"y\":13.976605,\"fixed\":true},{\"x\":105,\"y\":10},{\"x\":103.60986,\"y\":6.6667591,\"fixed\":true},{\"x\":100.883872,\"y\":3.0711055,\"fixed\":true},{\"x\":101,\"y\":3},{\"x\":101,\"y\":3,\"fixed\":true},{\"x\":89.020296,\"y\":1.447937,\"fixed\":true},{\"x\":83,\"y\":1}]},{\"command\":\"C\",\"points\":[{\"x\":68.510051,\"y\":-0.31330452,\"fixed\":true},{\"x\":18.502441,\"y\":3.6534231,\"fixed\":true},{\"x\":19,\"y\":4}]},{\"command\":\"C\",\"points\":[{\"x\":19,\"y\":4,\"fixed\":true},{\"x\":7.9227341,\"y\":4.1251023,\"fixed\":true},{\"x\":5,\"y\":8}]},{\"command\":\"Z\"}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":199,"h0":100,"x0":0,"y0":1}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat([]);}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector1_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector1_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":100,"w0":171,"h0":71,"x0":14,"y0":15}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#f8d11fb9b6f8485ebd310b260786c75e)" id="rectangle0" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" height="100" width="200"/>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#bc19ff524dcc4a29855324fd927a581b)" id="vector0" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector1_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector1_globalGroup" p:filter="url(#vector1_shadowFilter)">
+        <g p:filter="url(#fbd25d7dbab34306a1b3dcc74488ca15)" id="vector1" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#0c60208e4da84793a820dc3666066f59)" id="text0text" dominant-baseline="auto"/>
+    </Content>
+  </Shape>
+  <Shape id="highlight" displayName="Highlight" icon="icons/highlight.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">224,28</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">#E8E80080</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|0|0</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":224,"gh0":28,"w0":224,"h0":28,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+ var r = (b.w / 224 + b.h / 28) / 2; var style = StrokeStyle.fromString("0|");
+ return new StrokeStyle(style.w / r, style.array);}())]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":224,"gh0":28,"w0":224,"h0":28,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = StrokeStyle.fromString("0|"); b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("224,28,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":4,\"y\":5}]},{\"command\":\"C\",\"points\":[{\"x\":4.7705575,\"y\":4.7194031,\"fixed\":true},{\"x\":5.6254867,\"y\":4.5397244,\"fixed\":true},{\"x\":6,\"y\":4},{\"x\":7.7169261,\"y\":4.0659984,\"fixed\":true},{\"x\":8.9781922,\"y\":3.8855637,\"fixed\":true},{\"x\":10,\"y\":4},{\"x\":12.065273,\"y\":3.5643795,\"fixed\":true},{\"x\":13.89188,\"y\":3.4732929,\"fixed\":true},{\"x\":16,\"y\":3},{\"x\":17.950829,\"y\":3.2979228,\"fixed\":true},{\"x\":20.183207,\"y\":3.1966314,\"fixed\":true},{\"x\":22,\"y\":3},{\"x\":24.997493,\"y\":2.9131669,\"fixed\":true},{\"x\":27.58303,\"y\":2.8205684,\"fixed\":true},{\"x\":30,\"y\":3},{\"x\":32.804599,\"y\":2.7026472,\"fixed\":true},{\"x\":35.439383,\"y\":2.6406629,\"fixed\":true},{\"x\":38,\"y\":3},{\"x\":40.865878,\"y\":2.5027102,\"fixed\":true},{\"x\":43.657966,\"y\":2.4433716,\"fixed\":true},{\"x\":46,\"y\":2},{\"x\":49.421859,\"y\":2.3057968,\"fixed\":true},{\"x\":59.288731,\"y\":3.7007448,\"fixed\":true},{\"x\":62,\"y\":4},{\"x\":66.519232,\"y\":3.6561464,\"fixed\":true},{\"x\":55.573834,\"y\":1.606622,\"fixed\":true},{\"x\":60,\"y\":2}]},{\"command\":\"C\",\"points\":[{\"x\":63.015912,\"y\":2.034016,\"fixed\":true},{\"x\":74.87096700000001,\"y\":2.043087,\"fixed\":true},{\"x\":78,\"y\":2},{\"x\":79.990639,\"y\":2.034016,\"fixed\":true},{\"x\":81.451389,\"y\":2.7498204,\"fixed\":true},{\"x\":83,\"y\":3},{\"x\":83.493304,\"y\":2.9992441,\"fixed\":true},{\"x\":84.973102,\"y\":3.0009071,\"fixed\":true},{\"x\":84,\"y\":3},{\"x\":83.224403,\"y\":2.99244,\"fixed\":true},{\"x\":82.448768,\"y\":2.998,\"fixed\":true},{\"x\":82,\"y\":3},{\"x\":84.918135,\"y\":3.00197,\"fixed\":true},{\"x\":89.073348,\"y\":2.0684976,\"fixed\":true},{\"x\":92,\"y\":2},{\"x\":94.827275,\"y\":1.961071,\"fixed\":true},{\"x\":96.416491,\"y\":2.7727622,\"fixed\":true},{\"x\":99,\"y\":3},{\"x\":101.813519,\"y\":2.941795,\"fixed\":true},{\"x\":104.627109,\"y\":2.888126,\"fixed\":true},{\"x\":107,\"y\":3},{\"x\":109.80698,\"y\":2.951622,\"fixed\":true},{\"x\":112.614,\"y\":2.904756,\"fixed\":true},{\"x\":115,\"y\":3},{\"x\":117.74908,\"y\":2.956157,\"fixed\":true},{\"x\":120.49815,\"y\":2.910803,\"fixed\":true},{\"x\":123,\"y\":3},{\"x\":125.66083,\"y\":2.960693,\"fixed\":true},{\"x\":128.32161,\"y\":2.917228,\"fixed\":true},{\"x\":131,\"y\":3},{\"x\":133.58644,\"y\":2.962205,\"fixed\":true},{\"x\":136.17296,\"y\":2.930835,\"fixed\":true},{\"x\":139,\"y\":3},{\"x\":141.54623,\"y\":2.969764,\"fixed\":true},{\"x\":146.3906,\"y\":4.1781165,\"fixed\":true},{\"x\":149,\"y\":4},{\"x\":151.46716,\"y\":3.969764,\"fixed\":true},{\"x\":151.63622,\"y\":2.7024502999999997,\"fixed\":true},{\"x\":154,\"y\":3},{\"x\":156.34017,\"y\":2.973543,\"fixed\":true},{\"x\":158.68038,\"y\":2.945197,\"fixed\":true},{\"x\":161,\"y\":3},{\"x\":163.15629,\"y\":2.969764,\"fixed\":true},{\"x\":165.31281,\"y\":2.955779,\"fixed\":true},{\"x\":167,\"y\":3},{\"x\":169.03006,\"y\":2.962205,\"fixed\":true},{\"x\":171.06001,\"y\":2.920252,\"fixed\":true},{\"x\":173,\"y\":3},{\"x\":174.91188,\"y\":2.960693,\"fixed\":true},{\"x\":176.82383,\"y\":2.923276,\"fixed\":true},{\"x\":179,\"y\":3},{\"x\":180.80004,\"y\":2.9659842,\"fixed\":true},{\"x\":183.66072,\"y\":2.04846613,\"fixed\":true},{\"x\":185,\"y\":2},{\"x\":188.10704,\"y\":1.93310237,\"fixed\":true},{\"x\":190.15448,\"y\":2.83739214,\"fixed\":true},{\"x\":193,\"y\":3},{\"x\":194.69202,\"y\":3.0151181,\"fixed\":true},{\"x\":196.38411,\"y\":3.0264566999999998,\"fixed\":true},{\"x\":198,\"y\":3}]},{\"command\":\"L\",\"points\":[{\"x\":203,\"y\":3}]},{\"command\":\"C\",\"points\":[{\"x\":204.78443,\"y\":2.9773228,\"fixed\":true},{\"x\":203.83864,\"y\":2.992441,\"fixed\":true},{\"x\":201,\"y\":3},{\"x\":200.7411,\"y\":2.99962205,\"fixed\":true},{\"x\":201.51806,\"y\":2.99988662,\"fixed\":true},{\"x\":202,\"y\":3},{\"x\":202.77957,\"y\":2.997997,\"fixed\":true},{\"x\":203.5591,\"y\":2.992441,\"fixed\":true},{\"x\":204,\"y\":3},{\"x\":205.5179,\"y\":2.9886614,\"fixed\":true},{\"x\":207.0358,\"y\":2.9811024,\"fixed\":true},{\"x\":209,\"y\":3},{\"x\":209.2468,\"y\":2.997997,\"fixed\":true},{\"x\":209.49342,\"y\":2.996976,\"fixed\":true},{\"x\":210,\"y\":3}]},{\"command\":\"L\",\"points\":[{\"x\":215,\"y\":6},{\"x\":211,\"y\":10},{\"x\":216,\"y\":12},{\"x\":212,\"y\":15},{\"x\":208,\"y\":19},{\"x\":218,\"y\":17},{\"x\":212,\"y\":21},{\"x\":223,\"y\":23},{\"x\":214,\"y\":27}]},{\"command\":\"L\",\"points\":[{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27}]},{\"command\":\"L\",\"points\":[{\"x\":214,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":213.9849,\"y\":27,\"fixed\":true},{\"x\":213.9698,\"y\":27.000037,\"fixed\":true},{\"x\":214,\"y\":27}]},{\"command\":\"L\",\"points\":[{\"x\":214,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":213.9849,\"y\":27.000037,\"fixed\":true},{\"x\":213.9698,\"y\":27.000037,\"fixed\":true},{\"x\":214,\"y\":27}]},{\"command\":\"L\",\"points\":[{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27},{\"x\":214,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":213.9849,\"y\":27.000075,\"fixed\":true},{\"x\":213.9698,\"y\":27.000113,\"fixed\":true},{\"x\":214,\"y\":27}]},{\"command\":\"L\",\"points\":[{\"x\":214,\"y\":27},{\"x\":214,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":213.9849,\"y\":27.000038,\"fixed\":true},{\"x\":213.9698,\"y\":27.000076,\"fixed\":true},{\"x\":214,\"y\":27},{\"x\":213.9849,\"y\":27.000076,\"fixed\":true},{\"x\":213.9698,\"y\":27.000114,\"fixed\":true},{\"x\":214,\"y\":27},{\"x\":212.48218,\"y\":27.003,\"fixed\":true},{\"x\":210.96432,\"y\":27.0076,\"fixed\":true},{\"x\":209,\"y\":27},{\"x\":206.08674,\"y\":27.0076,\"fixed\":true},{\"x\":203.17298,\"y\":27.03931,\"fixed\":true},{\"x\":200,\"y\":27},{\"x\":198.38392,\"y\":26.98488,\"fixed\":true},{\"x\":196.94463,\"y\":27.142867,\"fixed\":true},{\"x\":195,\"y\":27},{\"x\":193.31724,\"y\":26.9811,\"fixed\":true},{\"x\":191.45775,\"y\":26.780409,\"fixed\":true},{\"x\":190,\"y\":27},{\"x\":189.71729,\"y\":26.998,\"fixed\":true},{\"x\":189.43443,\"y\":26.9962,\"fixed\":true},{\"x\":189,\"y\":27},{\"x\":185.63954999999999,\"y\":26.98866,\"fixed\":true},{\"x\":193.75975,\"y\":27.002,\"fixed\":true},{\"x\":190,\"y\":27},{\"x\":189.71956,\"y\":26.999471,\"fixed\":true},{\"x\":189.43916,\"y\":26.999018,\"fixed\":true},{\"x\":189,\"y\":27},{\"x\":188.73015,\"y\":26.999093,\"fixed\":true},{\"x\":188.46021,\"y\":26.998,\"fixed\":true},{\"x\":188,\"y\":27},{\"x\":186.20639,\"y\":27.02268,\"fixed\":true},{\"x\":184.41278,\"y\":27.04309,\"fixed\":true},{\"x\":183,\"y\":27},{\"x\":181.09395,\"y\":27.02268,\"fixed\":true},{\"x\":180.07182,\"y\":26.696125,\"fixed\":true},{\"x\":178,\"y\":27},{\"x\":175.95614,\"y\":27.02646,\"fixed\":true},{\"x\":168.0787,\"y\":28.29411,\"fixed\":true},{\"x\":166,\"y\":28},{\"x\":163.7911,\"y\":28.03402,\"fixed\":true},{\"x\":172.89594,\"y\":25.757077,\"fixed\":true},{\"x\":171,\"y\":26},{\"x\":168.66214,\"y\":26.01134,\"fixed\":true},{\"x\":159.96034,\"y\":27.440681,\"fixed\":true},{\"x\":158,\"y\":27},{\"x\":155.53696,\"y\":27.0189,\"fixed\":true},{\"x\":153.07388,\"y\":27.03402,\"fixed\":true},{\"x\":151,\"y\":27},{\"x\":148.46235,\"y\":27.02268,\"fixed\":true},{\"x\":145.9247,\"y\":27.04838,\"fixed\":true},{\"x\":143,\"y\":27},{\"x\":140.4221,\"y\":27.02646,\"fixed\":true},{\"x\":137.84428,\"y\":27.05442,\"fixed\":true},{\"x\":135,\"y\":27},{\"x\":132.347,\"y\":27.03024,\"fixed\":true},{\"x\":127.57259,\"y\":25.994532,\"fixed\":true},{\"x\":125,\"y\":26},{\"x\":122.26075,\"y\":26.03402,\"fixed\":true},{\"x\":121.64284,\"y\":27.12679,\"fixed\":true},{\"x\":119,\"y\":27},{\"x\":116.20704,\"y\":27.03855,\"fixed\":true},{\"x\":113.41413,\"y\":27.0805,\"fixed\":true},{\"x\":111,\"y\":27},{\"x\":108.20175,\"y\":27.04838,\"fixed\":true},{\"x\":102.75186,\"y\":26.389644,\"fixed\":true},{\"x\":100,\"y\":26},{\"x\":97.129189,\"y\":26.05631,\"fixed\":true},{\"x\":96.909863,\"y\":26.812182,\"fixed\":true},{\"x\":94,\"y\":27},{\"x\":91.002532,\"y\":27.03402,\"fixed\":true},{\"x\":88.005178,\"y\":27.0805,\"fixed\":true},{\"x\":85,\"y\":27},{\"x\":80.672555,\"y\":27.0038,\"fixed\":true},{\"x\":76.345487,\"y\":27.003,\"fixed\":true},{\"x\":72,\"y\":27},{\"x\":69.000907,\"y\":26.9811,\"fixed\":true},{\"x\":68.299955,\"y\":27.838526,\"fixed\":true},{\"x\":65,\"y\":28},{\"x\":63.026445,\"y\":27.9811,\"fixed\":true},{\"x\":58.754709,\"y\":27.082104,\"fixed\":true},{\"x\":57,\"y\":27},{\"x\":56.520076,\"y\":26.998,\"fixed\":true},{\"x\":55.080454,\"y\":26.999622,\"fixed\":true},{\"x\":56,\"y\":27},{\"x\":56.792944,\"y\":26.9962,\"fixed\":true},{\"x\":57.585927,\"y\":26.998,\"fixed\":true},{\"x\":58,\"y\":27},{\"x\":55.17416,\"y\":26.98866,\"fixed\":true},{\"x\":52.347603,\"y\":27.0076,\"fixed\":true},{\"x\":50,\"y\":27},{\"x\":47.239622,\"y\":27.06425,\"fixed\":true},{\"x\":44.479395,\"y\":27.134173,\"fixed\":true},{\"x\":42,\"y\":27},{\"x\":39.356976,\"y\":27.07181,\"fixed\":true},{\"x\":36.714557,\"y\":27.16252,\"fixed\":true},{\"x\":34,\"y\":27},{\"x\":31.649323,\"y\":27.05896,\"fixed\":true},{\"x\":28.0593,\"y\":25.855144,\"fixed\":true},{\"x\":26,\"y\":26},{\"x\":23.768,\"y\":26.132661,\"fixed\":true},{\"x\":22.775911999999998,\"y\":27.53755,\"fixed\":true},{\"x\":21,\"y\":28},{\"x\":19.520466,\"y\":28.096,\"fixed\":true},{\"x\":18.041235,\"y\":28.197291,\"fixed\":true},{\"x\":17,\"y\":28},{\"x\":16.423055,\"y\":28.05178,\"fixed\":true},{\"x\":15.839874,\"y\":28.07521,\"fixed\":true},{\"x\":15,\"y\":28},{\"x\":14.682897,\"y\":27.98866,\"fixed\":true},{\"x\":9.849259499999999,\"y\":28.309921,\"fixed\":true},{\"x\":10,\"y\":28}]},{\"command\":\"L\",\"points\":[{\"x\":10,\"y\":28}]},{\"command\":\"L\",\"points\":[{\"x\":0,\"y\":25},{\"x\":7,\"y\":21},{\"x\":3,\"y\":20},{\"x\":4,\"y\":16},{\"x\":8,\"y\":14},{\"x\":0,\"y\":15},{\"x\":3,\"y\":12},{\"x\":0,\"y\":9},{\"x\":4,\"y\":5}]},{\"command\":\"Z\"}],\"style\":\"opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98492462\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":224,"gh0":28,"w0":224,"h0":28,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = StrokeStyle.fromString("0|"); b.x += s.w / 2; b.y += s.w / 2; b.w -= s.w; b.h -= s.w;
+return [translate(b.x, b.y), scale(b.w / 224, b.h / 28)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#04cb17db55834f89aef733e5237385e6)" id="vector0" style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0; fill: rgb(232, 232, 0); fill-opacity: 0.501961;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="cornerarrow" displayName="Corner Arrow" icon="icons/cornerarrow.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="a" displayName="a" type="Handle" p:connectTo="*">0,117</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="b" displayName="b" type="Handle" p:connectTo="*">47,0</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Visibility>
+          <Arg><![CDATA[$a.x <= $b.x && $a.y > $b.y]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, -8);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("36,36,8-13,20-25,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":1,\"y\":36}]},{\"command\":\"C\",\"points\":[{\"x\":1,\"y\":36,\"fixed\":true},{\"x\":1.4756157,\"y\":31.675010999999998,\"fixed\":true},{\"x\":2,\"y\":29},{\"x\":2,\"y\":29,\"fixed\":true},{\"x\":-0.30532285000000003,\"y\":15.092889,\"fixed\":true},{\"x\":1,\"y\":11}]},{\"command\":\"C\",\"points\":[{\"x\":1.0432052,\"y\":9.9878976,\"fixed\":true},{\"x\":2.1699202,\"y\":8.5660771,\"fixed\":true},{\"x\":4,\"y\":8},{\"x\":7.2733029,\"y\":6.1658881,\"fixed\":true},{\"x\":17.476742,\"y\":6.5095227,\"fixed\":true},{\"x\":17,\"y\":7}]},{\"command\":\"C\",\"points\":[{\"x\":17,\"y\":7,\"fixed\":true},{\"x\":21.702489,\"y\":7.7363654,\"fixed\":true},{\"x\":24,\"y\":8},{\"x\":25.900157,\"y\":7.977323,\"fixed\":true},{\"x\":29.656857,\"y\":7.2928881,\"fixed\":true},{\"x\":30,\"y\":7}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":20,\"y\":15}]},{\"command\":\"C\",\"points\":[{\"x\":20,\"y\":15,\"fixed\":true},{\"x\":32.267023,\"y\":11.997959,\"fixed\":true},{\"x\":35,\"y\":9},{\"x\":35.912152,\"y\":7.8628913,\"fixed\":true},{\"x\":36.611818,\"y\":7.2577888999999995,\"fixed\":true},{\"x\":36,\"y\":6}]},{\"command\":\"C\",\"points\":[{\"x\":33.449631,\"y\":1.3940833,\"fixed\":true},{\"x\":18.625794,\"y\":0.49909117,\"fixed\":true},{\"x\":19,\"y\":0}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, -8);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat([]);}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="vector1">
+        <Visibility>
+          <Arg><![CDATA[$a.x <= $b.x && $a.y <= $b.y]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, 8);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("36,36,11-16,13-18,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":1,\"y\":0}]},{\"command\":\"C\",\"points\":[{\"x\":1,\"y\":0,\"fixed\":true},{\"x\":1.4756157,\"y\":4.32498907,\"fixed\":true},{\"x\":2,\"y\":7},{\"x\":2,\"y\":7,\"fixed\":true},{\"x\":-0.30532285000000003,\"y\":20.9071115,\"fixed\":true},{\"x\":1,\"y\":25},{\"x\":1.33600002,\"y\":26.47137,\"fixed\":true},{\"x\":2.46271502,\"y\":27.893191,\"fixed\":true},{\"x\":4,\"y\":29},{\"x\":7.7376504,\"y\":30.757858,\"fixed\":true},{\"x\":17.9410895,\"y\":30.414223,\"fixed\":true},{\"x\":18,\"y\":30},{\"x\":18,\"y\":30,\"fixed\":true},{\"x\":22.702489,\"y\":29.263635,\"fixed\":true},{\"x\":25,\"y\":29},{\"x\":26.900157,\"y\":29.02268,\"fixed\":true},{\"x\":30.656857,\"y\":29.707112,\"fixed\":true},{\"x\":31,\"y\":30}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":20,\"y\":21}]},{\"command\":\"C\",\"points\":[{\"x\":20,\"y\":21,\"fixed\":true},{\"x\":32.267023,\"y\":24.002041,\"fixed\":true},{\"x\":35,\"y\":27},{\"x\":35.912152,\"y\":28.137108,\"fixed\":true},{\"x\":36.611818,\"y\":28.742211,\"fixed\":true},{\"x\":36,\"y\":30},{\"x\":33.764863,\"y\":33.878022,\"fixed\":true},{\"x\":18.941026,\"y\":34.773014,\"fixed\":true},{\"x\":19,\"y\":35}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, 8);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat([]);}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector1_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector1_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="vector2">
+        <Visibility>
+          <Arg><![CDATA[$a.x > $b.x && $a.y > $b.y]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, -8);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("36,36,22-27,19-24,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":35,\"y\":36}]},{\"command\":\"C\",\"points\":[{\"x\":35,\"y\":36,\"fixed\":true},{\"x\":34.524384,\"y\":31.675010999999998,\"fixed\":true},{\"x\":34,\"y\":29},{\"x\":34,\"y\":29,\"fixed\":true},{\"x\":36.305323,\"y\":15.092889,\"fixed\":true},{\"x\":35,\"y\":11},{\"x\":34.664,\"y\":9.5286296,\"fixed\":true},{\"x\":33.537285,\"y\":8.1068091,\"fixed\":true},{\"x\":32,\"y\":7},{\"x\":28.26235,\"y\":5.2421416999999995,\"fixed\":true},{\"x\":18.058909999999997,\"y\":5.5857763,\"fixed\":true},{\"x\":18,\"y\":6},{\"x\":18,\"y\":6,\"fixed\":true},{\"x\":13.297512000000001,\"y\":6.7363654,\"fixed\":true},{\"x\":11,\"y\":7}]},{\"command\":\"C\",\"points\":[{\"x\":10.026348,\"y\":7.1939574,\"fixed\":true},{\"x\":6.2696492,\"y\":6.5095227,\"fixed\":true},{\"x\":6,\"y\":7}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":17,\"y\":15}]},{\"command\":\"C\",\"points\":[{\"x\":17,\"y\":15,\"fixed\":true},{\"x\":4.732976300000001,\"y\":11.997959,\"fixed\":true},{\"x\":2,\"y\":9}]},{\"command\":\"C\",\"points\":[{\"x\":0.76129008,\"y\":7.1401747,\"fixed\":true},{\"x\":0.06162393,\"y\":6.5350723,\"fixed\":true},{\"x\":1,\"y\":5},{\"x\":3.024698,\"y\":1.3940833,\"fixed\":true},{\"x\":17.848534,\"y\":0.49909117,\"fixed\":true},{\"x\":18,\"y\":0}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, -8);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat([]);}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector2_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector2_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="vector3">
+        <Visibility>
+          <Arg><![CDATA[$a.x > $b.x && $a.y <= $b.y]]></Arg>
+        </Visibility>
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#FFFFFF00")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, 8);
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("36,36,23-28,14-19,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":35,\"y\":0}]},{\"command\":\"C\",\"points\":[{\"x\":35,\"y\":0,\"fixed\":true},{\"x\":34.524384,\"y\":4.32498907,\"fixed\":true},{\"x\":34,\"y\":7},{\"x\":34,\"y\":7,\"fixed\":true},{\"x\":36.305323,\"y\":20.9071115,\"fixed\":true},{\"x\":35,\"y\":25},{\"x\":34.664,\"y\":26.47137,\"fixed\":true},{\"x\":33.537285,\"y\":27.893191,\"fixed\":true},{\"x\":32,\"y\":29},{\"x\":28.26235,\"y\":30.757858,\"fixed\":true},{\"x\":18.058909999999997,\"y\":30.414223,\"fixed\":true},{\"x\":18,\"y\":30},{\"x\":18,\"y\":30,\"fixed\":true},{\"x\":13.297512000000001,\"y\":29.263635,\"fixed\":true},{\"x\":11,\"y\":29},{\"x\":9.099842,\"y\":29.02268,\"fixed\":true},{\"x\":5.3431432,\"y\":29.707112,\"fixed\":true},{\"x\":5,\"y\":30}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"},{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":17,\"y\":21}]},{\"command\":\"C\",\"points\":[{\"x\":17,\"y\":21,\"fixed\":true},{\"x\":4.732976300000001,\"y\":24.002041,\"fixed\":true},{\"x\":2,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":0.76129008,\"y\":28.900652,\"fixed\":true},{\"x\":0.06162393,\"y\":29.505755,\"fixed\":true},{\"x\":1,\"y\":31},{\"x\":3.024698,\"y\":34.646744,\"fixed\":true},{\"x\":17.848534,\"y\":35.541736,\"fixed\":true},{\"x\":18,\"y\":36}]}],\"style\":\"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.getContainerBound($a, $b, 0, 8);
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)].concat([]);}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector3_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector3_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+    </Behaviors>
+    <Actions/>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#bf02f685d6844ac48047c78d93d5f362)" id="vector0" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector1_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector1_globalGroup" p:filter="url(#vector1_shadowFilter)">
+        <g p:filter="url(#47ff7cfc041d4a758dbc44a129480751)" id="vector1" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector2_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector2_globalGroup" p:filter="url(#vector2_shadowFilter)">
+        <g p:filter="url(#416636731be84992a57f18eaae0db13d)" id="vector2" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector3_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector3_globalGroup" p:filter="url(#vector3_shadowFilter)">
+        <g p:filter="url(#5ac0d82a2ab64c63a9c38975b4551c35)" id="vector3" style="stroke: rgb(255, 0, 0); stroke-opacity: 1; stroke-width: 2; fill: rgb(255, 255, 255); fill-opacity: 0;"/>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="circletext" displayName="Circle Text" icon="icons/circletext.png?token=1499935098582">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">48,48</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$defaultProblemColor</E>
+        </Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">#FFFFFFFF</Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|0|2|0.5</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">1,1</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">#FFFFFFFF</Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultTextFont.resized(0.9444444444444444)</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:48,&quot;gh0&quot;:48,&quot;w0&quot;:48,&quot;h0&quot;:48,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;}),font: $textFont,align: $textAlignment,richText: true})">X</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":48,"gh0":48,"w0":48,"h0":48,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+ var r = (b.w / 32 + b.h / 32) / 2; var style = $strokeStyle;
+ return new StrokeStyle(style.w / r, style.array);}())]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":48,"gh0":48,"w0":48,"h0":48,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("32,32,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":32,\"y\":16}]},{\"command\":\"C\",\"points\":[{\"x\":32,\"y\":20.349215,\"fixed\":true},{\"x\":31.474533,\"y\":22.872504,\"fixed\":true},{\"x\":29,\"y\":26},{\"x\":26.14982,\"y\":28.85018,\"fixed\":true},{\"x\":20.974853,\"y\":32.027288,\"fixed\":true},{\"x\":17,\"y\":32},{\"x\":12.650746,\"y\":32,\"fixed\":true},{\"x\":8.8900027,\"y\":29.353235,\"fixed\":true},{\"x\":6,\"y\":27}]},{\"command\":\"C\",\"points\":[{\"x\":1.9396536,\"y\":23.152857,\"fixed\":true},{\"x\":0,\"y\":20.099225,\"fixed\":true},{\"x\":0,\"y\":16},{\"x\":0,\"y\":11.400756,\"fixed\":true},{\"x\":2.8482898,\"y\":7.885304,\"fixed\":true},{\"x\":5,\"y\":5},{\"x\":8.0819528,\"y\":1.1441386,\"fixed\":true},{\"x\":11.400756,\"y\":-0.000037794261,\"fixed\":true},{\"x\":16,\"y\":0}]},{\"command\":\"C\",\"points\":[{\"x\":20.349215,\"y\":-0.000037794261,\"fixed\":true},{\"x\":23.226078,\"y\":1.0557354,\"fixed\":true},{\"x\":26,\"y\":4},{\"x\":28.850217,\"y\":6.850179600000001,\"fixed\":true},{\"x\":31.673751,\"y\":11.4948032,\"fixed\":true},{\"x\":32,\"y\":16}]},{\"command\":\"Z\"}],\"style\":\"opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98492462\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":48,"gh0":48,"w0":48,"h0":48,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2; b.w -= s.w; b.h -= s.w;
+return [translate(b.x, b.y), scale(b.w / 32, b.h / 32)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":48,"gh0":48,"w0":48,"h0":48,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#cc7d211bdaac461abb9af92dfe5f692c)" id="vector0" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1.3913; fill: rgb(255, 0, 0); fill-opacity: 1;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#84b5fc3552754048a4241ceeae6951e6)" id="text0text" dominant-baseline="auto"/>
+    </Content>
+  </Shape>
   <Shortcut to="box" displayName="Indicator - U" icon="icons/indicator-u.png">
     <PropertyValue name="box">200,10</PropertyValue>
     <PropertyValue name="strokeStyle">4|</PropertyValue>
@@ -934,220 +2001,200 @@ return snaps;
     <PropertyValue name="leftBorder">false</PropertyValue>
     <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Red text" icon="icons/redtext.png">
-    <PropertyValue name="box">247,55</PropertyValue>
-    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textColor">#CC0000FF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  <Shortcut to="arrow1" displayName="Good Arrow 1" icon="icons/goodarrow1.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Green text" icon="icons/greentext.png">
-    <PropertyValue name="box">247,55</PropertyValue>
-    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textColor">#009900FF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+  <Shortcut to="arrow2" displayName="Good Arrow 2" icon="icons/goodarrow2.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Red text box" icon="icons/redtextbox.png">
-    <PropertyValue name="box">247,67</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,8</PropertyValue>
-    <PropertyValue name="textAlignment">0,1</PropertyValue>
+  <Shortcut to="arrow3" displayName="Good Arrow 3" icon="icons/goodarrow3.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="circle" displayName="Good Circle 1" icon="icons/goodcircle1.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Frame" icon="icons/textboxwitharrownoframe.png">
+    <PropertyValue name="box">200,86</PropertyValue>
+    <PropertyValue name="b">231,-27.52</PropertyValue>
+    <PropertyValue name="withTextFrame">false</PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, Good" icon="icons/textboxwitharrowgood.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Arrow" icon="icons/textboxwitharrownoarrow.png">
+    <PropertyValue name="withArrow">false</PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Arrow, Good" icon="icons/textboxwitharrownoarrowgood.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="withArrow">false</PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Frame, Good" icon="icons/textboxwitharrownoframegood.png">
+    <PropertyValue name="box">200,87</PropertyValue>
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="b">231,-27.840000000000003</PropertyValue>
+    <PropertyValue name="textColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="withTextFrame">false</PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Arrow, BG" icon="icons/textboxwitharrownoarrowbg.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultProblemColor</E>
+    </PropertyValue>
     <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+    <PropertyValue name="withArrow">false</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Green text box" icon="icons/greentextbox.png">
-    <PropertyValue name="box">247,67</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
-    <PropertyValue name="padding">0,8</PropertyValue>
-    <PropertyValue name="textAlignment">0,1</PropertyValue>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, No Arrow, BG, Good" icon="icons/textboxwitharrownoarrowbggood.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
     <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
+    <PropertyValue name="withArrow">false</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 1" icon="icons/index1.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, BG" icon="icons/textboxwitharrowbg.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultProblemColor</E>
+    </PropertyValue>
     <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  </Shortcut>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, BG, Good" icon="icons/textboxwitharrowbggood.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
+  </Shortcut>
+  <Shortcut to="highlight" displayName="Red Highlight" icon="icons/redhighlight.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultProblemColor.hollowed(0.4980392156862745)</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="highlight" displayName="Underline" icon="icons/underline.png">
+    <PropertyValue name="box">224,5</PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultProblemColor</E>
+    </PropertyValue>
+    <PropertyValue name="shadowStyle">0|1|1|0.4</PropertyValue>
+  </Shortcut>
+  <Shortcut to="highlight" displayName="Good Highlight" icon="icons/goodhighlight.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor.hollowed(0.4980392156862745)</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="cornerarrow" displayName="Corner Arrow - Good" icon="icons/cornerarrow-good.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="circletext" displayName="Bullet 1" icon="icons/bullet1.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">1</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 2" icon="icons/index2.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet 2" icon="icons/bullet2.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">2</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 3" icon="icons/index3.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet 3" icon="icons/bullet3.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">3</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 4" icon="icons/index4.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">4</PropertyValue>
-  </Shortcut>
-  <Shortcut to="box" displayName="Index 5" icon="icons/index5.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">5</PropertyValue>
-  </Shortcut>
-  <Shortcut to="box" displayName="Index 1g" icon="icons/index1g.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet 1 - Green" icon="icons/bullet1-green.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">1</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 2g" icon="icons/index2g.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet 2 - Green" icon="icons/bullet2-green.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">2</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 3g" icon="icons/index3g.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet 3 - Green" icon="icons/bullet3-green.png">
+    <PropertyValue name="box">30,30</PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont</E>
+    </PropertyValue>
     <PropertyValue name="text0">3</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 4g" icon="icons/index4g.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">4</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet A" icon="icons/bulleta.png">
+    <PropertyValue name="box">41,41</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont.resized(0.6666666666666667)</E>
+    </PropertyValue>
+    <PropertyValue name="text0">A</PropertyValue>
   </Shortcut>
-  <Shortcut to="box" displayName="Index 5g" icon="icons/index5g.png">
-    <PropertyValue name="box">24,24</PropertyValue>
-    <PropertyValue name="fillColor">#009900FF</PropertyValue>
-    <PropertyValue name="strokeStyle">0|</PropertyValue>
-    <PropertyValue name="radius">12,0</PropertyValue>
-    <PropertyValue name="shadowStyle">0|1|1|0.5</PropertyValue>
-    <PropertyValue name="padding">0,0</PropertyValue>
-    <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="text0">5</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet B" icon="icons/bulletb.png">
+    <PropertyValue name="box">41,41</PropertyValue>
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultTextFont.resized(0.6666666666666667)</E>
+    </PropertyValue>
+    <PropertyValue name="text0">B</PropertyValue>
   </Shortcut>
-  <Shortcut to="Evolus.Common:arrow" displayName="Connector" icon="icons/connector.png">
-    <PropertyValue name="endPin">52,17</PropertyValue>
-    <PropertyValue name="withStartArrow">false</PropertyValue>
-    <PropertyValue name="withEndArrow">false</PropertyValue>
-    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
+  <Shortcut to="circletext" displayName="Bullet OK" icon="icons/bulletok.png">
+    <PropertyValue name="fillColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="text0">OK</PropertyValue>
   </Shortcut>
-  <Shortcut to="Evolus.Common:arrow" displayName="Connector 2" icon="icons/connector2.png">
-    <PropertyValue name="endPin">52,17</PropertyValue>
-    <PropertyValue name="withEndArrow">false</PropertyValue>
-    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, Box Only" icon="icons/textboxwitharrowboxonly.png">
+    <PropertyValue name="text0"/>
+    <PropertyValue name="withArrow">false</PropertyValue>
   </Shortcut>
-  <Shortcut to="Evolus.Common:arrow" displayName="Connector 3" icon="icons/connector3.png">
-    <PropertyValue name="endPin">52,17</PropertyValue>
-    <PropertyValue name="withStartArrow">false</PropertyValue>
-    <PropertyValue name="withEndArrow">false</PropertyValue>
-    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
-  </Shortcut>
-  <Shortcut to="Evolus.Common:arrow" displayName="Connector 4" icon="icons/connector4.png">
-    <PropertyValue name="endPin">52,17</PropertyValue>
-    <PropertyValue name="withEndArrow">false</PropertyValue>
-    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
-  </Shortcut>
-  <Shortcut to="Evolus.Flowchart:process" displayName="Text Arrow" icon="icons/textarrow.png">
-    <PropertyValue name="box">248,72</PropertyValue>
-    <PropertyValue name="outputPin1Origin">124,0</PropertyValue>
-    <PropertyValue name="outputPin1">123.99999999999999,0</PropertyValue>
-    <PropertyValue name="outputPin2Origin">248,36</PropertyValue>
-    <PropertyValue name="outputPin2">247.99999999999997,36.00000000000001</PropertyValue>
-    <PropertyValue name="outputPin3Origin">124,72</PropertyValue>
-    <PropertyValue name="outputPin3">123.99999999999999,72.00000000000001</PropertyValue>
-    <PropertyValue name="outputPin4Origin">0,36</PropertyValue>
-    <PropertyValue name="outputPin4">0,36.00000000000001</PropertyValue>
-    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="strokeColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="textContent">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="textColor">#FF0000FF</PropertyValue>
-    <PropertyValue name="textAlign">0,1</PropertyValue>
-  </Shortcut>
-  <Shortcut to="Evolus.Flowchart:process" displayName="Text Arrow Green" icon="icons/textarrowgreen.png">
-    <PropertyValue name="box">248,72</PropertyValue>
-    <PropertyValue name="outputPin1Origin">124,0</PropertyValue>
-    <PropertyValue name="outputPin1">123.99999999999999,0</PropertyValue>
-    <PropertyValue name="outputPin2Origin">248,36</PropertyValue>
-    <PropertyValue name="outputPin2">247.99999999999997,36.00000000000001</PropertyValue>
-    <PropertyValue name="outputPin3Origin">124,72</PropertyValue>
-    <PropertyValue name="outputPin3">123.99999999999999,72.00000000000001</PropertyValue>
-    <PropertyValue name="outputPin4Origin">0,36</PropertyValue>
-    <PropertyValue name="outputPin4">0,36.00000000000001</PropertyValue>
-    <PropertyValue name="fillColor">#FFFFFFFF</PropertyValue>
-    <PropertyValue name="strokeColor">#009900FF</PropertyValue>
-    <PropertyValue name="textContent">Concordi glomeravit et dissaepserat margine carmen non regna terrarum flamina melioris fulminibus...</PropertyValue>
-    <PropertyValue name="textFont">Arial|normal|normal|14px|none</PropertyValue>
-    <PropertyValue name="textColor">#009900FF</PropertyValue>
-    <PropertyValue name="textAlign">0,1</PropertyValue>
+  <Shortcut to="textblockwitharrow" displayName="Text Box With Arrow, Box Only Green" icon="icons/textboxwitharrowboxonlygreen.png">
+    <PropertyValue name="strokeColor">
+      <E>$$defaultGoodColor</E>
+    </PropertyValue>
+    <PropertyValue name="text0"/>
+    <PropertyValue name="withArrow">false</PropertyValue>
   </Shortcut>
   <Script comments="Resource script"><![CDATA[
 collection.RESOURCE_LIST = [{"name":"Built-in bitmaps","type":"bitmap","prefix":"bitmaps"}];
@@ -1171,4 +2218,7 @@ collection.browseResource = function (setNames, type, returnType, callback) {
 };
 
 ]]></Script>
+  <Fonts>
+    <Font name="CaveatBrush" regular="fonts/CaveatBrush/CaveatBrush-normal-normal.ttf"/>
+  </Fonts>
 </Shapes>

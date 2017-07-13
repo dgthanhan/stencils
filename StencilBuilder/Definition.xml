@@ -1959,7 +1959,7 @@
     <Shape id="vector" displayName="Vector Path" inherits="basePathRelatedShape" icon="" p:skipBoundBehavior="true">
         <Properties>
             <PropertyGroup name="Vector Image">
-                <Property name="svgPathData" displayName="SVG Path 1" type="ImageData" p:disabled="true">155,110,json:[{"commands":[{"command":"M","points":[{"x":0,"y":69}]},{"command":"C","points":[{"x":0,"y":69,"fixed":true},{"x":90.00000064,"y":-40,"fixed":true},{"x":143,"y":16},{"x":195.99999,"y":71.999998,"fixed":true},{"x":34.999994,"y":29.999997999999998,"fixed":true},{"x":95,"y":63},{"x":155.000005,"y":96.000001,"fixed":true},{"x":131.000005,"y":108.99998500000001,"fixed":true},{"x":131,"y":109}]}],"style":"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"}]</Property>
+                <Property name="svgPathData" displayName="SVG Path 1" type="ImageData" p:npatch-edit="$imageScaleMode.value == 'npatch'">155,110,json:[{"commands":[{"command":"M","points":[{"x":0,"y":69}]},{"command":"C","points":[{"x":0,"y":69,"fixed":true},{"x":90.00000064,"y":-40,"fixed":true},{"x":143,"y":16},{"x":195.99999,"y":71.999998,"fixed":true},{"x":34.999994,"y":29.999997999999998,"fixed":true},{"x":95,"y":63},{"x":155.000005,"y":96.000001,"fixed":true},{"x":131.000005,"y":108.99998500000001,"fixed":true},{"x":131,"y":109}]}],"style":"fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"}]</Property>
                 <Property name="imageScaleMode" displayName="Image Scale Mode" type="Enum" p:enumValues="['scalable|Scalable', 'npatch|N-Patch Scalable']" p:disabled="$boundMode.value == 'fixed'">scalable</Property>
                 <Property name="strokeInside" displayName="Stroke Inside" type="Bool">true</Property>
             </PropertyGroup>
@@ -2087,10 +2087,14 @@
                                 + (strokeInside && strokeLiteral ? "var s = " + strokeLiteral + "; b.w -= s.w; b.h -= s.w;\n" : "")
                                 + "return collection.generatePathDOM(" + imageDataLiteral + ", b, false); }())"]);
 
+                        var advancedTransformExpression = this.getProperty("advancedTransformExpression").value || "[]";
+                        var transformLiteral = "(function () { var b = " + boundLiteral + ";\n"
+                            + (strokeInside && strokeLiteral ? "var s = " + strokeLiteral + "; b.x += s.w / 2; b.y += s.w / 2;\n" : "")
+                            + "return [translate(b.x, b.y)].concat(" + advancedTransformExpression + ");}())";
+
+                        console.log("transform: ", transformLiteral);
                         contribution.addBehavior(elementName, "Transform",
-                            ["(function () { var b = " + boundLiteral + ";\n"
-                                + (strokeInside && strokeLiteral ? "var s = " + strokeLiteral + "; b.x += s.w / 2; b.y += s.w / 2;\n" : "")
-                                + "return [translate(b.x, b.y)];}())"]);
+                            [transformLiteral]);
                     }
 
                     return contribution;
@@ -2117,6 +2121,8 @@
                 <Property name="lockY" type="PlainText" displayName="lockY Expression"></Property>
                 <Property name="noScale" type="Bool" displayName="No Scale">false</Property>
                 <Property name="disabled" type="PlainText" displayName="disabled Expression"></Property>
+                <Property name="connectTo" type="PlainText" displayName="Connect to"></Property>
+                <Property name="unconnectedValue" type="PlainText" displayName="unconnectedValue Expression"></Property>
             </PropertyGroup>
         </Properties>
         <Actions>
@@ -2146,7 +2152,7 @@
                         meta: {}
                     };
 
-                    const META_NAMES = ["minX", "maxX", "minY", "maxY", "lockX", "lockY", "disabled"];
+                    const META_NAMES = ["minX", "maxX", "minY", "maxY", "lockX", "lockY", "disabled", "connectTo", "unconnectedValue"];
                     for (var name of META_NAMES) {
                         var v = this.getProperty(name).value;
                         if (v) prop.meta[name] = v;
@@ -2267,6 +2273,69 @@
                         snaps: [],
                         contentFragment: document.createDocumentFragment(),
                     };
+
+                    return contribution;
+                ]]></Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <g id="text" />
+        </p:Content>
+    </Shape>
+    <Shape id="action" displayName="Action" icon="" p:excludeSizeCalculation="true">
+        <Properties>
+            <PropertyGroup name="Common">
+                <Property name="actionId" type="PlainText" displayName="Action ID"><E>collection.generateElementName(F._target)</E></Property>
+                <Property name="displayName" type="PlainText" displayName="Display name"><E>collection.generateElementName(F._target)</E></Property>
+                <Property name="impl" type="PlainText" displayName="Implementation"></Property>
+                <Property name="meta" type="PlainText" displayName="Meta Expressions"></Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="text">
+                <Font>Font.fromString("Arial|normal|normal|16px")</Font>
+                <Fill>Color.fromString("$000000FF")</Fill>
+                <Color>Color.fromString("$000000FF")</Color>
+                <RichTextContent>
+                    <Arg><![CDATA[RichText.fromString($actionId.value + '<span style="color: #F00;">()</span>')]]></Arg>
+                    <Arg>new Bound(0, -10, 200, 20)</Arg>
+                    <Arg>new Alignment(0, 1)</Arg>
+                </RichTextContent>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="buildShapeContribution">
+                <Impl><![CDATA[
+                    var contribution = {
+                        properties: [],
+                        behaviorMap: {},
+                        actions: [],
+                        snaps: [],
+                        contentFragment: document.createDocumentFragment(),
+                    };
+
+                    var action = {
+                        id: this.getProperty("actionId").value,
+                        displayName: this.getProperty("displayName").value,
+                        meta: [],
+                        impl: this.getProperty("impl").value
+                    };
+
+                    var metaExpressions = this.getProperty("meta").value;
+                    if (metaExpressions) {
+                        var lines = metaExpressions.split(/[\r\n]+/);
+                        for (var line of lines) {
+                            if (line.match(/^[ \t]*([^ \t\r\n=:]+)[ \t]*[=:][ \t]*([^\r\n]+)$/)) {
+                                var name = RegExp.$1;
+                                var expr = RegExp.$2;
+                                action.meta[name] = expr;
+                            } else {
+                                console.log("Invalid line: ", line);
+                            }
+                        }
+                    }
+
+                    contribution.actions.push(action);
 
                     return contribution;
                 ]]></Impl>

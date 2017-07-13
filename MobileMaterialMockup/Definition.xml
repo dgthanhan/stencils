@@ -486,7 +486,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
       <Property name="defaultTextColor" displayName="Default Text Color" type="Color">#000000FF</Property>
     </PropertyGroup>
   </Properties>
-  <Shape id="phoneframe" displayName="Phone Frame" icon="icons/phoneframe.png?token=1498731254335">
+  <Shape id="phoneframe" displayName="Phone Frame" icon="icons/phoneframe.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">456,922</Property>
@@ -659,7 +659,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#0ecf0dc3791b454da54b26978188dee2)" id="rectangle6" rx="0" ry="0" style="fill: rgb(96, 96, 96); fill-opacity: 1; stroke: rgb(96, 96, 96); stroke-opacity: 1; stroke-width: 0;" width="2" height="113"/>
     </Content>
   </Shape>
-  <Shape id="systemheaderbar" displayName="System Header Bar" icon="icons/systemheaderbar.png?token=1498731254335">
+  <Shape id="systemheaderbar" displayName="System Header Bar" icon="icons/systemheaderbar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,24</Property>
@@ -787,7 +787,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#02d7c207c39849a3a411eaee22e64549)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="titlebar" displayName="Title Bar" icon="icons/titlebar.png?token=1498731254335">
+  <Shape id="titlebar" displayName="Title Bar" icon="icons/titlebar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1065,7 +1065,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="bottomsoftkeybar" displayName="Bottom Softkey Bar" icon="icons/bottomsoftkeybar.png?token=1498731254335">
+  <Shape id="bottomsoftkeybar" displayName="Bottom Softkey Bar" icon="icons/bottomsoftkeybar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1184,7 +1184,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="bottomnavigationbar" displayName="Bottom Navigation Bar" icon="icons/bottomnavigationbar.png?token=1498731254335">
+  <Shape id="bottomnavigationbar" displayName="Bottom Navigation Bar" icon="icons/bottomnavigationbar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -1271,7 +1271,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#73b3e7f8e0034c1bbcd544c8c98e2426)" id="pathRect0" d="M 410 55.5 M 0 55.5 M 0 0 L 410 0" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 0.101961; stroke-width: 1;"/>
     </Content>
   </Shape>
-  <Shape id="bottomnavigationitem" displayName="Bottom Navigation Item" icon="icons/bottomnavigationitem.png?token=1498731254335">
+  <Shape id="bottomnavigationitem" displayName="Bottom Navigation Item" icon="icons/bottomnavigationitem.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">137,56</Property>
@@ -1388,7 +1388,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#ade38a0e1d114a3c959fe1faf269dd76)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="button" displayName="Button" icon="icons/button.png?token=1498731254335">
+  <Shape id="button" displayName="Button" icon="icons/button.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,36</Property>
@@ -1490,7 +1490,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#9b78d6452edd4ddb95a6408fc9807334)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="fab" displayName="FAB" icon="icons/fab.png?token=1498731254335">
+  <Shape id="fab" displayName="FAB" icon="icons/fab.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">56,56</Property>
@@ -1609,7 +1609,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="card" displayName="Card" icon="icons/card.png?token=1498731254335">
+  <Shape id="card" displayName="Card" icon="icons/card.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">394,260</Property>
@@ -1700,7 +1700,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="chip" displayName="Chip" icon="icons/chip.png?token=1498731254335">
+  <Shape id="chip" displayName="Chip" icon="icons/chip.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">140,32</Property>
@@ -1901,7 +1901,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#ebb58f9867884bae9ec1cb0f0b21135d)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="datatablecell" displayName="Data Table Cell" icon="icons/datatablecell.png?token=1498731254335">
+  <Shape id="datatablecell" displayName="Data Table Cell" icon="icons/datatablecell.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -2203,7 +2203,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="datatableheader" displayName="Data Table Header" icon="icons/datatableheader.png?token=1498731254335">
+  <Shape id="datatableheader" displayName="Data Table Header" icon="icons/datatableheader.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">394,64</Property>
@@ -2410,7 +2410,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1498731254335">
+  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">320,200</Property>
@@ -2593,7 +2593,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#eccf49333f084421a73efd337de06c78)" id="text3text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="fullscreendialogtitlebar" displayName="Full Screen Dialog Title Bar" icon="icons/fullscreendialogtitlebar.png?token=1498731254335">
+  <Shape id="fullscreendialogtitlebar" displayName="Full Screen Dialog Title Bar" icon="icons/fullscreendialogtitlebar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,56</Property>
@@ -2789,7 +2789,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#361a08c5df1a47248490d4a3e1095beb)" id="text1text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="listitem" displayName="List Item" icon="icons/listitem.png?token=1498731254335">
+  <Shape id="listitem" displayName="List Item" icon="icons/listitem.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,72</Property>
@@ -3025,7 +3025,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#62173d57ac03462a82dd98bc338a0a56)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="checkboxes" displayName="Checkboxes" icon="icons/checkboxes.png?token=1498731254335">
+  <Shape id="checkboxes" displayName="Checkboxes" icon="icons/checkboxes.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">24,24</Property>
@@ -3158,7 +3158,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1498731254335">
+  <Shape id="radio" displayName="Radio" icon="icons/radio.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">24,24</Property>
@@ -3291,7 +3291,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="avatar" displayName="Avatar" icon="icons/avatar.png?token=1498731254335">
+  <Shape id="avatar" displayName="Avatar" icon="icons/avatar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">40,40</Property>
@@ -3424,7 +3424,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#f428dbf8eab9407597e1fccd4ad24b86)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1498731254335">
+  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,18</Property>
@@ -3531,7 +3531,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="toggle-on" displayName="Toggle - On" icon="icons/toggle-on.png?token=1498731254335">
+  <Shape id="toggle-on" displayName="Toggle - On" icon="icons/toggle-on.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">36,20</Property>
@@ -3627,7 +3627,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="toggle-off" displayName="Toggle - Off" icon="icons/toggle-off.png?token=1498731254335">
+  <Shape id="toggle-off" displayName="Toggle - Off" icon="icons/toggle-off.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">36,20</Property>
@@ -3720,7 +3720,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="inputtext-single" displayName="Input Text - Single" icon="icons/inputtext-single.png?token=1498731254335">
+  <Shape id="inputtext-single" displayName="Input Text - Single" icon="icons/inputtext-single.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -3922,7 +3922,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#de6d15fb821045af82a3e79330489ca5)" id="text2text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="snackbar" displayName="Snackbar" icon="icons/snackbar.png?token=1498731254335">
+  <Shape id="snackbar" displayName="Snackbar" icon="icons/snackbar.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">410,48</Property>
@@ -4047,7 +4047,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#c4b1e4a3bb7c410480808f4a5bec5fac)" id="textActiontext" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="progress" displayName="Progress" icon="icons/progress.png?token=1498731254335">
+  <Shape id="progress" displayName="Progress" icon="icons/progress.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">360,4</Property>
@@ -4160,7 +4160,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#11e24a116ecd49ea8b8b091ae1cf9113)" id="rectangle3" rx="0" ry="0" style="fill: rgb(0, 188, 212); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="360" height="17"/>
     </Content>
   </Shape>
-  <Shape id="progress-indeterminate" displayName="Progress - Indeterminate" icon="icons/progress-indeterminate.png?token=1498731254335">
+  <Shape id="progress-indeterminate" displayName="Progress - Indeterminate" icon="icons/progress-indeterminate.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">360,4</Property>
@@ -4248,7 +4248,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#df0d6e5dca804389844c3ef50228da6f)" id="rectangle1" rx="0" ry="0" style="fill: rgb(0, 188, 212); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="134" height="4"/>
     </Content>
   </Shape>
-  <Shape id="tabitem" displayName="Tab Item" icon="icons/tabitem.png?token=1498731254335">
+  <Shape id="tabitem" displayName="Tab Item" icon="icons/tabitem.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,72</Property>
@@ -4480,7 +4480,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="icon" displayName="Icon" icon="icons/icon.png?token=1498731254335">
+  <Shape id="icon" displayName="Icon" icon="icons/icon.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">24,24</Property>
@@ -4560,7 +4560,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="rectangle" displayName="Rectangle" icon="icons/rectangle.png?token=1498731254335">
+  <Shape id="rectangle" displayName="Rectangle" icon="icons/rectangle.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,100</Property>
@@ -4779,7 +4779,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="mobilemenuitem" displayName="Mobile Menu Item" icon="icons/mobilemenuitem.png?token=1498731254335">
+  <Shape id="mobilemenuitem" displayName="Mobile Menu Item" icon="icons/mobilemenuitem.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">168,48</Property>
@@ -5065,7 +5065,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#7b2f7cd0a2a54f00bbc971883bd7fa53)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="appicon" displayName="App Icon" icon="icons/appicon.png?token=1498731254335">
+  <Shape id="appicon" displayName="App Icon" icon="icons/appicon.png?token=1499140972688">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">72,72</Property>
@@ -5246,11 +5246,598 @@ return snaps;
       </g>
     </Content>
   </Shape>
+  <Shape id="imagecard" displayName="Image Card" icon="icons/imagecard.png?token=1499140972688">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">200,240</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$invertedContentColor</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="radius" displayName="Corner Radius" type="Handle" p:minX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:240,&quot;w0&quot;:200,&quot;h0&quot;:240,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x" p:lockY="true" p:maxX="(collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:240,&quot;w0&quot;:200,&quot;h0&quot;:240,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).x + Math.round((collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:200,&quot;gh0&quot;:240,&quot;w0&quot;:200,&quot;h0&quot;:240,&quot;x0&quot;:0,&quot;y0&quot;:0}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;})).w / 2)">2,0</Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|2|1|0.2</Property>
+        <Property name="bitmap0ImageData" displayName="Image Data (bitmap0)" type="ImageData">293,335,collection://bitmaps/imagecard-bitmap0.png</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="handle1" displayName="handle1" type="Handle" p:minY="0" p:maxY="$box.h" p:lockX="true" p:disabled="$bitmap0ImageData.w &lt;= 0">0,137</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="pathRect1">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, ($radius).x)]]></Arg>
+        </Radius>
+        <D>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":240,"w0":200,"h0":240,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+var s = StrokeStyle.fromString("0|");
+var r = $radius;
+return collection.generateAdvancedRectPathData(b, s, r.x, true, true, true, true, true, true, true, true); }())]]></Arg>
+        </D>
+        <Transform>
+          <Arg><![CDATA[(function () { var s = StrokeStyle.fromString("0|");
+var b = collection.calculateBoundsFromPolicy($box, {"gw0":200,"gh0":240,"w0":200,"h0":240,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"});
+return [translate(((true) ? (s.w / 2) : 0) + b.x, ((true) ? (s.w / 2) : 0) + b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="pathRect1_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="pathRect1_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="bitmap0">
+        <Transform>
+          <Arg><![CDATA[var bound = (new Bound(0, 0, $box.w, $bitmap0ImageData.w > 0 ? ($bitmap0ImageData.h * $box.w / $bitmap0ImageData.w) : 0));
+var imageData = ($bitmap0ImageData);
+
+[translate(bound.x, bound.y), scale(imageData.w <= 0 ? 1 : bound.w / imageData.w, imageData.h <= 0 ? 1 : bound.h / imageData.h)];]]></Arg>
+        </Transform>
+      </For>
+      <For ref="bitmap0image">
+        <Image>
+          <Arg><![CDATA[$bitmap0ImageData]]></Arg>
+        </Image>
+      </For>
+      <For ref="pathRect0">
+        <Fill>
+          <Arg><![CDATA[Color.fromString("#00BCD466")]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, ($radius).x)]]></Arg>
+        </Radius>
+        <D>
+          <Arg><![CDATA[(function () { var b = new Bound(0, 0, $box.w, $handle1.y);
+var s = StrokeStyle.fromString("0|");
+var r = $radius;
+return collection.generateAdvancedRectPathData(b, s, r.x, true, true, true, true, true, true, $handle1.y == $box.h, $handle1.y == $box.h); }())]]></Arg>
+        </D>
+        <Transform>
+          <Arg><![CDATA[(function () { var s = StrokeStyle.fromString("0|");
+var b = new Bound(0, 0, $box.w, $handle1.y);
+return [translate(((true) ? (s.w / 2) : 0) + b.x, ((true) ? (s.w / 2) : 0) + b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="bitmap0CopyClipboard" displayName="Use Clipboard Data as bitmap0">
+        <Impl><![CDATA[this.def.collection.copyClipboardImage(this, "bitmap0ImageData");]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="bitmap0Browse" displayName="Select Resource Images for bitmap0..." p:content-action="true">
+        <Impl><![CDATA[this.def.collection.browseResource("", CollectionResourceBrowserDialog.TYPE_BITMAP, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("bitmap0ImageData", imageData)}.bind(this));]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="bitmap0BrowseFile" displayName="Select Bitmap from File for bitmap0..." p:content-action="true">
+        <Impl><![CDATA[
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("bitmap0ImageData", data);
+                            });
+                            ]]></Impl>
+      </Action>
+      <Action id="bitmap0Remove" displayName="Remove bitmap0">
+        <Impl><![CDATA[this.setProperty("bitmap0ImageData", new ImageData(0,0,"data:"));]]></Impl>
+      </Action>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+var __bound_bitmap0 = new Bound(0, 0, __prop_box.w, __prop_bitmap0ImageData.w > 0 ? (__prop_bitmap0ImageData.h * __prop_box.w / __prop_bitmap0ImageData.w) : 0);
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true),
+new SnappingData("Top0", this.def.collection.BOUND_CALCULATOR.calculate(__bound_bitmap0, "T0"), "Top", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <clipPath id="sbDefaultClipPath">
+          <path xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#e5ac3913ec714d548e409bf5bdec552f)" id="pathRect0" d="M 2 0 L 198 0 c 1.1045694996615871 0 2 0.8954305003384129 2 2 L 200 135 c 0 1.1045694996615871 -0.8954305003384129 2 -2 2 L 2 137 c -0.8954305003384129 0 -2 -0.8954305003384129 -2 -2 L 0 2 c 0 -1.1045694996615871 0.8954305003384129 -2 2 -2 z" style="fill: rgb(0, 188, 212); fill-opacity: 0.4; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;"/>
+        </clipPath>
+      </defs>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="pathRect1_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="pathRect1_globalGroup" p:filter="url(#pathRect1_shadowFilter)">
+        <path p:filter="url(#01ab7b7dde93451caec1e628ea3d6c0d)" id="pathRect1" d="M 2 0 L 198 0 c 1.1045694996615871 0 2 0.8954305003384129 2 2 L 200 238 c 0 1.1045694996615871 -0.8954305003384129 2 -2 2 L 2 240 c -0.8954305003384129 0 -2 -0.8954305003384129 -2 -2 L 0 2 c 0 -1.1045694996615871 0.8954305003384129 -2 2 -2 z" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" style="clip-path: url(#sbDefaultClipPath);">
+        <g id="bitmap0">
+          <image id="bitmap0image" x="0" y="0"/>
+        </g>
+      </g>
+    </Content>
+  </Shape>
+  <Shape id="conversationmessage" displayName="Conversation Message" icon="icons/conversationmessage.png?token=1499140972688">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">258,80</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$primaryContentColor</E>
+        </Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultTextColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">
+          <E>$$defaultStrokeStyle.condensed(-1)</E>
+        </Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|1|1|0.3</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">
+          <E>$$invertedContentColor</E>
+        </Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultFont</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:258,&quot;gh0&quot;:80,&quot;w0&quot;:218,&quot;h0&quot;:35,&quot;x0&quot;:13,&quot;y0&quot;:11}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;}),font: $textFont,align: $textAlignment,richText: true})">Sinistra regna duas erat aestu astra poena terris cingebant...</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text4" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text4text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:258,&quot;gh0&quot;:80,&quot;w0&quot;:145,&quot;h0&quot;:16,&quot;x0&quot;:13,&quot;y0&quot;:56}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;end&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;fixed&quot;}),font: $textFont,align: Alignment.fromString(&quot;0,0&quot;),richText: true})">Apr 4, 05:22 pm</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":258,"h0":80,"x0":0,"y0":0}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("258,66,13-235,18-56,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":6,\"y\":0}]},{\"command\":\"L\",\"points\":[{\"x\":258,\"y\":0}]},{\"command\":\"L\",\"points\":[{\"x\":246,\"y\":14}]},{\"command\":\"L\",\"points\":[{\"x\":246,\"y\":60}]},{\"command\":\"C\",\"points\":[{\"x\":246,\"y\":63.324019,\"fixed\":true},{\"x\":243.32402,\"y\":66,\"fixed\":true},{\"x\":240,\"y\":66}]},{\"command\":\"L\",\"points\":[{\"x\":6,\"y\":66}]},{\"command\":\"C\",\"points\":[{\"x\":2.6759925,\"y\":66.000001,\"fixed\":true},{\"x\":0,\"y\":63.32402,\"fixed\":true},{\"x\":0,\"y\":60}]},{\"command\":\"L\",\"points\":[{\"x\":0,\"y\":6}]},{\"command\":\"C\",\"points\":[{\"x\":0,\"y\":2.6759811,\"fixed\":true},{\"x\":2.6759925,\"y\":0,\"fixed\":true},{\"x\":6,\"y\":0}]},{\"command\":\"Z\"}],\"style\":\"opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98492462\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":258,"h0":80,"x0":0,"y0":0}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":218,"h0":35,"x0":13,"y0":11}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+      <For ref="text4text">
+        <Fill>
+          <Arg><![CDATA[$textColor.hollowed(0.25)]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor.hollowed(0.25)]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text4]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":145,"h0":16,"x0":13,"y0":56}, {"xPolicy":"start","yPolicy":"end","wPolicy":"start-end","hPolicy":"fixed"})]]></Arg>
+          <Arg><![CDATA[Alignment.fromString("0,0")]]></Arg>
+        </RichTextContent>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#b6a09fe83084449d895945a94bcf112d)" id="vector0" style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0; fill: rgb(0, 188, 212); fill-opacity: 1;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#c65abf0caca444a7b37f777c213aa07f)" id="text0text" dominant-baseline="auto"/>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#c1002c0fa2984e77964c2375fd5ac956)" id="text4text" dominant-baseline="auto"/>
+    </Content>
+  </Shape>
+  <Shape id="conversationmessagereversed" displayName="Conversation Message Reversed" icon="icons/conversationmessagereversed.png?token=1499140972688">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">258,80</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$primaryContentColor</E>
+        </Property>
+        <Property name="strokeColor" displayName="Line Color" type="Color">
+          <E>$$defaultTextColor</E>
+        </Property>
+        <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">
+          <E>$$defaultStrokeStyle.condensed(-1)</E>
+        </Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|1|1|0.3</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,0</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">
+          <E>$$invertedContentColor</E>
+        </Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultFont</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:258,&quot;gh0&quot;:80,&quot;w0&quot;:218,&quot;h0&quot;:35,&quot;x0&quot;:25,&quot;y0&quot;:11}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;}),font: $textFont,align: $textAlignment,richText: true})">Sinistra regna duas erat aestu astra poena terris cingebant...</Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text4" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text4text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:258,&quot;gh0&quot;:80,&quot;w0&quot;:145,&quot;h0&quot;:16,&quot;x0&quot;:25,&quot;y0&quot;:56}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;end&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;fixed&quot;}),font: $textFont,align: Alignment.fromString(&quot;0,0&quot;),richText: true})">Apr 4, 05:22 pm</Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="vector0">
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[$strokeColor]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[$strokeStyle]]></Arg>
+        </StrokeStyle>
+        <DomContent>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":258,"h0":80,"x0":0,"y0":0}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.w -= s.w; b.h -= s.w;
+return collection.generatePathDOM(ImageData.fromString("258,66,26-242,20-58,json:[{\"commands\":[{\"command\":\"M\",\"points\":[{\"x\":252,\"y\":0}]},{\"command\":\"L\",\"points\":[{\"x\":0,\"y\":0}]},{\"command\":\"L\",\"points\":[{\"x\":12,\"y\":14}]},{\"command\":\"L\",\"points\":[{\"x\":12,\"y\":60}]},{\"command\":\"C\",\"points\":[{\"x\":12,\"y\":63.324019,\"fixed\":true},{\"x\":14.675981,\"y\":66,\"fixed\":true},{\"x\":18,\"y\":66}]},{\"command\":\"L\",\"points\":[{\"x\":252,\"y\":66}]},{\"command\":\"C\",\"points\":[{\"x\":255.32401,\"y\":66,\"fixed\":true},{\"x\":258,\"y\":63.324019,\"fixed\":true},{\"x\":258,\"y\":60}]},{\"command\":\"L\",\"points\":[{\"x\":258,\"y\":6}]},{\"command\":\"C\",\"points\":[{\"x\":258.00003,\"y\":2.6759811,\"fixed\":true},{\"x\":255.32404,\"y\":0,\"fixed\":true},{\"x\":252,\"y\":0}]},{\"command\":\"Z\"}],\"style\":\"opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98492462\"}]"), b, false); }())]]></Arg>
+        </DomContent>
+        <Transform>
+          <Arg><![CDATA[(function () { var b = collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":258,"h0":80,"x0":0,"y0":0}, {"xPolicy":"relative","yPolicy":"relative","wPolicy":"relative","hPolicy":"relative"});
+var s = $strokeStyle; b.x += s.w / 2; b.y += s.w / 2;
+return [translate(b.x, b.y)];}())]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vector0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vector0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":218,"h0":35,"x0":25,"y0":11}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+      <For ref="text4text">
+        <Fill>
+          <Arg><![CDATA[$textColor.hollowed(0.25)]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor.hollowed(0.25)]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text4]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":258,"gh0":80,"w0":145,"h0":16,"x0":25,"y0":56}, {"xPolicy":"start","yPolicy":"end","wPolicy":"start-end","hPolicy":"fixed"})]]></Arg>
+          <Arg><![CDATA[Alignment.fromString("0,0")]]></Arg>
+        </RichTextContent>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="vector0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vector0_globalGroup" p:filter="url(#vector0_shadowFilter)">
+        <g p:filter="url(#88ba7eaaa52645d8b5a8363fbdd47945)" id="vector0" style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0; fill: rgb(0, 188, 212); fill-opacity: 1;"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#e6b193da2cfc4a75a509b2b45ce66f50)" id="text0text" dominant-baseline="auto"/>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#e232e5215cbc4a11a6db7e335b2c50f3)" id="text4text" dominant-baseline="auto"/>
+    </Content>
+  </Shape>
+  <Shape id="solotextfield" displayName="Solo Text Field" icon="icons/solotextfield.png?token=1499140972688">
+    <Properties>
+      <PropertyGroup name="Common" holder="true">
+        <Property name="box" displayName="box" type="Dimension">362,48</Property>
+        <Property name="fillColor" displayName="Background Color" type="Color">
+          <E>$$invertedContentColor</E>
+        </Property>
+        <Property name="shadowStyle" displayName="Shadow Style" type="ShadowStyle">0|1|2|0.5</Property>
+        <Property name="vectorImage0ImageData" displayName="Image Data (Leading Icon)" type="ImageData">24,24,collection://vectors/solotextfield-vectorimage0.svg</Property>
+        <Property name="vectorImage1ImageData" displayName="Image Data (Trailing Icon)" type="ImageData">24,24,collection://vectors/solotextfield-vectorimage1.svg</Property>
+        <Property name="textAlignment" displayName="Text Alignment" type="Alignment">0,1</Property>
+        <Property name="textColor" displayName="Text Color" type="Color">
+          <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
+        </Property>
+        <Property name="textFont" displayName="Text Font" type="Font">
+          <E>$$defaultFont.resized(0.4285714285714286)</E>
+        </Property>
+        <Property xmlns:p="http://www.evolus.vn/Namespace/Pencil" name="text0" displayName="Text" type="RichText" p:editInfo="({targetName: &quot;text0text&quot;,bound: collection.calculateBoundsFromPolicy($box, {&quot;gw0&quot;:362,&quot;gh0&quot;:48,&quot;w0&quot;:268,&quot;h0&quot;:30,&quot;x0&quot;:53,&quot;y0&quot;:9}, {&quot;xPolicy&quot;:&quot;start&quot;,&quot;yPolicy&quot;:&quot;start&quot;,&quot;wPolicy&quot;:&quot;start-end&quot;,&quot;hPolicy&quot;:&quot;start-end&quot;}),font: $textFont,align: $textAlignment,richText: true})">Search</Property>
+        <Property name="iconColor" displayName="Icon Color" type="Color">
+          <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
+        </Property>
+      </PropertyGroup>
+    </Properties>
+    <Behaviors>
+      <For ref="rectangle0">
+        <Bound>
+          <Arg><![CDATA[(collection.calculateBoundsFromPolicy($box, {"gw0":362,"gh0":48,"w0":362,"h0":48,"x0":0,"y0":0}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})).narrowed((StrokeStyle.fromString("0|")).w / 2)]]></Arg>
+        </Bound>
+        <Fill>
+          <Arg><![CDATA[$fillColor]]></Arg>
+        </Fill>
+        <StrokeColor>
+          <Arg><![CDATA[Color.fromString("#000000FF")]]></Arg>
+        </StrokeColor>
+        <StrokeStyle>
+          <Arg><![CDATA[StrokeStyle.fromString("0|")]]></Arg>
+        </StrokeStyle>
+        <Radius>
+          <Arg><![CDATA[Math.max(0, (Handle.fromString("3,0")).x)]]></Arg>
+        </Radius>
+      </For>
+      <For ref="rectangle0_shadowFilter">
+        <DomContent>
+          <Arg><![CDATA[(function () {
+                        var shadowStyle = $shadowStyle;
+                        return Dom.newDOMFragment(
+                        [
+                            { _name: "feGaussianBlur", _uri: PencilNamespaces.svg, in: "SourceAlpha", stdDeviation: shadowStyle.size },
+                            { _name: "feOffset", _uri: PencilNamespaces.svg, dx: shadowStyle.dx, dy: shadowStyle.dy },
+                            { _name: "feComponentTransfer", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feFuncA", _uri: PencilNamespaces.svg, type: "linear", slope: shadowStyle.opacity }
+                            ]},
+                            { _name: "feMerge", _uri: PencilNamespaces.svg, _children: [
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg },
+                                { _name: "feMergeNode", _uri: PencilNamespaces.svg, in: "SourceGraphic" }
+                            ]}
+                        ]);
+                    }())]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="rectangle0_globalGroup">
+        <ApplyFilter>
+          <Arg><![CDATA[($shadowStyle.opacity) ? true : false]]></Arg>
+        </ApplyFilter>
+      </For>
+      <For ref="vectorImage0">
+        <Transform>
+          <Arg><![CDATA[var bound = (collection.calculateBoundsFromPolicy($box, {"gw0":362,"gh0":48,"w0":24,"h0":24,"x0":11,"y0":12}, {"xPolicy":"start","yPolicy":"middle","wPolicy":"fixed","hPolicy":"fixed"}));
+
+var imageData = ($vectorImage0ImageData);
+
+[translate(bound.x, bound.y), scale(bound.w / (imageData.w || 1), bound.h / (imageData.h || 1))];]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vectorImage0Image">
+        <DomContent>
+          <Arg><![CDATA[collection.toColorizedDOMNode(($vectorImage0ImageData).getDataAsXML(), $iconColor)]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="vectorImage1">
+        <Transform>
+          <Arg><![CDATA[var bound = (collection.calculateBoundsFromPolicy($box, {"gw0":362,"gh0":48,"w0":24,"h0":24,"x0":329,"y0":12}, {"xPolicy":"end","yPolicy":"middle","wPolicy":"fixed","hPolicy":"fixed"}));
+
+var imageData = ($vectorImage1ImageData);
+
+[translate(bound.x, bound.y), scale(bound.w / (imageData.w || 1), bound.h / (imageData.h || 1))];]]></Arg>
+        </Transform>
+      </For>
+      <For ref="vectorImage1Image">
+        <DomContent>
+          <Arg><![CDATA[collection.toColorizedDOMNode(($vectorImage1ImageData).getDataAsXML(), $iconColor)]]></Arg>
+        </DomContent>
+      </For>
+      <For ref="text0text">
+        <Fill>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Fill>
+        <Color>
+          <Arg><![CDATA[$textColor]]></Arg>
+        </Color>
+        <Font>
+          <Arg><![CDATA[$textFont]]></Arg>
+        </Font>
+        <RichTextContent>
+          <Arg><![CDATA[$text0]]></Arg>
+          <Arg><![CDATA[collection.calculateBoundsFromPolicy($box, {"gw0":362,"gh0":48,"w0":268,"h0":30,"x0":53,"y0":9}, {"xPolicy":"start","yPolicy":"start","wPolicy":"start-end","hPolicy":"start-end"})]]></Arg>
+          <Arg><![CDATA[$textAlignment]]></Arg>
+        </RichTextContent>
+      </For>
+    </Behaviors>
+    <Actions>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0Browse" displayName="Select Resource Images for Leading Icon..." p:content-action="true">
+        <Impl><![CDATA[this.def.collection.browseResource("", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage0ImageData", imageData)}.bind(this));]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage0BrowseFile" displayName="Select Vector Image from File for Leading Icon..." p:content-action="true">
+        <Impl><![CDATA[
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("vectorImage0ImageData", data);
+                            });
+                            ]]></Impl>
+      </Action>
+      <Action id="vectorImage0Remove" displayName="Remove Leading Icon">
+        <Impl><![CDATA[this.setProperty("vectorImage0ImageData", new ImageData(0,0,"data:"));]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage1Browse" displayName="Select Resource Images for Trailing Icon..." p:content-action="true">
+        <Impl><![CDATA[this.def.collection.browseResource("", CollectionResourceBrowserDialog.TYPE_SVG, CollectionResourceBrowserDialog.RETURN_IMAGEDATA, function (imageData) {this.setProperty("vectorImage1ImageData", imageData)}.bind(this));]]></Impl>
+      </Action>
+      <Action xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="vectorImage1BrowseFile" displayName="Select Vector Image from File for Trailing Icon..." p:content-action="true">
+        <Impl><![CDATA[
+                            var thiz = this;
+                            ImageData.prompt(function(data) {
+                                if (!data) return;
+                                thiz.setProperty("vectorImage1ImageData", data);
+                            });
+                            ]]></Impl>
+      </Action>
+      <Action id="vectorImage1Remove" displayName="Remove Trailing Icon">
+        <Impl><![CDATA[this.setProperty("vectorImage1ImageData", new ImageData(0,0,"data:"));]]></Impl>
+      </Action>
+      <Action id="getSnappingGuide">
+        <Impl><![CDATA[
+var __prop_box = this.getProperty("box");
+
+var snaps = [new SnappingData("Left", 0, "Left", true, this.id).makeLocal(true),
+new SnappingData("Right", __prop_box.w, "Right", true, this.id).makeLocal(true),
+new SnappingData("Top", 0, "Top", false, this.id).makeLocal(true),
+new SnappingData("Bottom", __prop_box.h, "Bottom", false, this.id).makeLocal(true),
+new SnappingData("VCenter", Math.round(__prop_box.w / 2), "VCenter", true, this.id).makeLocal(true),
+new SnappingData("HCenter", Math.round(__prop_box.h / 2), "HCenter", false, this.id).makeLocal(true)];
+return snaps;
+]]></Impl>
+      </Action>
+    </Actions>
+    <Content>
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="rectangle0_shadowFilter" x="-50%" width="200%" y="-50%" height="200%"/>
+      </defs>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" id="rectangle0_globalGroup" p:filter="url(#rectangle0_shadowFilter)">
+        <rect p:filter="url(#07bdb109eb804c5bb2b5e7e7dc247c7b)" id="rectangle0" rx="3" ry="3" style="fill: rgb(255, 255, 255); fill-opacity: 1; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="362" height="48"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" id="vectorImage0">
+        <g id="vectorImage0Image" x="0" y="0"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" id="vectorImage1">
+        <g id="vectorImage1Image" x="0" y="0"/>
+      </g>
+      <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#7b0b9ac7b93545ce8e7cfac05fee4b2f)" id="text0text" dominant-baseline="auto"/>
+    </Content>
+  </Shape>
   <Shortcut to="bottomnavigationitem" displayName="Active Navigation Item" icon="icons/activenavigationitem.png">
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-activenavigationitem-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-activenavigationitem-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Active Item</PropertyValue>
     <PropertyValue name="active">true</PropertyValue>
   </Shortcut>
@@ -5263,7 +5850,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-invertedactivebottomitem-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-invertedactivebottomitem-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Active Item</PropertyValue>
     <PropertyValue name="active">true</PropertyValue>
   </Shortcut>
@@ -5271,7 +5858,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.0980392156862745)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-invertednormalbottomitem-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-invertednormalbottomitem-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="button" displayName="Raised Button" icon="icons/raisedbutton.png">
     <PropertyValue name="fillColor">
@@ -5328,11 +5915,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-fabnocolor-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-fabnocolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="fab" displayName="FAB Mini color" icon="icons/fabminicolor.png">
     <PropertyValue name="box">40,40</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-fabminicolor-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-fabminicolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="fab" displayName="FAB Mini No color" icon="icons/fabmininocolor.png">
     <PropertyValue name="box">40,40</PropertyValue>
@@ -5342,7 +5929,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-fabmininocolor-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-fabmininocolor-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="card" displayName="Card Raised" icon="icons/cardraised.png">
     <PropertyValue name="shadowStyle">0|4|5|0.4</PropertyValue>
@@ -5352,28 +5939,28 @@ return snaps;
   </Shortcut>
   <Shortcut to="chip" displayName="Chip Raised" icon="icons/chipraised.png">
     <PropertyValue name="shadowStyle">0|2|1|0.2</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-chipraised-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-chipraised-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Chip Raised</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip no image" icon="icons/chipnoimage.png">
     <PropertyValue name="box">112,32</PropertyValue>
     <PropertyValue name="bitmap0ImageData">0,0,data:</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-chipnoimage-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-chipnoimage-vectorimage0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip no delete" icon="icons/chipnodelete.png">
     <PropertyValue name="box">109,32</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-chipnodelete-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-chipnodelete-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="withDelete">false</PropertyValue>
   </Shortcut>
   <Shortcut to="chip" displayName="Chip simple" icon="icons/chipsimple.png">
     <PropertyValue name="box">80,32</PropertyValue>
     <PropertyValue name="bitmap0ImageData">0,0,data:</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-chipsimple-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-chipsimple-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="withDelete">false</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC Header Uncheck" icon="icons/dcheaderuncheck.png">
     <PropertyValue name="box">259,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dcheaderuncheck-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dcheaderuncheck-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
@@ -5381,13 +5968,13 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Dessert (100g serving)</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dcheaderuncheck-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dcheaderuncheck-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header up" icon="icons/dcheaderup.png">
     <PropertyValue name="box">103,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dcheaderup-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dcheaderup-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
@@ -5396,47 +5983,47 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Calories</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/appicon-dcheaderup-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dcheaderup-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/solotextfield-dcheaderup-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dcheaderup-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header down active" icon="icons/dcheaderdownactive.png">
     <PropertyValue name="box">121,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dcheaderdownactive-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dcheaderdownactive-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="textFont">
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Fat (g)</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/appicon-dcheaderdownactive-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dcheaderdownactive-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/solotextfield-dcheaderdownactive-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dcheaderdownactive-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell unchecked" icon="icons/dccellunchecked.png">
     <PropertyValue name="box">259,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellunchecked-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellunchecked-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Frozen yogurt</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellunchecked-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellunchecked-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number dropdown" icon="icons/dccellnumberdropdown.png">
     <PropertyValue name="box">103,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellnumberdropdown-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdown-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">159</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellnumberdropdown-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdown-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
-    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/appicon-dccellnumberdropdown-trailingiconimagedata.svg</PropertyValue>
+    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdown-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number" icon="icons/dccellnumber.png">
     <PropertyValue name="box">121,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellnumber-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellnumber-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">6.0</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellnumber-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellnumber-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -5445,9 +6032,9 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellcheckedhover-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellcheckedhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Ice cream sandwich</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellcheckedhover-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellcheckedhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number dropdown hover" icon="icons/dccellnumberdropdownhover.png">
@@ -5455,28 +6042,28 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellnumberdropdownhover-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdownhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">1.829</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellnumberdropdownhover-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdownhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
-    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/appicon-dccellnumberdropdownhover-trailingiconimagedata.svg</PropertyValue>
+    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/solotextfield-dccellnumberdropdownhover-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell number hover" icon="icons/dccellnumberhover.png">
     <PropertyValue name="box">121,48</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccellnumberhover-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccellnumberhover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
     <PropertyValue name="text0">9.0</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccellnumberhover-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccellnumberhover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC header comment" icon="icons/dcheadercomment.png">
     <PropertyValue name="box">246,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dcheadercomment-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dcheadercomment-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
@@ -5484,27 +6071,27 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">Comments</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/appicon-dcheadercomment-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dcheadercomment-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/solotextfield-dcheadercomment-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dcheadercomment-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell text edit icon" icon="icons/dccelltextediticon.png">
     <PropertyValue name="box">246,48</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccelltextediticon-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccelltextediticon-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">Super tasty</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccelltextediticon-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccelltextediticon-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
-    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/appicon-dccelltextediticon-trailingiconimagedata.svg</PropertyValue>
+    <PropertyValue name="trailingIconImageData">24,24,collection://vectors/solotextfield-dccelltextediticon-trailingiconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="DC cell text hover" icon="icons/dccelltexthover.png">
     <PropertyValue name="box">246,48</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor.shaded(0.040000000000000036)</E>
     </PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-dccelltexthover-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-dccelltexthover-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text0">I like ice cream more</PropertyValue>
-    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/appicon-dccelltexthover-vectorimage1imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage1ImageData">24,24,collection://vectors/solotextfield-dccelltexthover-vectorimage1imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -5740,7 +6327,7 @@ return snaps;
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
     <PropertyValue name="text1"/>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-inputemptyfocushelpicon-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-inputemptyfocushelpicon-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="withCaret">true</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext-single" displayName="Input (filled, error, help)" icon="icons/inputfillederrorhelp.png">
@@ -5757,7 +6344,7 @@ return snaps;
   <Shortcut to="inputtext-single" displayName="Input (date)" icon="icons/inputdate.png">
     <PropertyValue name="text1">Thu, Oct 19 2017</PropertyValue>
     <PropertyValue name="text0">Start date</PropertyValue>
-    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/appicon-inputdate-vectorimage0imagedata.svg</PropertyValue>
+    <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/solotextfield-inputdate-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="text2"/>
   </Shortcut>
   <Shortcut to="snackbar" displayName="Snackbar - no action" icon="icons/snackbar-noaction.png">
@@ -5792,7 +6379,7 @@ return snaps;
   <Shortcut to="tabitem" displayName="Tab with more" icon="icons/tabwithmore.png">
     <PropertyValue name="box">93,48</PropertyValue>
     <PropertyValue name="text0">MORE</PropertyValue>
-    <PropertyValue name="text0ImageData">40,40,collection://vectors/appicon-tabwithmore-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">40,40,collection://vectors/solotextfield-tabwithmore-text0imagedata.svg</PropertyValue>
     <PropertyValue name="iconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Multiline tab" icon="icons/multilinetab.png">
@@ -5810,13 +6397,13 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(-0.1428571428571429)</E>
     </PropertyValue>
     <PropertyValue name="text0">MULTI&lt;br xmlns="http://www.w3.org/1999/xhtml" /&gt;LINE</PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-multilinetabwithicon-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-multilinetabwithicon-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Tab with icon and more" icon="icons/tabwithiconandmore.png">
     <PropertyValue name="box">93,72</PropertyValue>
     <PropertyValue name="text0">MORE</PropertyValue>
-    <PropertyValue name="text0ImageData">40,40,collection://vectors/appicon-tabwithiconandmore-text0imagedata.svg</PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-tabwithiconandmore-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">40,40,collection://vectors/solotextfield-tabwithiconandmore-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-tabwithiconandmore-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Focused tab (inversed)" icon="icons/focusedtabinversed.png">
     <PropertyValue name="box">136,48</PropertyValue>
@@ -5849,7 +6436,7 @@ return snaps;
       <E>$$invertedContentColor.hollowed(1)</E>
     </PropertyValue>
     <PropertyValue name="text0">MORE</PropertyValue>
-    <PropertyValue name="text0ImageData">40,40,collection://vectors/appicon-tabwithmoreinversed-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">40,40,collection://vectors/solotextfield-tabwithmoreinversed-text0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
@@ -5883,7 +6470,7 @@ return snaps;
     <PropertyValue name="strokeColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-focusedtabwithiconinversed-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-focusedtabwithiconinversed-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Inactive tab with icon (inversed)" icon="icons/inactivetabwithiconinversed.png">
     <PropertyValue name="box">109,72</PropertyValue>
@@ -5893,7 +6480,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-inactivetabwithiconinversed-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-inactivetabwithiconinversed-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Multiline tab with icon (inversed)" icon="icons/multilinetabwithiconinversed.png">
     <PropertyValue name="box">73,72</PropertyValue>
@@ -5907,7 +6494,7 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-multilinetabwithiconinversed-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-multilinetabwithiconinversed-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Tab with icon and more (inversed)" icon="icons/tabwithiconandmoreinversed.png">
     <PropertyValue name="box">93,72</PropertyValue>
@@ -5915,11 +6502,11 @@ return snaps;
       <E>$$invertedContentColor.hollowed(1)</E>
     </PropertyValue>
     <PropertyValue name="text0">MORE</PropertyValue>
-    <PropertyValue name="text0ImageData">40,40,collection://vectors/appicon-tabwithiconandmoreinversed-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">40,40,collection://vectors/solotextfield-tabwithiconandmoreinversed-text0imagedata.svg</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="iconImageData">24,24,collection://vectors/appicon-tabwithiconandmoreinversed-iconimagedata.svg</PropertyValue>
+    <PropertyValue name="iconImageData">24,24,collection://vectors/solotextfield-tabwithiconandmoreinversed-iconimagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="tabitem" displayName="Focused tab with icon" icon="icons/focusedtabwithicon.png">
     <PropertyValue name="box">135,72</PropertyValue>
@@ -6034,7 +6621,7 @@ return snaps;
   </Shortcut>
   <Shortcut to="mobilemenuitem" displayName="Menu Item With Icon" icon="icons/menuitemwithicon.png">
     <PropertyValue name="text0">Item With Icon</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/appicon-menuitemwithicon-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/solotextfield-menuitemwithicon-text0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="mobilemenuitem" displayName="First Menu Item" icon="icons/firstmenuitem.png">
     <PropertyValue name="box">168,56</PropertyValue>
@@ -6052,47 +6639,63 @@ return snaps;
   </Shortcut>
   <Shortcut to="appicon" displayName="Gmail" icon="icons/gmail.png">
     <PropertyValue name="text0">Gmail</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-gmail-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-gmail-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Chrome" icon="icons/chrome.png">
     <PropertyValue name="text0">Chome</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-chrome-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-chrome-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Drive" icon="icons/drive.png">
     <PropertyValue name="text0">Drive</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-drive-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-drive-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Photos" icon="icons/photos.png">
     <PropertyValue name="text0">Photos</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-photos-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-photos-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Youtube" icon="icons/youtube.png">
     <PropertyValue name="text0">Youtube</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-youtube-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-youtube-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="GooglePlus" icon="icons/googleplus.png">
     <PropertyValue name="text0">Google+</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-googleplus-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-googleplus-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Doc" icon="icons/doc.png">
     <PropertyValue name="text0">Doc</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-doc-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-doc-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Skype" icon="icons/skype.png">
     <PropertyValue name="text0">Skype</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-skype-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-skype-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Facebook" icon="icons/facebook.png">
     <PropertyValue name="text0">Facebook</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-facebook-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-facebook-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Twitter" icon="icons/twitter.png">
     <PropertyValue name="text0">Twitter</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-twitter-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-twitter-bitmap0imagedata.png</PropertyValue>
   </Shortcut>
   <Shortcut to="appicon" displayName="Keep" icon="icons/keep.png">
     <PropertyValue name="text0">Google Keep</PropertyValue>
-    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/appicon-keep-bitmap0imagedata.png</PropertyValue>
+    <PropertyValue name="bitmap0ImageData">300,300,collection://bitmaps/solotextfield-keep-bitmap0imagedata.png</PropertyValue>
+  </Shortcut>
+  <Shortcut to="conversationmessage" displayName="Conversation Message - White" icon="icons/conversationmessage-white.png">
+    <PropertyValue name="fillColor">
+      <E>$$invertedContentColor</E>
+    </PropertyValue>
+    <PropertyValue name="textColor">
+      <E>$$defaultTextColor</E>
+    </PropertyValue>
+  </Shortcut>
+  <Shortcut to="conversationmessagereversed" displayName="Conversation Message - White - Reversed" icon="icons/conversationmessage-white-reversed.png">
+    <PropertyValue name="fillColor">
+      <E>$$invertedContentColor</E>
+    </PropertyValue>
+    <PropertyValue name="textColor">
+      <E>$$defaultTextColor</E>
+    </PropertyValue>
   </Shortcut>
   <Script comments="Resource script"><![CDATA[
 collection.RESOURCE_LIST = [{"name":"Built-in vectors","type":"svg","prefix":"vectors"},{"name":"Built-in bitmaps","type":"bitmap","prefix":"bitmaps"}];
