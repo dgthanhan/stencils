@@ -489,7 +489,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
       <Property name="secondaryContentColor" displayName="Problem Content Color" type="Color">#FF9900FF</Property>
     </PropertyGroup>
   </Properties>
-  <Shape id="inputtext" displayName="Input Text" icon="icons/inputtext.png?token=1534488441714">
+  <Shape id="inputtext" displayName="Input Text" icon="icons/inputtext.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,36</Property>
@@ -677,7 +677,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#01fff17dc85d4f1e9abff120b119a175)" id="rectangle1" rx="0" ry="0" style="fill: rgb(0, 0, 0); fill-opacity: 0.870588; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" width="1" height="20"/>
     </Content>
   </Shape>
-  <Shape id="button2" displayName="Button2" icon="icons/button2.png?token=1534488441714">
+  <Shape id="button2" displayName="Button2" icon="icons/button2.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,36</Property>
@@ -893,7 +893,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#edfa81b7bf9545b6970f4d767c1b8910)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="radio2" displayName="Radio 2" icon="icons/radio2.png?token=1534488441714">
+  <Shape id="radio2" displayName="Radio 2" icon="icons/radio2.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">124,24</Property>
@@ -1051,7 +1051,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#eef14ff5cbe649299ebbb5429140dcb8)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="checkbox2" displayName="Checkbox 2" icon="icons/checkbox2.png?token=1534488441714">
+  <Shape id="checkbox2" displayName="Checkbox 2" icon="icons/checkbox2.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="checked" displayName="Checked" type="Bool">true</Property>
@@ -1209,7 +1209,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1534488441714">
+  <Shape id="dialog" displayName="Dialog" icon="icons/dialog.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">500,600</Property>
@@ -1430,7 +1430,7 @@ return snaps;
       <path xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#e4238dc15a4042159b23522479a88576)" id="pathRect1" d="M 0 0 L 500 0 L 500 1 L 0 1 L 0 0 z" style="fill: rgb(255, 255, 255); fill-opacity: 0.219608; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;"/>
     </Content>
   </Shape>
-  <Shape id="datatablecell" displayName="DataTable Cell" icon="icons/datatablecell.png?token=1534488441714">
+  <Shape id="datatablecell" displayName="DataTable Cell" icon="icons/datatablecell.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,48</Property>
@@ -1739,7 +1739,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="combobox" displayName="Combo Box" icon="icons/combobox.png?token=1534488441714">
+  <Shape id="combobox" displayName="Combo Box" icon="icons/combobox.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">120,36</Property>
@@ -1962,7 +1962,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="rectangle" displayName="Rectangle" icon="icons/rectangle.png?token=1534488441714">
+  <Shape id="rectangle" displayName="Rectangle" icon="icons/rectangle.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,100</Property>
@@ -2149,7 +2149,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="image" displayName="Image" icon="icons/image.png?token=1534488441714">
+  <Shape id="image" displayName="Image" icon="icons/image.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">160,160</Property>
@@ -2310,7 +2310,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#b4d72212b91f46fc8ffaab5a8cef11ee)" id="rectangle2" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" height="160" width="160"/>
     </Content>
   </Shape>
-  <Shape id="vector" displayName="Vector" icon="icons/vector.png?token=1534488441714">
+  <Shape id="vector" displayName="Vector" icon="icons/vector.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">160,160</Property>
@@ -2480,7 +2480,7 @@ return snaps;
       <rect xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#c3d5783280f647738e8d749d73360958)" id="rectangle2" rx="0" ry="0" style="fill: rgb(255, 255, 255); fill-opacity: 0; stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 0;" height="160" width="160"/>
     </Content>
   </Shape>
-  <Shape id="paginator" displayName="Paginator" icon="icons/paginator.png?token=1534488441714">
+  <Shape id="paginator" displayName="Paginator" icon="icons/paginator.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">258,36</Property>
@@ -2815,7 +2815,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="dragfeedback" displayName="Drag Feedback" icon="icons/dragfeedback.png?token=1534488441714">
+  <Shape id="dragfeedback" displayName="Drag Feedback" icon="icons/dragfeedback.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">90,90</Property>
@@ -2943,7 +2943,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="infotip" displayName="Info Tip" icon="icons/infotip.png?token=1534488441714">
+  <Shape id="infotip" displayName="Info Tip" icon="icons/infotip.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">160,48</Property>
@@ -3146,7 +3146,7 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#1a146248211640ea8c1f4e63cc1b526c)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1534488441714">
+  <Shape id="textview" displayName="Text View" icon="icons/textview.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">200,18</Property>
@@ -3253,7 +3253,7 @@ return snaps;
       </g>
     </Content>
   </Shape>
-  <Shape id="mobilemenuitem" displayName="Mobile Menu Item" icon="icons/mobilemenuitem.png?token=1534488441714">
+  <Shape id="mobilemenuitem" displayName="Mobile Menu Item" icon="icons/mobilemenuitem.png?token=1534491624248">
     <Properties>
       <PropertyGroup name="Common" holder="true">
         <Property name="box" displayName="box" type="Dimension">168,48</Property>
@@ -3539,21 +3539,27 @@ return snaps;
       <g xmlns="http://www.w3.org/2000/svg" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:filter="url(#21149c64cb804cf4817854d467d7ed84)" id="text0text" dominant-baseline="auto"/>
     </Content>
   </Shape>
-  <Shortcut to="button2" displayName="Dismiss Button" icon="icons/dismissbutton.png">
+  <Shortcut to="button2" displayName="@Button21" icon="icons/button21.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$problemContentColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">CANCEL</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
+  <Shortcut to="button2" displayName="@Button21" icon="icons/button21.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button22" icon="icons/button22.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -3564,17 +3570,17 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text1" icon="icons/inputtext1.png">
     <PropertyValue name="box">210,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Normal text input</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">2,0</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button23" icon="icons/button23.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$secondaryContentColor</E>
@@ -3582,8 +3588,11 @@ return snaps;
     <PropertyValue name="strokeColor">
       <E>$$formBackground.shaded(0.24731182795698925)</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Dismiss Button" icon="icons/dismissbutton.png">
+  <Shortcut to="button2" displayName="@Button24" icon="icons/button24.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$problemContentColor.hollowed(0.6)</E>
@@ -3591,9 +3600,12 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.29803921568627456)</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">CANCEL</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
+  <Shortcut to="button2" displayName="@Button25" icon="icons/button25.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor.hollowed(0.6)</E>
@@ -3601,9 +3613,12 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.29803921568627456)</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button26" icon="icons/button26.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712).hollowed(0.6)</E>
@@ -3614,8 +3629,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.45882352941176474)</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button27" icon="icons/button27.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$secondaryContentColor.hollowed(0.6)</E>
@@ -3626,24 +3644,33 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.1098039215686275)</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Dismiss Button" icon="icons/dismissbutton.png">
+  <Shortcut to="button2" displayName="@Button28" icon="icons/button28.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$problemContentColor</E>
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|1|2|0.3</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">CANCEL</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
+  <Shortcut to="button2" displayName="@Button29" icon="icons/button29.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|1|2|0.3</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button210" icon="icons/button210.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -3655,8 +3682,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button211" icon="icons/button211.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$secondaryContentColor</E>
@@ -3665,14 +3695,14 @@ return snaps;
       <E>$$formBackground.shaded(0.24731182795698925)</E>
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|1|2|0.3</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text2" icon="icons/inputtext2.png">
     <PropertyValue name="box">210,36</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.4980392156862745)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text1">Placeholder text</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
@@ -3681,9 +3711,6 @@ return snaps;
     <PropertyValue name="box">210,36</PropertyValue>
     <PropertyValue name="strokeColor">
       <E>$$primaryContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text1">Focused te&lt;span xmlns="http://www.w3.org/1999/xhtml" style="color: rgb(153, 153, 153);"&gt;xt with caret&lt;/span&gt;</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
@@ -3701,9 +3728,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.6509803921568628)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Disabled input</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -3712,35 +3736,23 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.13978494623655913).hollowed(0.8)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Read-only input</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text6" icon="icons/inputtext6.png">
     <PropertyValue name="box">210,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Text with action</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/mobilemenuitem-inputtext6-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="handle0">50,0</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text7" icon="icons/inputtext7.png">
     <PropertyValue name="box">210,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">●●●●●●●</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/mobilemenuitem-inputtext7-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="handle0">50,0</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text8" icon="icons/inputtext8.png">
     <PropertyValue name="box">168,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">08/13/2018</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">2,0</PropertyValue>
@@ -3766,9 +3778,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text9" icon="icons/inputtext9.png">
     <PropertyValue name="box">168,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Username</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">2,0</PropertyValue>
@@ -3803,9 +3812,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.6509803921568628)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">08/13/2018</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">2,0</PropertyValue>
@@ -3822,18 +3828,12 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.8196078431372549)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont.bolder(100)</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button-text0imagedata.svg</PropertyValue>
     <PropertyValue name="leftRoundedCorners">false</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text11" icon="icons/inputtext11.png">
     <PropertyValue name="box">168,36</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Search field</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">2,0</PropertyValue>
@@ -3844,14 +3844,11 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont.bolder(100)</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-acceptbutton-text0imagedata.svg</PropertyValue>
     <PropertyValue name="leftRoundedCorners">false</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Dismiss Button" icon="icons/dismissbutton.png">
+  <Shortcut to="button2" displayName="@Button212" icon="icons/button212.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$problemContentColor</E>
@@ -3861,6 +3858,9 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
     </PropertyValue>
     <PropertyValue name="text0">CANCEL</PropertyValue>
   </Shortcut>
@@ -3875,9 +3875,12 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button213" icon="icons/button213.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -3891,8 +3894,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button214" icon="icons/button214.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$secondaryContentColor</E>
@@ -3903,8 +3909,11 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
+  <Shortcut to="button2" displayName="@Button215" icon="icons/button215.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
@@ -3915,9 +3924,12 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Dismiss Button" icon="icons/dismissbutton.png">
+  <Shortcut to="button2" displayName="@Button216" icon="icons/button216.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$problemContentColor</E>
@@ -3928,8 +3940,11 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">CLOSE</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-dismissbutton-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button216-text0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
     <PropertyValue name="box">99,36</PropertyValue>
@@ -3942,9 +3957,12 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button217" icon="icons/button217.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -3958,10 +3976,13 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">BROWSE</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button217-text0imagedata.svg</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button218" icon="icons/button218.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$secondaryContentColor</E>
@@ -3972,10 +3993,13 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">UPLOAD</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button218-text0imagedata.svg</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Accept Button" icon="icons/acceptbutton.png">
+  <Shortcut to="button2" displayName="@Button219" icon="icons/button219.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
@@ -3986,8 +4010,11 @@ return snaps;
     <PropertyValue name="strokeStyle">
       <E>$$defaultStrokeStyle</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">SEARCH</PropertyValue>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-acceptbutton-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button219-text0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="inputtext" displayName="@Input Text12" icon="icons/inputtext12.png">
     <PropertyValue name="box">210,36</PropertyValue>
@@ -3995,15 +4022,12 @@ return snaps;
       <E>$$problemContentColor</E>
     </PropertyValue>
     <PropertyValue name="textColor">#FF0000DE</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text1">Validation error</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="handle0">115,0</PropertyValue>
     <PropertyValue name="withCaret">true</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button220" icon="icons/button220.png">
     <PropertyValue name="box">56,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -4021,9 +4045,9 @@ return snaps;
       <E>$$defaultFont.bolder(100).resized(0.5)</E>
     </PropertyValue>
     <PropertyValue name="text0"/>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button220-text0imagedata.svg</PropertyValue>
   </Shortcut>
-  <Shortcut to="button2" displayName="Button" icon="icons/button.png">
+  <Shortcut to="button2" displayName="@Button221" icon="icons/button221.png">
     <PropertyValue name="box">56,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.09677419354838712)</E>
@@ -4037,52 +4061,34 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont.bolder(100)</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
-    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button-text0imagedata.svg</PropertyValue>
+    <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-button221-text0imagedata.svg</PropertyValue>
   </Shortcut>
   <Shortcut to="radio2" displayName="@Radio 21" icon="icons/radio21.png">
     <PropertyValue name="box">73,24</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Radio</PropertyValue>
   </Shortcut>
   <Shortcut to="radio2" displayName="@Radio 22" icon="icons/radio22.png">
     <PropertyValue name="box">73,24</PropertyValue>
     <PropertyValue name="checked">false</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Radio</PropertyValue>
   </Shortcut>
   <Shortcut to="radio2" displayName="@Radio 23" icon="icons/radio23.png">
     <PropertyValue name="box">73,24</PropertyValue>
     <PropertyValue name="disabled">true</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Radio</PropertyValue>
   </Shortcut>
   <Shortcut to="radio2" displayName="@Radio 24" icon="icons/radio24.png">
     <PropertyValue name="box">73,24</PropertyValue>
     <PropertyValue name="checked">false</PropertyValue>
     <PropertyValue name="disabled">true</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Radio</PropertyValue>
   </Shortcut>
   <Shortcut to="checkbox2" displayName="@Checkbox 21" icon="icons/checkbox21.png">
     <PropertyValue name="box">93,24</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
@@ -4091,37 +4097,22 @@ return snaps;
     <PropertyValue name="checked">false</PropertyValue>
     <PropertyValue name="disabled">true</PropertyValue>
     <PropertyValue name="box">99,24</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
   </Shortcut>
   <Shortcut to="checkbox2" displayName="@Checkbox 23" icon="icons/checkbox23.png">
     <PropertyValue name="checked">false</PropertyValue>
     <PropertyValue name="box">93,24</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
   </Shortcut>
   <Shortcut to="checkbox2" displayName="@Checkbox 24" icon="icons/checkbox24.png">
     <PropertyValue name="disabled">true</PropertyValue>
     <PropertyValue name="box">93,24</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
-  </Shortcut>
-  <Shortcut to="dialog" displayName="@Dialog1" icon="icons/dialog1.png">
-    <PropertyValue name="box">560,558</PropertyValue>
-    <PropertyValue name="fillColor">
-      <E>$$formBackground</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont.bolder(100)</E>
-    </PropertyValue>
   </Shortcut>
   <Shortcut to="button2" displayName="@Button21" icon="icons/button21.png">
     <PropertyValue name="box">99,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$primaryContentColor</E>
+    </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
     </PropertyValue>
     <PropertyValue name="text0">SELECT</PropertyValue>
   </Shortcut>
@@ -4130,15 +4121,15 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$problemContentColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.bolder(100).resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text0">CANCEL</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell1" icon="icons/datatablecell1.png">
     <PropertyValue name="box">49,48</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.043010752688172005)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
@@ -4159,9 +4150,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell3" icon="icons/datatablecell3.png">
     <PropertyValue name="box">49,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="fillColor2">
       <E>$$primaryContentColor</E>
@@ -4170,9 +4158,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell4" icon="icons/datatablecell4.png">
     <PropertyValue name="box">169,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Utque erectos</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4183,9 +4168,6 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4195,9 +4177,6 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Secrevit ponderib...</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4205,18 +4184,12 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell7" icon="icons/datatablecell7.png">
     <PropertyValue name="box">49,58</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell8" icon="icons/datatablecell8.png">
     <PropertyValue name="box">169,58</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">&lt;span xmlns="http://www.w3.org/1999/xhtml" style="font-weight: bold;"&gt;Complex Text&lt;br xmlns="http://www.w3.org/1999/xhtml" /&gt;&lt;/span&gt;In multiple lines</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4226,9 +4199,6 @@ return snaps;
     <PropertyValue name="box">49,48</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="fillColor2">
@@ -4242,9 +4212,6 @@ return snaps;
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
     <PropertyValue name="textAlignment">2,1</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">$13.45</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4252,9 +4219,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell11" icon="icons/datatablecell11.png">
     <PropertyValue name="box">49,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0"/>
     <PropertyValue name="checkMode">unchecked</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4262,9 +4226,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell12" icon="icons/datatablecell12.png">
     <PropertyValue name="box">339,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Partim locum &lt;span xmlns="http://www.w3.org/1999/xhtml" style="color: rgb(52, 154, 153); text-decoration: underline;"&gt;crescendo&lt;/span&gt; norant...</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-datatablecell12-text0imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
@@ -4294,18 +4255,12 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(0.13978494623655913)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Active Dropdown</PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="mobilemenuitem" displayName="@Mobile Menu Item1" icon="icons/mobilemenuitem1.png">
     <PropertyValue name="box">168,56</PropertyValue>
     <PropertyValue name="fillColor2">#33CCFFFF</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">First Menu Item</PropertyValue>
     <PropertyValue name="first">true</PropertyValue>
   </Shortcut>
@@ -4313,9 +4268,6 @@ return snaps;
     <PropertyValue name="box">168,56</PropertyValue>
     <PropertyValue name="fillColor2">
       <E>$$formBackground</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Last Menu Item</PropertyValue>
     <PropertyValue name="last">true</PropertyValue>
@@ -4330,17 +4282,11 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor.hollowed(0.12941176470588234)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Selected Item</PropertyValue>
   </Shortcut>
   <Shortcut to="paginator" displayName="@Paginator1" icon="icons/paginator1.png">
     <PropertyValue name="fillColor">
       <E>$$invertedContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text3">...</PropertyValue>
     <PropertyValue name="text4">49</PropertyValue>
@@ -4354,9 +4300,6 @@ return snaps;
     <PropertyValue name="fillColor">#FF00006B</PropertyValue>
     <PropertyValue name="shadowStyle">0|0|2|0.4</PropertyValue>
     <PropertyValue name="textAlignment">0,1</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Validation error</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-infotip1-text0imagedata.svg</PropertyValue>
   </Shortcut>
@@ -4382,9 +4325,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell14" icon="icons/datatablecell14.png">
     <PropertyValue name="box">169,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Utque erectos</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4396,9 +4336,6 @@ return snaps;
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
     <PropertyValue name="textAlignment">1,1</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">13/08/18 09:30</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-datatablecell15-text0imagedata.svg</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
@@ -4409,9 +4346,6 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$problemContentColor.hollowed(0.7294117647058824)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Error cell</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4421,9 +4355,6 @@ return snaps;
     <PropertyValue name="box">169,48</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Check inside</PropertyValue>
     <PropertyValue name="fillColor2">
@@ -4449,9 +4380,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell19" icon="icons/datatablecell19.png">
     <PropertyValue name="box">133,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">&lt;span xmlns="http://www.w3.org/1999/xhtml"&gt;Sive&lt;/span&gt;</PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
@@ -4464,9 +4392,6 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Nisi</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4477,9 +4402,6 @@ return snaps;
     <PropertyValue name="box">133,58</PropertyValue>
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">&lt;span xmlns="http://www.w3.org/1999/xhtml" style="text-decoration: underline;"&gt;Action&lt;/span&gt;</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-datatablecell21-text0imagedata.svg</PropertyValue>
@@ -4493,9 +4415,6 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Row Edit</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">24,24,collection://vectors/mobilemenuitem-datatablecell22-trailingiconimagedata.svg</PropertyValue>
@@ -4504,9 +4423,6 @@ return snaps;
   </Shortcut>
   <Shortcut to="datatablecell" displayName="@DataTable Cell23" icon="icons/datatablecell23.png">
     <PropertyValue name="box">133,48</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Capacius</PropertyValue>
     <PropertyValue name="checkMode">none</PropertyValue>
     <PropertyValue name="trailingIconImageData">0,0,data:</PropertyValue>
@@ -4519,18 +4435,12 @@ return snaps;
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
   <Shortcut to="combobox" displayName="@Combo Box3" icon="icons/combobox3.png">
     <PropertyValue name="box">187,36</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Combo with icon</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-combobox3-text0imagedata.svg</PropertyValue>
@@ -4547,9 +4457,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.6509803921568628)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Disabled</PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -4557,9 +4464,6 @@ return snaps;
     <PropertyValue name="box">242,60</PropertyValue>
     <PropertyValue name="fillColor">
       <E>$$formBackground.shaded(-0.032258064516129004)</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">&lt;span xmlns="http://www.w3.org/1999/xhtml" style="font-weight: bold;"&gt;Complex text&lt;br /&gt;&lt;/span&gt;In multiple lines recessit an...</PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
@@ -4603,6 +4507,9 @@ return snaps;
     <PropertyValue name="strokeColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.resized(-0.125)</E>
+    </PropertyValue>
     <PropertyValue name="text1">Editable combo</PropertyValue>
     <PropertyValue name="vectorImage0ImageData">24,24,collection://vectors/mobilemenuitem-inputtext13-vectorimage0imagedata.svg</PropertyValue>
     <PropertyValue name="handle0">103,0</PropertyValue>
@@ -4618,9 +4525,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|0|0|0.2</PropertyValue>
     <PropertyValue name="textColor">#FF0000DE</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Validation error</PropertyValue>
     <PropertyValue name="text0ImageData">0,0,data:</PropertyValue>
   </Shortcut>
@@ -4631,9 +4535,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|0|2|0.4</PropertyValue>
     <PropertyValue name="textAlignment">0,1</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Warning message</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-infotip2-text0imagedata.svg</PropertyValue>
   </Shortcut>
@@ -4650,9 +4551,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Information tooltip</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-infotip3-text0imagedata.svg</PropertyValue>
     <PropertyValue name="text0IconColor">
@@ -4666,9 +4564,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="shadowStyle">0|0|2|0.2</PropertyValue>
     <PropertyValue name="textAlignment">0,1</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Information tooltip</PropertyValue>
     <PropertyValue name="text0ImageData">24,24,collection://vectors/mobilemenuitem-infotip4-text0imagedata.svg</PropertyValue>
     <PropertyValue name="text0IconColor">
@@ -4781,6 +4676,9 @@ return snaps;
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle9" icon="icons/rectangle9.png">
     <PropertyValue name="box">118,73</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle10" icon="icons/rectangle10.png">
     <PropertyValue name="box">118,73</PropertyValue>
@@ -4788,6 +4686,9 @@ return snaps;
       <E>$$formBackground.shaded(0.13978494623655913)</E>
     </PropertyValue>
     <PropertyValue name="rightBorder">false</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle11" icon="icons/rectangle11.png">
     <PropertyValue name="box">118,73</PropertyValue>
@@ -4795,6 +4696,9 @@ return snaps;
       <E>$$formBackground.shaded(0.13978494623655913)</E>
     </PropertyValue>
     <PropertyValue name="bottomBorder">false</PropertyValue>
+    <PropertyValue name="textFont">
+      <E>$$defaultFont.resized(-0.125)</E>
+    </PropertyValue>
   </Shortcut>
   <Shortcut to="dragfeedback" displayName="@Drag Feedback1" icon="icons/dragfeedback1.png">
     <PropertyValue name="box">118,120</PropertyValue>
@@ -4935,9 +4839,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$defaultTextColor.hollowed(0.4)</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle2" icon="icons/rectangle2.png">
@@ -4954,9 +4855,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="textColor">
       <E>$$problemContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
@@ -4975,9 +4873,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$primaryContentColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle4" icon="icons/rectangle4.png">
@@ -4994,9 +4889,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
@@ -5015,9 +4907,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle6" icon="icons/rectangle6.png">
@@ -5031,9 +4920,6 @@ return snaps;
     <PropertyValue name="radius">7,0</PropertyValue>
     <PropertyValue name="strokeColor">#F39E18FF</PropertyValue>
     <PropertyValue name="textColor">#F39E18FF</PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle7" icon="icons/rectangle7.png">
@@ -5049,9 +4935,6 @@ return snaps;
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
     </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
-    </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
   <Shortcut to="rectangle" displayName="@Rectangle8" icon="icons/rectangle8.png">
@@ -5066,9 +4949,6 @@ return snaps;
     </PropertyValue>
     <PropertyValue name="textColor">
       <E>$$invertedContentColor</E>
-    </PropertyValue>
-    <PropertyValue name="textFont">
-      <E>$$defaultFont</E>
     </PropertyValue>
     <PropertyValue name="text0">Liberioris tuba quam flamina mea congestaque pugnabant orba...</PropertyValue>
   </Shortcut>
